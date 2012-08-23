@@ -280,7 +280,7 @@ public class Stations{
         player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationShowList")));
         for(String index : DragonTravelMain.dbd.getIndices()){
 
-            String world = DragonTravelMain.dbs.getString(index, "world");
+            String world = DragonTravelMain.dbd.getString(index, "world");
 
             if(world.equalsIgnoreCase(player.getWorld().toString())){
                 a.append(index + ", ");

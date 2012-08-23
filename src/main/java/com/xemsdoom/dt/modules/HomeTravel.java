@@ -75,9 +75,9 @@ public class HomeTravel{
             return;
         }
 
-        double x = DragonTravelMain.dbs.getDouble(name, "x");
-        double y = DragonTravelMain.dbs.getDouble(name, "y");
-        double z = DragonTravelMain.dbs.getDouble(name, "z");
+        double x = DragonTravelMain.players.getDouble(name, "x");
+        double y = DragonTravelMain.players.getDouble(name, "y");
+        double z = DragonTravelMain.players.getDouble(name, "z");
         
         Location loca = new Location(player.getWorld(), x, y, z);
 

@@ -167,9 +167,9 @@ public class SignCreating{
 
         for(String name : DragonTravelMain.dbd.getIndices()){
 
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
+            double x = DragonTravelMain.dbd.getDouble(name, "x");
+            double y = DragonTravelMain.dbd.getDouble(name, "y");
+            double z = DragonTravelMain.dbd.getDouble(name, "z");
 
             World world = b.getWorld();
 
