@@ -140,8 +140,7 @@ public class BlockListener implements Listener {
 			}
 
 			// Checking if we have to make a sign with a cost or not and then
-			// fire
-			// the specific method
+			// fire the specific method
 			if (!DragonTravelMain.EconomyEnabled) {
 
 				if (!event.getLine(3).isEmpty()) {
@@ -205,7 +204,10 @@ public class BlockListener implements Listener {
 		Player player = event.getPlayer();
 		String worldname = block.getLocation().getWorld().toString();
 
-		if (block.getType().equals(Material.AIR))
+		if (block == null || block.getTypeId() == 0)
+			return;
+
+		if (block.getType() != Material.SIGN && block.getType() != Material.SIGN_POST)
 			return;
 
 		for (String name : DragonTravelMain.signs.getIndices()) {

@@ -1,3 +1,4 @@
+# Modified on the 23 August 2012 by XemsDoom
 
 Welcome to the the DragonTravel FAQ textfile.
 In this file, some questions about DragonTravel are answered.
@@ -5,39 +6,58 @@ Also some random stuff is just written on some places, because
 being a server administrator needs more fun and stuff, right?
 
 > Who made DragonTravel?
-- Penguins.
+- Penguins. Well XemsDoom(Developer) and Phiwa(Documenter).
 
 > Can you be serious?
-- Sure, here you go:
+- Sure and also tired but here you go:
 
 > The dragon sometimes looks into the wrong direction, what can I do?
 - This is caused by the client itself, but on clients with more
-  FPS, this usually does not occur.
+  frames per second, this usually does not occur or less.
 
-> Economy does not work, I don't get any withdraw.
+> I want to run DragonTravel on a server without a PermissionManager
+- Alright, open the DragonTravel.jar file, you will find a "plugin.yml"
+  in there. Open it with NotePad++ and not a shitty editor please.
+  Change every "default: op" you see to "default: true", this means
+  that all players get the permission, instead of only the operators.
+  After you are done editing the file, put it back into the DragonTravel.jar
+
+> Economy does not work, I don't have any withdraw.
 - As a server administrator, you likely got the permission
   dt.nocost, which disables withdraws for you.
   
-> DragonTravel does not work on the server
-- If you set "Economy" true in the config but did not install
-  the plugin "Vault", then DragonTravel will disable itself 
+> DragonTravel does not work
+- If you set "Economy" to "true" in the config but did not install
+  the plugin "Vault", then DragonTravel will disable itself
 - If you try to run DragonTravel with an outdated config or
   messages file, then DragonTravel will disable itself
 - If you like cakes, then DragonTravel is a lie and disables itself
   
 > The dragon flys really glitchy or laggy.
-- Decrease the dragon's speed in the configuration
-- Set your render distance smaller
-- Get better hardware anyways...
+  First of all, DragonTravel itself is NOT glitchy, this shuttered
+  movement is coming from your server or client. The performance
+  on one side or both is bad, that causes the dragon to not move fluid.
+
+On Server:
+- Try to decrease the view-distance, this will give your server a good
+  performance boost, as less chunks are generally loaded.
+- Fix errors which appear in the log, plugins having errors can decrease
+  the server performance a lot.
+- Decrease the dragon's speed in the configuration file.
+On Client:
+- Decrease the view-distance
+- Maybe get OptiFine?, usually OptiFine increases performance
 
 > The dragon flys through blocks.
 - We can't change that in an efficient way
 
 > Is it possible to remove the boss-health bar?
-- No it is not, the boss-health bar is client-sided.
+- No it is not, the boss-health bar is client-sided,
+  you can try to hire a dev, which will modify the vanilla Minecraft client,
+  but why throw out money.
 
 > Where are the permission-nodes?
-  Some lines under me {-_-}:
+  Some lines under me {-_-}
 
 ############################################################################
 dt.* -> All permissions
