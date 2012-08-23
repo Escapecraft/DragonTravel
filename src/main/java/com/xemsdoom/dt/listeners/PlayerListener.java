@@ -122,9 +122,9 @@ public class PlayerListener implements Listener {
 
 		for (String name : DragonTravelMain.signs.getIndices()) {
 
-			double x = DragonTravelMain.dbs.getDouble(name, "x");
-			double y = DragonTravelMain.dbs.getDouble(name, "y");
-			double z = DragonTravelMain.dbs.getDouble(name, "z");
+			double x = DragonTravelMain.signs.getDouble(name, "x");
+			double y = DragonTravelMain.signs.getDouble(name, "y");
+			double z = DragonTravelMain.signs.getDouble(name, "z");
 
 			World world = block.getWorld();
 
