@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.avaje.ebeaninternal.server.lib.util.StringParsingException;
 import com.xemsdoom.dt.DragonTravelMain;
 import com.xemsdoom.dt.economy.EconomyHandler;
 import com.xemsdoom.dt.modules.HomeTravel;
@@ -513,7 +512,6 @@ public class Commands implements CommandExecutor {
 
 			default:
 				CommandHandlers.helpPlayer(player);
-				break;
 		}
 		
 		return false;
