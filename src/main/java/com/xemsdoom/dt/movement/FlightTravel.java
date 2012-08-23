@@ -46,7 +46,6 @@ public class FlightTravel {
 		}
 
 		for (String index : DragonTravelMain.wps.getIndices()) {
-
 			a.append(index + ", ");
 		}
 

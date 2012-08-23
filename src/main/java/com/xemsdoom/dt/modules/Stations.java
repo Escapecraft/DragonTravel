@@ -175,7 +175,6 @@ public class Stations {
 		sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingSuccessful")) + " " + name);
 		DragonTravelMain.dbs.removeEntry(name);
 		DragonTravelMain.dbs.push();
-
 	}
 
 	/**

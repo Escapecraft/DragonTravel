@@ -3,6 +3,7 @@ package com.xemsdoom.dt.movement;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
 import com.xemsdoom.mexdb.exception.EmptyIndexException;
@@ -67,10 +68,14 @@ public class Flight {
 		for (int counter = 0; counter < wpamount; counter++) {
 			Waypoint wp = waypoints.get(counter);
 
-			player.getWorld().getBlockAt((int) wp.getX(), (int) wp.getY(), (int) wp.getZ()).getChunk().load();
+			Chunk chunk = player.getWorld().getBlockAt((int) wp.getX(), (int) wp.getY(), (int) wp.getZ()).getChunk();
+			
+			chunk.load(true);
+			
 			String x = String.valueOf(wp.getX());
 			String y = String.valueOf(wp.getY());
 			String z = String.valueOf(wp.getZ());
+			
 			wp.removeMarker();
 			entry.addValue(String.valueOf(counter), x + "," + y + "," + z);
 		}
