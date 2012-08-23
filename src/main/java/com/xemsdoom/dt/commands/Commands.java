@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.avaje.ebeaninternal.server.lib.util.StringParsingException;
@@ -55,85 +56,60 @@ public class Commands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
 
-		if (args.length < 1) {
+		// Length of the commands
+		int length = args.length;
+
+		// Return if not right length
+		if (length < 1) {
 			CommandHandlers.helpPlayer(sender);
 			return false;
 		}
 
-		if (sender instanceof Player) {
-			Player player = (Player) sender;
+		// Console Command Execution
+		if (sender instanceof ConsoleCommandSender) {
 
-			String argu = args[0];
+			if (length > 0 && args[0].equalsIgnoreCase("remdragons")) {
 
-			try {
-
-				if (argu.equalsIgnoreCase("flight")) {
-
-					if (!player.hasPermission("dt.flight")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length != 2) {
-						CommandHandlers.commandList(sender);
-						return false;
-					}
-
-					if (!Flight.existFlight(args[1])) {
-						CommandHandlers.dtCredit(sender);
-						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
-						return false;
-					}
-
-					Flight flight = new Flight(args[1]);
-					FlightTravel.flyFlight(flight, player, true);
-					return true;
+				if (args.length == 1) {
+					sender.sendMessage("[DragonTravel] /dt remdragons <worldname>");
+					return false;
 				}
 
-				if (argu.equalsIgnoreCase("flightlist")) {
-					if (!player.hasPermission("dt.flightlist")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
+				try {
 
-					FlightTravel.showFlights(player);
-					return true;
+					// Getting world in which we remove the dragons
+					String worldStr = "";
+
+					for (int i = 1; i < args.length; i++)
+						worldStr += args[i] + " ";
+
+					// Removing the dragons
+					World world = plugin.getServer().getWorld(worldStr.trim());
+					Travels.removeDragons(world);
+
+				} catch (Exception ex) {
+					DragonTravelMain.log.info("[DragonTravel] Could not find the world specified. /dt remdragons worldname");
+					return false;
 				}
 
-				if (argu.equalsIgnoreCase("createflight")) {
+			} else {
+				sender.sendMessage("[DragonTravel] Only /dt remdragons <worldname> is available from console");
+				return false;
+			}
+		}
 
-					if (!player.hasPermission("dt.createflight")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
+		// Getting the common argument 1
+		String arg1 = args[0];
 
-					if (args.length != 2) {
-						CommandHandlers.commandListTwo(sender);
-						return false;
-					}
+		// Getting player
+		Player player = (Player) sender;
 
-					if (FlightEditor.editors.containsKey(player)) {
-						CommandHandlers.dtCredit(sender);
-						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("AlreadyInEditMode")));
-						return false;
-					}
+		// Player Command Execution
+		switch (length) {
 
-					if (Flight.existFlight(args[1])) {
-						CommandHandlers.dtCredit(sender);
-						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightAlreadyExists")));
-						return false;
-					}
+			case 1:
 
-					new FlightEditor(player, args[1]);
-					CommandHandlers.dtCredit(sender);
-					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("YouAreNowInEditMode")));
-					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpToMakeWP")));
-					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpToMakeWP2")));
-					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ExecuteSaveWhenDone")));
-					return true;
-				}
-
-				if (argu.equalsIgnoreCase("saveflight")) {
+				if (arg1.equalsIgnoreCase("saveflight")) {
 
 					if (!player.hasPermission("dt.saveflight")) {
 						CommandHandlers.noPerm(sender);
@@ -159,31 +135,7 @@ public class Commands implements CommandExecutor {
 					return true;
 				}
 
-				if (argu.equalsIgnoreCase("remflight")) {
-
-					if (!player.hasPermission("dt.remflight")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length != 2) {
-						CommandHandlers.commandListTwo(sender);
-						return false;
-					}
-
-					if (!Flight.existFlight(args[1])) {
-						CommandHandlers.dtCredit(sender);
-						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
-						return false;
-					}
-
-					Flight.removeFlight(args[1]);
-					CommandHandlers.dtCredit(sender);
-					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemovedFlight")));
-					return true;
-				}
-
-				if (argu.equalsIgnoreCase("setwp")) {
+				if (arg1.equalsIgnoreCase("setwp")) {
 
 					if (!player.hasPermission("dt.setwp")) {
 						CommandHandlers.noPerm(sender);
@@ -208,7 +160,7 @@ public class Commands implements CommandExecutor {
 					return true;
 				}
 
-				if (argu.equalsIgnoreCase("remlastwp")) {
+				if (arg1.equalsIgnoreCase("remlastwp")) {
 
 					if (!player.hasPermission("dt.remwp")) {
 						CommandHandlers.noPerm(sender);
@@ -226,67 +178,7 @@ public class Commands implements CommandExecutor {
 					return true;
 				}
 
-				if (argu.equalsIgnoreCase("setdest")) {
-
-					if (!sender.hasPermission("dt.setdest")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length > 1) {
-						String name = args[1];
-						Stations.setDestination(player, name);
-					} else {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterName")));
-					}
-
-				} else if (argu.equalsIgnoreCase("remdest")) {
-
-					if (!sender.hasPermission("dt.remdest")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length > 1) {
-						String name = args[1];
-						Stations.removeDestination(sender, name);
-					} else {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterName")));
-					}
-
-				} else if (argu.equalsIgnoreCase("setstat")) {
-
-					if (!sender.hasPermission("dt.setstat")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length > 1) {
-						String name = args[1];
-						Stations.setStation(player, name);
-					} else {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterName")));
-					}
-
-				} else if (argu.equalsIgnoreCase("remstat")) {
-
-					if (!sender.hasPermission("dt.remstat")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length > 1) {
-						String name = args[1];
-						Stations.removeStation(sender, name);
-					} else {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterName")));
-					}
-
-				} else if (argu.equalsIgnoreCase("statdragon")) {
+				if (arg1.equalsIgnoreCase("statdragon")) {
 
 					if (!sender.hasPermission("dt.statdragon")) {
 						CommandHandlers.noPerm(sender);
@@ -294,8 +186,10 @@ public class Commands implements CommandExecutor {
 					}
 
 					StationaryDragon.createStatDragon(player);
+					return true;
+				}
 
-				} else if (argu.equalsIgnoreCase("sethome")) {
+				if (arg1.equalsIgnoreCase("sethome")) {
 
 					if (!sender.hasPermission("dt.home.set")) {
 						CommandHandlers.noPerm(sender);
@@ -303,8 +197,10 @@ public class Commands implements CommandExecutor {
 					}
 
 					HomeTravel.setHome(player);
+					return true;
+				}
 
-				} else if (argu.equalsIgnoreCase("home")) {
+				if (arg1.equalsIgnoreCase("home")) {
 
 					if (!sender.hasPermission("dt.home")) {
 						CommandHandlers.noPerm(sender);
@@ -315,8 +211,10 @@ public class Commands implements CommandExecutor {
 						return false;
 
 					HomeTravel.goHome(player);
+					return true;
+				}
 
-				} else if (argu.equalsIgnoreCase("mount")) {
+				if (arg1.equalsIgnoreCase("mount")) {
 
 					if (!sender.hasPermission("dt.mount")) {
 						CommandHandlers.noPerm(sender);
@@ -324,8 +222,10 @@ public class Commands implements CommandExecutor {
 					}
 
 					Travels.mountDragon(player);
+					return true;
+				}
 
-				} else if (argu.equalsIgnoreCase("dismount")) {
+				if (arg1.equalsIgnoreCase("dismount")) {
 
 					if (!sender.hasPermission("dt.dismount")) {
 						CommandHandlers.noPerm(sender);
@@ -333,8 +233,10 @@ public class Commands implements CommandExecutor {
 					}
 
 					Travels.dismountDragon(player);
+					return true;
+				}
 
-				} else if (argu.equalsIgnoreCase("remdragons")) {
+				if (arg1.equalsIgnoreCase("remdragons")) {
 
 					if (!sender.hasPermission("dt.remdragons")) {
 						CommandHandlers.noPerm(sender);
@@ -342,59 +244,10 @@ public class Commands implements CommandExecutor {
 					}
 
 					Travels.removeDragons(player);
+					return true;
+				}
 
-				} else if (argu.equalsIgnoreCase("travel")) {
-
-					if (!sender.hasPermission("dt.travel")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (!(DragonTravelMain.onlysigns)) {
-						if (args.length > 1) {
-							String name = args[1];
-							Travels.travelDestination(player, name);
-						} else {
-							CommandHandlers.dtCredit(sender);
-							sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterName")));
-						}
-					} else {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorCommandDisabled1")));
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorCommandDisabled2")));
-					}
-
-				} else if (argu.equalsIgnoreCase("ctravel")) {
-
-					if (!sender.hasPermission("dt.ctravel")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					if (args.length != 4) {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterCoords")));
-						return false;
-					}
-
-					try {
-
-						String xx = args[1];
-						String yy = args[2];
-						String zz = args[3];
-
-						int x = Integer.parseInt(xx);
-						int y = Integer.parseInt(yy);
-						int z = Integer.parseInt(zz);
-
-						Travels.travelChord(player, x, y, z);
-
-					} catch (NumberFormatException e) {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorNumbersAsCoords")));
-					}
-
-				} else if (argu.equalsIgnoreCase("destlist")) {
+				if (arg1.equalsIgnoreCase("destlist")) {
 
 					if (!sender.hasPermission("dt.destlist")) {
 						CommandHandlers.noPerm(sender);
@@ -403,12 +256,15 @@ public class Commands implements CommandExecutor {
 
 					if (!(DragonTravelMain.dbd.getIndices().isEmpty())) {
 						Stations.showDestinations(player);
+						return true;
 					} else {
 						CommandHandlers.dtCredit(sender);
 						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorNoDestinationsAvailable")));
+						return false;
 					}
+				}
 
-				} else if (argu.equalsIgnoreCase("statlist")) {
+				if (arg1.equalsIgnoreCase("statlist")) {
 
 					if (!sender.hasPermission("dt.statlist")) {
 						CommandHandlers.noPerm(sender);
@@ -417,27 +273,15 @@ public class Commands implements CommandExecutor {
 
 					if (!(DragonTravelMain.dbs.getIndices().isEmpty())) {
 						Stations.showStations(player);
+						return true;
 					} else {
 						CommandHandlers.dtCredit(sender);
 						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorNoStationsAvailable")));
-					}
-
-				} else if (argu.equalsIgnoreCase("ptravel")) {
-
-					if (!sender.hasPermission("dt.ptravel")) {
-						CommandHandlers.noPerm(sender);
 						return false;
 					}
+				}
 
-					if (args.length >= 2) {
-						String name = args[1];
-						Travels.traveltoPlayer(player, name);
-					} else {
-						CommandHandlers.dtCredit(sender);
-						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEnterPlayername")));
-					}
-
-				} else if (argu.equalsIgnoreCase("ptoggle")) {
+				if (arg1.equalsIgnoreCase("ptoggle")) {
 
 					if (!sender.hasPermission("dt.ptoggle")) {
 						CommandHandlers.noPerm(sender);
@@ -455,12 +299,169 @@ public class Commands implements CommandExecutor {
 						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerToggleOn")));
 						return true;
 					}
-				} else if (argu.equalsIgnoreCase("help")) {
+				}
 
-					if (args.length < 2) {
-						CommandHandlers.helpPlayer(sender);
+				if (arg1.equalsIgnoreCase("stopmusic")) {
+
+					if (!sender.hasPermission("dt.stopmusic")) {
+						CommandHandlers.noPerm(sender);
 						return false;
 					}
+
+					MusicHandler.stopEpicSound(player);
+					return true;
+				}
+
+				if (arg1.equalsIgnoreCase("flightlist")) {
+					if (!player.hasPermission("dt.flightlist")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					FlightTravel.showFlights(player);
+					return true;
+				}
+
+				break;
+
+			case 2:
+
+				if (arg1.equalsIgnoreCase("flight")) {
+
+					if (!player.hasPermission("dt.flight")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					if (!Flight.existFlight(args[1])) {
+						CommandHandlers.dtCredit(sender);
+						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
+						return false;
+					}
+
+					Flight flight = new Flight(args[1]);
+					FlightTravel.flyFlight(flight, player, true);
+					return true;
+				}
+
+				if (arg1.equalsIgnoreCase("createflight")) {
+
+					if (!player.hasPermission("dt.createflight")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					if (FlightEditor.editors.containsKey(player)) {
+						CommandHandlers.dtCredit(sender);
+						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("AlreadyInEditMode")));
+						return false;
+					}
+
+					if (Flight.existFlight(args[1])) {
+						CommandHandlers.dtCredit(sender);
+						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightAlreadyExists")));
+						return false;
+					}
+
+					new FlightEditor(player, args[1]);
+					CommandHandlers.dtCredit(sender);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("YouAreNowInEditMode")));
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpToMakeWP")));
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpToMakeWP2")));
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ExecuteSaveWhenDone")));
+					return true;
+				}
+
+				if (arg1.equalsIgnoreCase("remflight")) {
+
+					if (!player.hasPermission("dt.remflight")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					if (!Flight.existFlight(args[1])) {
+						CommandHandlers.dtCredit(sender);
+						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
+						return false;
+					}
+
+					Flight.removeFlight(args[1]);
+					CommandHandlers.dtCredit(sender);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemovedFlight")));
+					return true;
+				}
+
+				if (arg1.equalsIgnoreCase("setdest")) {
+
+					if (!sender.hasPermission("dt.setdest")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					String name = args[1];
+					Stations.setDestination(player, name);
+					return true;
+
+				}
+
+				if (arg1.equalsIgnoreCase("remdest")) {
+
+					if (!sender.hasPermission("dt.remdest")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					String name = args[1];
+					Stations.removeDestination(sender, name);
+					return true;
+				}
+
+				if (arg1.equalsIgnoreCase("setstat")) {
+
+					if (!sender.hasPermission("dt.setstat")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					String name = args[1];
+					Stations.setStation(player, name);
+					return true;
+				}
+
+				if (arg1.equalsIgnoreCase("travel")) {
+
+					if (!sender.hasPermission("dt.travel")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					if (!(DragonTravelMain.onlysigns)) {
+
+						String name = args[1];
+						Travels.travelDestination(player, name);
+						return true;
+
+					} else {
+						CommandHandlers.dtCredit(sender);
+						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorCommandDisabled1")));
+						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorCommandDisabled2")));
+						return false;
+					}
+				}
+
+				if (arg1.equalsIgnoreCase("ptravel")) {
+
+					if (!sender.hasPermission("dt.ptravel")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+
+					String name = args[1];
+					Travels.traveltoPlayer(player, name);
+					return true;
+				}
+				
+				if (arg1.equalsIgnoreCase("help")) {
 
 					if (args[1].equalsIgnoreCase("1")) {
 						CommandHandlers.commandList(sender);
@@ -472,53 +473,49 @@ public class Commands implements CommandExecutor {
 						CommandHandlers.helpPlayer(sender);
 						return false;
 					}
+				} 
 
-				} else if (argu.equalsIgnoreCase("stopmusic")) {
+				break;
 
-					if (!sender.hasPermission("dt.stopmusic")) {
+			case 3:
+
+				break;
+
+			case 4:
+
+				if (arg1.equalsIgnoreCase("ctravel")) {
+
+					if (!sender.hasPermission("dt.ctravel")) {
 						CommandHandlers.noPerm(sender);
 						return false;
 					}
 
-					MusicHandler.stopEpicSound(player);
+					try {
 
-					// Helping
-				} else
-					CommandHandlers.helpPlayer(sender);
+						String xx = args[1];
+						String yy = args[2];
+						String zz = args[3];
 
-			} catch (StringParsingException e) {
-				CommandHandlers.dtCredit(sender);
-				sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorInvalidName")));
-			} catch (Exception e) {
-				CommandHandlers.dtCredit(sender);
-				sender.sendMessage(red + "Error! Report this to Bukkit thread:");
-				sender.sendMessage(e.getMessage());
-			}
+						int x = Integer.parseInt(xx);
+						int y = Integer.parseInt(yy);
+						int z = Integer.parseInt(zz);
 
-		} else {
-			if (args.length >= 1 && args[0].equalsIgnoreCase("remdragons")) {
-				if (args.length == 1) {
-					sender.sendMessage("[DragonTravel] /dt remdragons <worldname>");
-					return false;
-				}
-				try {
-					String worldStr = "";
-					for (int i = 1; i < args.length; i++) {
-						worldStr += args[i] + " "; // This makes sure if the
-													// worldname has spaces in
-													// it, we get the full name.
+						Travels.travelChord(player, x, y, z);
+						return true;
+					} catch (NumberFormatException e) {
+						CommandHandlers.dtCredit(sender);
+						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorNumbersAsCoords")));
+						return false;
 					}
-					World world = plugin.getServer().getWorld(worldStr.trim());
-					Travels.removeDragons(world);
-				} catch (Exception ex) {
-					DragonTravelMain.log.info("[DragonTravel] Could not find the world specified. /dt remdragons worldname");
 				}
-			} else if (args[0].equalsIgnoreCase("update")) {
-				sender.sendMessage("[DragonTravel] This command is not available yet!");
-			} else {
-				sender.sendMessage("[DragonTravel] Only /dt remdragons <worldname> and /dt update are available from console.");
-			}
+
+				break;
+
+			default:
+				CommandHandlers.helpPlayer(player);
+				break;
 		}
+		
 		return false;
 	}
 }
