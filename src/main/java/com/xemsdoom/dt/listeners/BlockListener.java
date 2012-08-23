@@ -37,202 +37,202 @@ import com.xemsdoom.dt.movement.Waypoint;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class BlockListener implements Listener{
+public class BlockListener implements Listener {
 
-    DragonTravelMain plugin;
+	DragonTravelMain plugin;
 
-    public BlockListener(DragonTravelMain plugin) {
-        this.plugin = plugin;
-    }
+	public BlockListener(DragonTravelMain plugin) {
+		this.plugin = plugin;
+	}
 
-    // Checking what is written on a sign and then fire the specific method
-    @EventHandler(priority = EventPriority.LOW)
-    public void onSignChange(SignChangeEvent event) {
-        Block b = event.getBlock();
-        Player player = event.getPlayer();
+	// Checking what is written on a sign and then fire the specific method
+	@EventHandler(priority = EventPriority.LOW)
+	public void onSignChange(SignChangeEvent event) {
+		Block b = event.getBlock();
+		Player player = event.getPlayer();
 
-        if(!event.getLine(0).equalsIgnoreCase("[DragonTravel]"))
-            return;
+		if (!event.getLine(0).equalsIgnoreCase("[DragonTravel]"))
+			return;
 
-        //FLIGHTSIGNS
-        if(player.hasPermission("dt.flightsigns")){
-            // Creating flight sign
-            if(event.getLine(1).equalsIgnoreCase("Flight") && !event.getLine(2).isEmpty() && event.getLine(3).isEmpty()){
+		// FLIGHTSIGNS
+		if (player.hasPermission("dt.flightsigns")) {
+			// Creating flight sign
+			if (event.getLine(1).equalsIgnoreCase("Flight") && !event.getLine(2).isEmpty() && event.getLine(3).isEmpty()) {
 
-                if(DragonTravelMain.EconomyEnabled){
-                    CommandHandlers.dtCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineMissing")));
-                    event.setCancelled(true);
-                    return;
-                }
+				if (DragonTravelMain.EconomyEnabled) {
+					CommandHandlers.dtCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineMissing")));
+					event.setCancelled(true);
+					return;
+				}
 
-                if(!Flight.existFlight(event.getLine(2))){
-                    CommandHandlers.dtCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
-                    return;
-                }
-                
-                CommandHandlers.dtCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightSignCreated")));
-                SignCreating.createFlightSign(event.getLine(2), event);
-                return;
-            }
+				if (!Flight.existFlight(event.getLine(2))) {
+					CommandHandlers.dtCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
+					return;
+				}
 
-            // Creatig flight economy sign
-            if(event.getLine(1).equalsIgnoreCase("Flight") && !event.getLine(2).isEmpty() && !event.getLine(3).isEmpty()){
+				CommandHandlers.dtCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightSignCreated")));
+				SignCreating.createFlightSign(event.getLine(2), event);
+				return;
+			}
 
-                if(!DragonTravelMain.EconomyEnabled){
-                    CommandHandlers.dtCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated1")));
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated2")));
-                    event.setCancelled(true);
-                    return;
-                }
+			// Creatig flight economy sign
+			if (event.getLine(1).equalsIgnoreCase("Flight") && !event.getLine(2).isEmpty() && !event.getLine(3).isEmpty()) {
 
-                if(!Flight.existFlight(event.getLine(2))){
-                    CommandHandlers.dtCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
-                    return;
-                }
+				if (!DragonTravelMain.EconomyEnabled) {
+					CommandHandlers.dtCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated1")));
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated2")));
+					event.setCancelled(true);
+					return;
+				}
 
-                int cost = 0;
+				if (!Flight.existFlight(event.getLine(2))) {
+					CommandHandlers.dtCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightDoesNotExist")));
+					return;
+				}
 
-                try{
-                    cost = Integer.parseInt(event.getLine(3));
-                }catch (NumberFormatException e){
-                    CommandHandlers.dtpCredit(player);
-                    CommandHandlers.dtCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineInvalid")));
-                    event.setCancelled(true);
-                    return;
-                }
+				int cost = 0;
 
-                CommandHandlers.dtCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightSignCreated")));
-                SignCreating.createFlightSignEconomy(event.getLine(2), event, cost);
-                return;
-            }
-        }
+				try {
+					cost = Integer.parseInt(event.getLine(3));
+				} catch (NumberFormatException e) {
+					CommandHandlers.dtpCredit(player);
+					CommandHandlers.dtCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineInvalid")));
+					event.setCancelled(true);
+					return;
+				}
 
-        //TRAVELSIGNS
-        if(player.hasPermission("dt.travelsigns")){
+				CommandHandlers.dtCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("FlightSignCreated")));
+				SignCreating.createFlightSignEconomy(event.getLine(2), event, cost);
+				return;
+			}
+		}
 
-            // Naming destination signs
-            if(event.getLine(1).isEmpty() && event.getLine(2).isEmpty() && event.getLine(3).isEmpty()){
-                SignCreating.nameDestinationSign(b, event, player);
-                return;
-            }
+		// TRAVELSIGNS
+		if (player.hasPermission("dt.travelsigns")) {
 
-            // Naming station signs
-            if(event.getLine(1).equalsIgnoreCase("name") && event.getLine(2).isEmpty() && event.getLine(3).isEmpty()){
-                SignCreating.nameStationSign(b, event, player);
-                return;
-            }
+			// Naming destination signs
+			if (event.getLine(1).isEmpty() && event.getLine(2).isEmpty() && event.getLine(3).isEmpty()) {
+				SignCreating.nameDestinationSign(b, event, player);
+				return;
+			}
 
-            String destination = event.getLine(2).toString();
+			// Naming station signs
+			if (event.getLine(1).equalsIgnoreCase("name") && event.getLine(2).isEmpty() && event.getLine(3).isEmpty()) {
+				SignCreating.nameStationSign(b, event, player);
+				return;
+			}
 
-            // Checking if even the destination exists
-            if(!DragonTravelMain.dbd.hasIndex(destination) && !destination.equals(DragonTravelMain.config.getString("RandomDest-Name"))){
-                CommandHandlers.dtpCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorDestinationNotAvailable")));
-                event.setCancelled(true);
-                return;
-            }
+			String destination = event.getLine(2).toString();
 
-            // Checking if we have to make a sign with a cost or not and then
-            // fire
-            // the specific method
-            if(!DragonTravelMain.EconomyEnabled){
+			// Checking if even the destination exists
+			if (!DragonTravelMain.dbd.hasIndex(destination) && !destination.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorDestinationNotAvailable")));
+				event.setCancelled(true);
+				return;
+			}
 
-                if(!event.getLine(3).isEmpty()){
-                    CommandHandlers.dtpCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated1")));
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated2")));
-                    event.setCancelled(true);
-                    return;
-                }
+			// Checking if we have to make a sign with a cost or not and then
+			// fire
+			// the specific method
+			if (!DragonTravelMain.EconomyEnabled) {
 
-                // Creating a destination sign
-                if(!event.getLine(2).isEmpty() && event.getLine(1).isEmpty()){
-                    SignCreating.createDestinationSign(b, event, player, destination);
-                    return;
-                }
+				if (!event.getLine(3).isEmpty()) {
+					CommandHandlers.dtpCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated1")));
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorEconomyNotActivated2")));
+					event.setCancelled(true);
+					return;
+				}
 
-            }else{
+				// Creating a destination sign
+				if (!event.getLine(2).isEmpty() && event.getLine(1).isEmpty()) {
+					SignCreating.createDestinationSign(b, event, player, destination);
+					return;
+				}
 
-                // If not written a cost on the fourth line while having economy
-                // enabled
-                if(event.getLine(3).isEmpty()){
-                    CommandHandlers.dtpCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineMissing")));
-                    event.setCancelled(true);
-                    return;
-                }
+			} else {
 
-                int cost = 0;
+				// If not written a cost on the fourth line while having economy
+				// enabled
+				if (event.getLine(3).isEmpty()) {
+					CommandHandlers.dtpCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineMissing")));
+					event.setCancelled(true);
+					return;
+				}
 
-                // Checking if the cost enteres is really a number
-                try{
-                    cost = Integer.parseInt(event.getLine(3));
-                }catch (NumberFormatException e){
-                    CommandHandlers.dtpCredit(player);
-                    player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineInvalid")));
-                    event.setCancelled(true);
-                    return;
-                }
+				int cost = 0;
 
-                // Creating an economy sign
-                if(event.getLine(1).isEmpty() && !event.getLine(2).isEmpty()){
-                    SignCreating.createDestinationSignEconomy(b, event, player, cost, destination);
-                    return;
-                }
-            }
-        }
-    }
+				// Checking if the cost enteres is really a number
+				try {
+					cost = Integer.parseInt(event.getLine(3));
+				} catch (NumberFormatException e) {
+					CommandHandlers.dtpCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorFourthLineInvalid")));
+					event.setCancelled(true);
+					return;
+				}
 
-    @EventHandler
-    public void onMarkerDestroy(BlockBreakEvent event) {
-        if(Waypoint.markers.containsKey(event.getBlock())){
-            event.getPlayer().sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("MarkersBreak")));
-            event.setCancelled(true);
-        }
-    }
+				// Creating an economy sign
+				if (event.getLine(1).isEmpty() && !event.getLine(2).isEmpty()) {
+					SignCreating.createDestinationSignEconomy(b, event, player, cost, destination);
+					return;
+				}
+			}
+		}
+	}
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onDestinationSignDestory(BlockBreakEvent event) {
+	@EventHandler
+	public void onMarkerDestroy(BlockBreakEvent event) {
+		if (Waypoint.markers.containsKey(event.getBlock())) {
+			event.getPlayer().sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("MarkersBreak")));
+			event.setCancelled(true);
+		}
+	}
 
-        Block block = event.getBlock();
-        Player player = event.getPlayer();
-        String worldname = block.getLocation().getWorld().toString();
+	@EventHandler(priority = EventPriority.LOW)
+	public void onDestinationSignDestory(BlockBreakEvent event) {
 
-        if(block.getType().equals(Material.AIR))
-            return;
+		Block block = event.getBlock();
+		Player player = event.getPlayer();
+		String worldname = block.getLocation().getWorld().toString();
 
-        for(String name : DragonTravelMain.signs.getIndices()){
-        	
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
+		if (block.getType().equals(Material.AIR))
+			return;
 
-            if(!worldname.equalsIgnoreCase(DragonTravelMain.signs.getString(name, "world")))
-                continue;
+		for (String name : DragonTravelMain.signs.getIndices()) {
 
-            World world = block.getWorld();
-            Location compar = new Location(world, x, y, z);
+			double x = DragonTravelMain.dbs.getDouble(name, "x");
+			double y = DragonTravelMain.dbs.getDouble(name, "y");
+			double z = DragonTravelMain.dbs.getDouble(name, "z");
 
-            if(!compar.equals(block.getLocation()))
-                continue;
+			if (!worldname.equalsIgnoreCase(DragonTravelMain.signs.getString(name, "world")))
+				continue;
 
-            if(!(player.hasPermission("dt.travelsigns"))){
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NoPermission")));
-                event.setCancelled(true);
-                break;
-            }
+			World world = block.getWorld();
+			Location compar = new Location(world, x, y, z);
 
-            CommandHandlers.dtpCredit(player);
-            DragonTravelMain.signs.removeEntry(name);
-            DragonTravelMain.signs.push();
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignRemovedSuccessfully")));
-        }
-    }
+			if (!compar.equals(block.getLocation()))
+				continue;
+
+			if (!(player.hasPermission("dt.travelsigns"))) {
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NoPermission")));
+				event.setCancelled(true);
+				break;
+			}
+
+			CommandHandlers.dtpCredit(player);
+			DragonTravelMain.signs.removeEntry(name);
+			DragonTravelMain.signs.push();
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignRemovedSuccessfully")));
+		}
+	}
 }

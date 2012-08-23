@@ -31,38 +31,41 @@ public class Entry {
 
 	// The index of the entry
 	private String index;
-	
+
 	// Check if the first value is passed
 	private boolean first = true;
-	
+
 	// Entry builder
 	private StringBuilder valuebuilder = new StringBuilder();
 
 	/**
 	 * Entry, consisting of an index, keys/keyvalues.<br>
-	 * The index should be usually a String object. 
-	 * The index is lowercased and trimmed.
-	 * @throws EmptyIndexException If the index passed is empty/insufficient
+	 * The index should be usually a String object. The index is lowercased and
+	 * trimmed.
+	 * 
+	 * @throws EmptyIndexException
+	 *             If the index passed is empty/insufficient
 	 */
 	public Entry(Object index) throws EmptyIndexException {
-		
+
 		String in = index.toString();
-		
-		if(in.isEmpty())
+
+		if (in.isEmpty())
 			throw new EmptyIndexException("Insufficient index passed");
-		
+
 		// Init the index of this entry
 		this.index = in.trim().toLowerCase();
 	}
 
 	/**
-	 * Adds the key and keyvalue to the entry. The key gets trimmed and lowercased.
+	 * Adds the key and keyvalue to the entry. The key gets trimmed and
+	 * lowercased.
 	 */
 	public void addValue(Object key, Object keyvalue) {
-		
+
 		String keya = key.toString();
 		String valuea = keyvalue == null ? "" : keyvalue.toString();
-		
+
 		// Adds the key and keyvalue to the stringbuilder
 		// while removing spaces in the key
 		if (first) {
@@ -71,51 +74,54 @@ public class Entry {
 		} else
 			valuebuilder.append(" ".concat(keya.trim().toLowerCase()).concat(":").concat(cipher(valuea)));
 	}
-	
-    /**
-     * Adds the key and list to the entry.<br>
-     * The key gets trimmed. <b>Make sure that no String in the list contains the coding "%&"</b>,<br>
-     * since that is the coding for concatenating the Strings in the entry.
-     * <p/>
-     * A list is stored like this:<br>
-     * index key:value1%&value2%&value3%& etc.
-     * @throws EmptyListException When an empty list is passed as a parameter
-     */
-    public void addList(Object key, List<String> list) throws EmptyListException {
-        
-    	if(list.isEmpty())
-    		throw new EmptyListException("Empty list passed on method call addList()");
-    	
-    	String keya = key.toString();
-    	
-        // Builder
-        StringBuilder builder = new StringBuilder();
-        
-        // List size, so we know we are at the end
-        int size = list.size();
 
-        // Counter
-        int c = 0;
-      
-        // Concatenating all list items
-        for(String s : list){
+	/**
+	 * Adds the key and list to the entry.<br>
+	 * The key gets trimmed. <b>Make sure that no String in the list contains
+	 * the coding "%&"</b>,<br>
+	 * since that is the coding for concatenating the Strings in the entry.
+	 * <p/>
+	 * A list is stored like this:<br>
+	 * index key:value1%&value2%&value3%& etc.
+	 * 
+	 * @throws EmptyListException
+	 *             When an empty list is passed as a parameter
+	 */
+	public void addList(Object key, List<String> list) throws EmptyListException {
 
-              if(c + 1 == size)
-                // Concat last item without code
-                builder.append(s);
-              else
-                builder.append(s.concat("%&"));
-              c++;
-        }
-        
-        // Adds the key and list to the stringbuilder
-        // while removing spaces in the key
-        if (first) {
-            valuebuilder.append(keya.trim().toLowerCase().concat(":").concat(cipher(builder.toString())));
-            first = false;
-        } else
-            valuebuilder.append(" ".concat(keya.trim().toLowerCase()).concat(":").concat(cipher(builder.toString())));
-    }
+		if (list.isEmpty())
+			throw new EmptyListException("Empty list passed on method call addList()");
+
+		String keya = key.toString();
+
+		// Builder
+		StringBuilder builder = new StringBuilder();
+
+		// List size, so we know we are at the end
+		int size = list.size();
+
+		// Counter
+		int c = 0;
+
+		// Concatenating all list items
+		for (String s : list) {
+
+			if (c + 1 == size)
+				// Concat last item without code
+				builder.append(s);
+			else
+				builder.append(s.concat("%&"));
+			c++;
+		}
+
+		// Adds the key and list to the stringbuilder
+		// while removing spaces in the key
+		if (first) {
+			valuebuilder.append(keya.trim().toLowerCase().concat(":").concat(cipher(builder.toString())));
+			first = false;
+		} else
+			valuebuilder.append(" ".concat(keya.trim().toLowerCase()).concat(":").concat(cipher(builder.toString())));
+	}
 
 	/**
 	 * Gets the index of this entry

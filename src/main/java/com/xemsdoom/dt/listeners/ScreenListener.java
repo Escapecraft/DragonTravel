@@ -29,84 +29,84 @@ import com.xemsdoom.dt.spout.gui.MenuScreen;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class ScreenListener implements Listener{
+public class ScreenListener implements Listener {
 
-    @EventHandler
-    public void onButtonClick(ButtonClickEvent event) {
+	@EventHandler
+	public void onButtonClick(ButtonClickEvent event) {
 
-        SpoutPlayer player = event.getPlayer();
+		SpoutPlayer player = event.getPlayer();
 
-        if(!player.isSpoutCraftEnabled())
-            return;
+		if (!player.isSpoutCraftEnabled())
+			return;
 
-        if(MenuScreen.popcontainer == null || MenuScreen.popcontainer.isEmpty())
-            return;
-        
-        if(!event.getButton().getScreen().getId().equals(MenuScreen.popcontainer.get(player)))
-            return;
+		if (MenuScreen.popcontainer == null || MenuScreen.popcontainer.isEmpty())
+			return;
 
-        if(event.getButton().getText().equals("Create Destination")){
+		if (!event.getButton().getScreen().getId().equals(MenuScreen.popcontainer.get(player)))
+			return;
 
-            MenuScreen sm = MenuScreen.screencontainer.get(player);
+		if (event.getButton().getText().equals("Create Destination")) {
 
-            if(sm.input1.getText().isEmpty()){
-                sm.input1.setText("Write something first");
-                return;
-            }
+			MenuScreen sm = MenuScreen.screencontainer.get(player);
 
-            Stations.setDestination(player, sm.input1.getText().trim());
-            player.getMainScreen().closePopup();
+			if (sm.input1.getText().isEmpty()) {
+				sm.input1.setText("Write something first");
+				return;
+			}
 
-        }else if(event.getButton().getText().equals("Create Station")){
+			Stations.setDestination(player, sm.input1.getText().trim());
+			player.getMainScreen().closePopup();
 
-            MenuScreen sm = MenuScreen.screencontainer.get(player);
+		} else if (event.getButton().getText().equals("Create Station")) {
 
-            if(sm.input3.getText().isEmpty()){
-                sm.input3.setText("Write something first");
-                return;
-            }
+			MenuScreen sm = MenuScreen.screencontainer.get(player);
 
-            Stations.setStation(player, sm.input3.getText().trim());
-            player.getMainScreen().closePopup();
+			if (sm.input3.getText().isEmpty()) {
+				sm.input3.setText("Write something first");
+				return;
+			}
 
-        }else if(event.getButton().getText().equals("Fly to Destination")){
+			Stations.setStation(player, sm.input3.getText().trim());
+			player.getMainScreen().closePopup();
 
-            MenuScreen sm = MenuScreen.screencontainer.get(player);
+		} else if (event.getButton().getText().equals("Fly to Destination")) {
 
-            if(sm.input2.getText().isEmpty()){
-                sm.input2.setText("Write something first");
-                return;
-            }
+			MenuScreen sm = MenuScreen.screencontainer.get(player);
 
-            String name = sm.input2.getText().trim();
+			if (sm.input2.getText().isEmpty()) {
+				sm.input2.setText("Write something first");
+				return;
+			}
 
-            if(!DragonTravelMain.dbd.hasIndex(name)){
-                sm.input2.setText("Does not exist");
-                return;
-            }
+			String name = sm.input2.getText().trim();
 
-            Travels.travelDestination(player, name);
-            player.getMainScreen().closePopup();
+			if (!DragonTravelMain.dbd.hasIndex(name)) {
+				sm.input2.setText("Does not exist");
+				return;
+			}
 
-        }else if(event.getButton().getText().equals("Fly to Player")){
+			Travels.travelDestination(player, name);
+			player.getMainScreen().closePopup();
 
-            MenuScreen sm = MenuScreen.screencontainer.get(player);
+		} else if (event.getButton().getText().equals("Fly to Player")) {
 
-            if(sm.input4.getText().isEmpty()){
-                sm.input4.setText("Write something first");
-                return;
-            }
+			MenuScreen sm = MenuScreen.screencontainer.get(player);
 
-            String name = sm.input4.getText().trim();
+			if (sm.input4.getText().isEmpty()) {
+				sm.input4.setText("Write something first");
+				return;
+			}
 
-            if(player.getServer().getPlayer(name) == null){
-                sm.input4.setText("Not online");
-                return;
-            }
+			String name = sm.input4.getText().trim();
 
-            Travels.traveltoPlayer(player, name);
-            player.getMainScreen().closePopup();
-        }
+			if (player.getServer().getPlayer(name) == null) {
+				sm.input4.setText("Not online");
+				return;
+			}
 
-    }
+			Travels.traveltoPlayer(player, name);
+			player.getMainScreen().closePopup();
+		}
+
+	}
 }

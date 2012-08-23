@@ -28,64 +28,64 @@ import com.xemsdoom.mexdb.system.Entry;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class HomeTravel{
+public class HomeTravel {
 
-    /**
-     * Sets a new home for the player, which he can travels to
-     */
-    public static void setHome(Player player) {
+	/**
+	 * Sets a new home for the player, which he can travels to
+	 */
+	public static void setHome(Player player) {
 
-        Entry entry = null;
-        
-        try {
+		Entry entry = null;
+
+		try {
 			entry = new Entry(player.getName().toLowerCase());
 		} catch (EmptyIndexException e) {
 			e.printStackTrace();
 		}
-        
-        Location location = player.getLocation();
 
-        entry.addValue("world", player.getWorld().toString());
-        entry.addValue("x", location.getX());
-        entry.addValue("y", location.getY() - 6);
-        entry.addValue("z", location.getZ());
+		Location location = player.getLocation();
 
-        DragonTravelMain.players.addEntry(entry);
-        DragonTravelMain.players.push();
+		entry.addValue("world", player.getWorld().toString());
+		entry.addValue("x", location.getX());
+		entry.addValue("y", location.getY() - 6);
+		entry.addValue("z", location.getZ());
 
-        CommandHandlers.dtpCredit(player);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeCreated")));
-    }
+		DragonTravelMain.players.addEntry(entry);
+		DragonTravelMain.players.push();
 
-    /**
-     * Mounts the player and travels him to his home
-     */
-    public static void goHome(Player player) {
+		CommandHandlers.dtpCredit(player);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeCreated")));
+	}
 
-        String name = player.getName().toLowerCase();
-        if(!DragonTravelMain.players.hasIndex(name)){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeNotAvailable")));
-            return;
-        }
+	/**
+	 * Mounts the player and travels him to his home
+	 */
+	public static void goHome(Player player) {
 
-        if(!player.getWorld().toString().equalsIgnoreCase(DragonTravelMain.players.getString(name, "world"))){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeInDifferentWorld")));
-            return;
-        }
+		String name = player.getName().toLowerCase();
+		if (!DragonTravelMain.players.hasIndex(name)) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeNotAvailable")));
+			return;
+		}
 
-        double x = DragonTravelMain.players.getDouble(name, "x");
-        double y = DragonTravelMain.players.getDouble(name, "y");
-        double z = DragonTravelMain.players.getDouble(name, "z");
-        
-        Location loca = new Location(player.getWorld(), x, y, z);
+		if (!player.getWorld().toString().equalsIgnoreCase(DragonTravelMain.players.getString(name, "world"))) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeInDifferentWorld")));
+			return;
+		}
 
-        if(!(Travels.mountDragon(player)))
-            return;
+		double x = DragonTravelMain.players.getDouble(name, "x");
+		double y = DragonTravelMain.players.getDouble(name, "y");
+		double z = DragonTravelMain.players.getDouble(name, "z");
 
-        XemDragon dragon = (XemDragon) DragonTravelMain.TravelInformation.get(player);
-        dragon.startTravel(loca);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeTravelling")));
-    }
+		Location loca = new Location(player.getWorld(), x, y, z);
+
+		if (!(Travels.mountDragon(player)))
+			return;
+
+		XemDragon dragon = (XemDragon) DragonTravelMain.TravelInformation.get(player);
+		dragon.startTravel(loca);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("TravelHomeTravelling")));
+	}
 }

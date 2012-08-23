@@ -22,14 +22,14 @@ package com.xemsdoom.mexdb.exception;
 /**
  * Thrown when an empty or insufficient index is passed as a parameter.
  */
-public class EmptyIndexException extends Exception{
-	
+public class EmptyIndexException extends Exception {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Thrown when an empty or insufficient index is passed as a parameter.
 	 */
-	public EmptyIndexException(String msg){
+	public EmptyIndexException(String msg) {
 		super(msg);
 	}
 

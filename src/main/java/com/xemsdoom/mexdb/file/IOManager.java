@@ -188,9 +188,10 @@ public class IOManager {
 	/**
 	 * Deletes the flatfile
 	 */
-	public void deleteDB(){
-    	try{
-    		flatfile.delete();
-    	}catch(Exception ex){}	
-    }
+	public void deleteDB() {
+		try {
+			flatfile.delete();
+		} catch (Exception ex) {
+		}
+	}
 }

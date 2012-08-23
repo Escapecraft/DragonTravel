@@ -33,271 +33,271 @@ import com.xemsdoom.mexdb.system.Entry;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class Stations{
+public class Stations {
 
-    /**
-     * Stores a new destination in the database.
-     * 
-     * @param player
-     *            the player setting the destination whose location is stored.
-     * @param name
-     *            the name of the destination to set.
-     */
-    public static void setDestination(Player player, String name) {
+	/**
+	 * Stores a new destination in the database.
+	 * 
+	 * @param player
+	 *            the player setting the destination whose location is stored.
+	 * @param name
+	 *            the name of the destination to set.
+	 */
+	public static void setDestination(Player player, String name) {
 
-        if(DragonTravelMain.dbd.hasIndex(name)){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingAlreadyExists")));
-            return;
-        }
+		if (DragonTravelMain.dbd.hasIndex(name)) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingAlreadyExists")));
+			return;
+		}
 
-        if(name.length() > 15){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingNameTooLong")));
-        }
+		if (name.length() > 15) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingNameTooLong")));
+		}
 
-        Entry entry = null;
-        
-        try {
+		Entry entry = null;
+
+		try {
 			entry = new Entry(name);
 		} catch (EmptyIndexException e) {
 			e.printStackTrace();
 		}
-        
-        Location location = player.getLocation();
 
-        entry.addValue("world", player.getWorld().toString());
-        entry.addValue("x", location.getX());
-        entry.addValue("y", location.getY() - 6);
-        entry.addValue("z", location.getZ());
-        entry.addValue("name", name);
+		Location location = player.getLocation();
 
-        if(DragonTravelMain.config.getBoolean("UseStatDestMarker")){
-            Block b = location.getBlock().getRelative(BlockFace.DOWN);
-            b.setType(Material.GLOWSTONE);
-        }
+		entry.addValue("world", player.getWorld().toString());
+		entry.addValue("x", location.getX());
+		entry.addValue("y", location.getY() - 6);
+		entry.addValue("z", location.getZ());
+		entry.addValue("name", name);
 
-        DragonTravelMain.dbd.addEntry(entry);
-        DragonTravelMain.dbd.push();
+		if (DragonTravelMain.config.getBoolean("UseStatDestMarker")) {
+			Block b = location.getBlock().getRelative(BlockFace.DOWN);
+			b.setType(Material.GLOWSTONE);
+		}
 
-        CommandHandlers.dtpCredit(player);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingSuccessful")) + " " + name);
+		DragonTravelMain.dbd.addEntry(entry);
+		DragonTravelMain.dbd.push();
 
-    }
+		CommandHandlers.dtpCredit(player);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingSuccessful")) + " " + name);
 
-    /**
-     * Stores a new station in the database.
-     * 
-     * @param player
-     *            the player setting the station whose location is stored.
-     * @param name
-     *            the name of the station to set.
-     */
-    public static void setStation(Player player, String name) {
+	}
 
-        if(DragonTravelMain.dbs.hasIndex(name)){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingAlreadyExists")));
-            return;
-        }
+	/**
+	 * Stores a new station in the database.
+	 * 
+	 * @param player
+	 *            the player setting the station whose location is stored.
+	 * @param name
+	 *            the name of the station to set.
+	 */
+	public static void setStation(Player player, String name) {
 
-        if(name.length() > 15){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingNameTooLong")));
-        }
+		if (DragonTravelMain.dbs.hasIndex(name)) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingAlreadyExists")));
+			return;
+		}
 
-        Entry entry = null;
-        		
-        		try {
-					entry = new Entry(name);
-				} catch (EmptyIndexException e) {
-					e.printStackTrace();
+		if (name.length() > 15) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingNameTooLong")));
+		}
+
+		Entry entry = null;
+
+		try {
+			entry = new Entry(name);
+		} catch (EmptyIndexException e) {
+			e.printStackTrace();
+		}
+		Location location = player.getLocation();
+
+		entry.addValue("world", player.getWorld().toString());
+		entry.addValue("x", location.getX());
+		entry.addValue("y", location.getY());
+		entry.addValue("z", location.getZ());
+		entry.addValue("name", name);
+
+		if (DragonTravelMain.config.getBoolean("UseStatDestMarker")) {
+			Block b = location.getBlock().getRelative(BlockFace.DOWN);
+			b.setType(Material.GLOWSTONE);
+		}
+
+		DragonTravelMain.dbs.addEntry(entry);
+		DragonTravelMain.dbs.push();
+
+		CommandHandlers.dtpCredit(player);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingSuccessful")) + " " + name);
+	}
+
+	/**
+	 * Removes a given destination out of Destinations.mini/dbd
+	 * 
+	 * @param sender
+	 *            executor of the method
+	 * @param name
+	 *            the destination name
+	 */
+	public static void removeDestination(CommandSender sender, String name) {
+
+		if (!DragonTravelMain.dbd.hasIndex(name)) {
+			CommandHandlers.dtCredit(sender);
+			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationRemovingDoesNotExist")));
+			return;
+		}
+
+		CommandHandlers.dtCredit(sender);
+		sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationRemovingSuccessful")) + " " + name);
+		DragonTravelMain.dbd.removeEntry(name);
+		DragonTravelMain.dbd.push();
+	}
+
+	/**
+	 * Removes a given station out of the Stations.mini/dbs
+	 * 
+	 * @param sender
+	 *            executor of the method
+	 * @param name
+	 *            the station name
+	 */
+	public static void removeStation(CommandSender sender, String name) {
+		if (!(DragonTravelMain.dbs.hasIndex(name))) {
+			CommandHandlers.dtCredit(sender);
+			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingDoesNotExist")));
+			return;
+		}
+
+		CommandHandlers.dtCredit(sender);
+		sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingSuccessful")) + " " + name);
+		DragonTravelMain.dbd.removeEntry(name);
+		DragonTravelMain.dbd.push();
+
+	}
+
+	/**
+	 * Checks if the player is on a station. false is not, true if yes.
+	 * 
+	 * @param player
+	 *            entity which gets mounted on the dragon, maybe.
+	 */
+	public static boolean checkStation(Player player) {
+
+		if (DragonTravelMain.TravelInformation.containsKey(player)) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("AlreadyMounted")));
+			return false;
+		}
+
+		int amount = DragonTravelMain.dbs.getIndices().size();
+
+		for (String name : DragonTravelMain.dbs.getIndices()) {
+			double x = DragonTravelMain.dbs.getDouble(name, "x");
+			double y = DragonTravelMain.dbs.getDouble(name, "y");
+			double z = DragonTravelMain.dbs.getDouble(name, "z");
+
+			if (amount != 0) {
+				World world = player.getWorld();
+
+				if (world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world"))) {
+					Location locplayer = player.getLocation();
+					Vector locvec = new Location(world, x, y, z).toVector();
+					Vector locvaca = new Location(world, locplayer.getX(), locplayer.getY(), locplayer.getZ()).toVector();
+					double lenga = locvec.subtract(locvaca).length();
+					if (lenga < DragonTravelMain.config.getDouble("DistancetoStation")) {
+						return true;
+
+					} else {
+						if (amount == 1) {
+							CommandHandlers.dtpCredit(player);
+							player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
+							return false;
+						}
+						amount--;
+					}
+				} else {
+					if (amount == 1) {
+						CommandHandlers.dtpCredit(player);
+						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
+						return false;
+					}
+					amount--;
 				}
-        Location location = player.getLocation();
+			} else {
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
+				return false;
+			}
+		}
+		return true;
+	}
 
-        entry.addValue("world", player.getWorld().toString());
-        entry.addValue("x", location.getX());
-        entry.addValue("y", location.getY());
-        entry.addValue("z", location.getZ());
-        entry.addValue("name", name);
+	/**
+	 * Shows the current stations available in the same world as the player
+	 * 
+	 * @param player
+	 */
+	public static void showStations(Player player) {
+		int amount = DragonTravelMain.dbs.getIndices().size();
+		StringBuilder a = new StringBuilder();
 
-        if(DragonTravelMain.config.getBoolean("UseStatDestMarker")){
-            Block b = location.getBlock().getRelative(BlockFace.DOWN);
-            b.setType(Material.GLOWSTONE);
-        }
-        
-        DragonTravelMain.dbs.addEntry(entry);
-        DragonTravelMain.dbs.push();
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationShowList")));
+		for (String index : DragonTravelMain.dbs.getIndices()) {
 
-        CommandHandlers.dtpCredit(player);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingSuccessful")) + " " + name);
-    }
+			String world = DragonTravelMain.dbs.getString(index, "world");
 
-    /**
-     * Removes a given destination out of Destinations.mini/dbd
-     * 
-     * @param sender
-     *            executor of the method
-     * @param name
-     *            the destination name
-     */
-    public static void removeDestination(CommandSender sender, String name) {
+			if (world.equalsIgnoreCase(player.getWorld().toString())) {
+				a.append(index + ", ");
 
-        if(!DragonTravelMain.dbd.hasIndex(name)){
-            CommandHandlers.dtCredit(sender);
-            sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationRemovingDoesNotExist")));
-            return;
-        }
+				if (amount == 1) {
+					player.sendRawMessage(a.toString());
+					return;
+				}
 
-        CommandHandlers.dtCredit(sender);
-        sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationRemovingSuccessful")) + " " + name);
-        DragonTravelMain.dbd.removeEntry(name);
-        DragonTravelMain.dbd.push();
-    }
+				amount--;
 
-    /**
-     * Removes a given station out of the Stations.mini/dbs
-     * 
-     * @param sender
-     *            executor of the method
-     * @param name
-     *            the station name
-     */
-    public static void removeStation(CommandSender sender, String name) {
-        if(!(DragonTravelMain.dbs.hasIndex(name))){
-            CommandHandlers.dtCredit(sender);
-            sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingDoesNotExist")));
-            return;
-        }
+			} else {
+				if (amount == 1) {
+					player.sendRawMessage(a.toString());
+					return;
+				}
+				amount--;
+			}
+		}
+	}
 
-        CommandHandlers.dtCredit(sender);
-        sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingSuccessful")) + " " + name);
-        DragonTravelMain.dbd.removeEntry(name);
-        DragonTravelMain.dbd.push();
+	/**
+	 * Shows the current stations available in the same world as the player
+	 * 
+	 * @param player
+	 */
+	public static void showDestinations(Player player) {
+		int amount = DragonTravelMain.dbd.getIndices().size();
+		StringBuilder a = new StringBuilder();
 
-    }
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationShowList")));
+		for (String index : DragonTravelMain.dbd.getIndices()) {
 
-    /**
-     * Checks if the player is on a station. false is not, true if yes.
-     * 
-     * @param player
-     *            entity which gets mounted on the dragon, maybe.
-     */
-    public static boolean checkStation(Player player) {
+			String world = DragonTravelMain.dbd.getString(index, "world");
 
-        if(DragonTravelMain.TravelInformation.containsKey(player)){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("AlreadyMounted")));
-            return false;
-        }
+			if (world.equalsIgnoreCase(player.getWorld().toString())) {
+				a.append(index + ", ");
 
-        int amount = DragonTravelMain.dbs.getIndices().size();
+				if (amount == 1) {
+					player.sendRawMessage(a.toString());
+					return;
+				}
+				amount--;
 
-        for(String name : DragonTravelMain.dbs.getIndices()){
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
-
-            if(amount != 0){
-                World world = player.getWorld();
-
-                if(world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world"))){
-                    Location locplayer = player.getLocation();
-                    Vector locvec = new Location(world, x, y, z).toVector();
-                    Vector locvaca = new Location(world, locplayer.getX(), locplayer.getY(), locplayer.getZ()).toVector();
-                    double lenga = locvec.subtract(locvaca).length();
-                    if(lenga < DragonTravelMain.config.getDouble("DistancetoStation")){
-                        return true;
-
-                    }else{
-                        if(amount == 1){
-                            CommandHandlers.dtpCredit(player);
-                            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
-                            return false;
-                        }
-                        amount--;
-                    }
-                }else{
-                    if(amount == 1){
-                        CommandHandlers.dtpCredit(player);
-                        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
-                        return false;
-                    }
-                    amount--;
-                }
-            }else{
-                CommandHandlers.dtpCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Shows the current stations available in the same world as the player
-     * 
-     * @param player
-     */
-    public static void showStations(Player player) {
-        int amount = DragonTravelMain.dbs.getIndices().size();
-        StringBuilder a = new StringBuilder();
-
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationShowList")));
-        for(String index : DragonTravelMain.dbs.getIndices()){
-
-            String world = DragonTravelMain.dbs.getString(index, "world");
-
-            if(world.equalsIgnoreCase(player.getWorld().toString())){
-                a.append(index + ", ");
-
-                if(amount == 1){
-                    player.sendRawMessage(a.toString());
-                    return;
-                }
-
-                amount--;
-
-            }else{
-                if(amount == 1){
-                    player.sendRawMessage(a.toString());
-                    return;
-                }
-                amount--;
-            }
-        }
-    }
-
-    /**
-     * Shows the current stations available in the same world as the player
-     * 
-     * @param player
-     */
-    public static void showDestinations(Player player) {
-        int amount = DragonTravelMain.dbd.getIndices().size();
-        StringBuilder a = new StringBuilder();
-
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationShowList")));
-        for(String index : DragonTravelMain.dbd.getIndices()){
-
-            String world = DragonTravelMain.dbd.getString(index, "world");
-
-            if(world.equalsIgnoreCase(player.getWorld().toString())){
-                a.append(index + ", ");
-
-                if(amount == 1){
-                    player.sendRawMessage(a.toString());
-                    return;
-                }
-                amount--;
-
-            }else{
-                if(amount == 1){
-                    player.sendRawMessage(a.toString());
-                    return;
-                }
-                amount--;
-            }
-        }
-    }
+			} else {
+				if (amount == 1) {
+					player.sendRawMessage(a.toString());
+					return;
+				}
+				amount--;
+			}
+		}
+	}
 }

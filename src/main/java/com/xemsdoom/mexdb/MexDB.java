@@ -12,7 +12,6 @@ import com.xemsdoom.mexdb.file.IOManager;
 import com.xemsdoom.mexdb.system.DataManager;
 import com.xemsdoom.mexdb.system.Entry;
 
-
 /**
  * Copyright (C) 2012-2013 Moser Luca <moser.luca@gmail.com>
  * 
@@ -107,39 +106,41 @@ public class MexDB {
 	public void setValue(String index, String key, Object value) {
 		dm.setValue(index, key, value);
 	}
-	
-	 /**
-     * Updates a list from an entry or <b>adds</b> it if the key is nonexistent
-     * <b>without</b> updating the flatfile.<br>
-     * <b>Make sure that no String in the list contains the coding "%&"</b>,<br>
-     * since that is the coding for concatenating the Strings in the entry.
-     * 
-     * @param index
-     *            The index of the entry
-     * @param key
-     *            A key of the entry
-     * @param list
-     *            The list of the key
-	 * @throws EmptyListException When an empty list is passed as a parameter
-     */
-	public void setList(String index, String key, List<String> list) throws EmptyListException{
-	    dm.setList(index, key, list);
+
+	/**
+	 * Updates a list from an entry or <b>adds</b> it if the key is nonexistent
+	 * <b>without</b> updating the flatfile.<br>
+	 * <b>Make sure that no String in the list contains the coding "%&"</b>,<br>
+	 * since that is the coding for concatenating the Strings in the entry.
+	 * 
+	 * @param index
+	 *            The index of the entry
+	 * @param key
+	 *            A key of the entry
+	 * @param list
+	 *            The list of the key
+	 * @throws EmptyListException
+	 *             When an empty list is passed as a parameter
+	 */
+	public void setList(String index, String key, List<String> list) throws EmptyListException {
+		dm.setList(index, key, list);
 	}
 
 	/**
 	 * Replaces the index-String of an entry with another replace-String.<br>
 	 * 
 	 * @param index
-	 * 			  The index of the entry
+	 *            The index of the entry
 	 * 
 	 * @param replace
 	 *            The String which replaces the old index-String
-	 * @throws NoSuchIndexException When the index does not exist in the database
+	 * @throws NoSuchIndexException
+	 *             When the index does not exist in the database
 	 */
-	public void replaceIndex(String index, String replace) throws NoSuchIndexException{
+	public void replaceIndex(String index, String replace) throws NoSuchIndexException {
 		dm.replaceIndex(index, replace);
 	}
-	
+
 	/**
 	 * Gets the indices of the loaded content.
 	 */
@@ -182,30 +183,30 @@ public class MexDB {
 	public double getDouble(String index, String key) {
 		return dm.getDouble(index, key);
 	}
-	
-	 /**
-     * Gets an ArrayList of a key from an entry.
-     * 
-     * @param index
-     *            The index of the entry
-     * @param key
-     *            The key of which we want to get the arraylist from
-     */
-	public ArrayList<String> getArrayList(String index, String key){
-	    return dm.getArrayList(index, key);
+
+	/**
+	 * Gets an ArrayList of a key from an entry.
+	 * 
+	 * @param index
+	 *            The index of the entry
+	 * @param key
+	 *            The key of which we want to get the arraylist from
+	 */
+	public ArrayList<String> getArrayList(String index, String key) {
+		return dm.getArrayList(index, key);
 	}
-	
-    /**
-     * Gets a LinkedList of a key from an entry.
-     * 
-     * @param index
-     *            The index of the entry
-     * @param key
-     *            The key of which we want to get the linkedlist from
-     */
-    public LinkedList<String> getLinkedList(String index, String key){
-        return dm.getLinkedList(index, key);
-    }
+
+	/**
+	 * Gets a LinkedList of a key from an entry.
+	 * 
+	 * @param index
+	 *            The index of the entry
+	 * @param key
+	 *            The key of which we want to get the linkedlist from
+	 */
+	public LinkedList<String> getLinkedList(String index, String key) {
+		return dm.getLinkedList(index, key);
+	}
 
 	/**
 	 * Gets a Long of a key from an entry.
@@ -230,7 +231,7 @@ public class MexDB {
 	public float getFloat(String index, String key) {
 		return dm.getFloat(index, key);
 	}
-	
+
 	/**
 	 * Gets a Boolean of a key from an entry.
 	 * 
@@ -239,7 +240,7 @@ public class MexDB {
 	 * @param key
 	 *            The key of which we want to get the value from
 	 */
-	public boolean getBoolean(String index, String key){
+	public boolean getBoolean(String index, String key) {
 		return dm.getBoolean(index, key);
 	}
 
@@ -327,12 +328,11 @@ public class MexDB {
 		return io.getFileName();
 	}
 
-
 	/**
 	 * Clears the loaded content.
 	 * 
 	 * @param reloadcontent
-	 * 		If true, then the content of the flatfile is reloaded.
+	 *            If true, then the content of the flatfile is reloaded.
 	 */
 	public void free(boolean reloadcontent) {
 		dm.free(reloadcontent);
@@ -344,13 +344,14 @@ public class MexDB {
 	public void clear() {
 		dm.clear();
 	}
-	
+
 	/**
 	 * Deletes the flatfile and clears the loaded content.<br>
-	 * <b>Note:</b> Write or read actions after this method call, could lead to errors in the MexDB system.<br> 
+	 * <b>Note:</b> Write or read actions after this method call, could lead to
+	 * errors in the MexDB system.<br>
 	 * <b>Do not use the MexDB object anymore after this method call.</b>
 	 */
-	public void destroyMexDB(){
+	public void destroyMexDB() {
 		dm.clear();
 		io.deleteDB();
 	}

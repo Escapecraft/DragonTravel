@@ -32,181 +32,180 @@ import com.xemsdoom.mexdb.system.Entry;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class SignCreating{
+public class SignCreating {
 
-    private static double distance = DragonTravelMain.config.getDouble("DistancetoStation");
-    static ChatColor gold = ChatColor.GOLD;
-    static ChatColor red = ChatColor.RED;
+	private static double distance = DragonTravelMain.config.getDouble("DistancetoStation");
+	static ChatColor gold = ChatColor.GOLD;
+	static ChatColor red = ChatColor.RED;
 
-    public static void createEntry(String name, String destination, Player player, Block b, int cost, boolean money) {
+	public static void createEntry(String name, String destination, Player player, Block b, int cost, boolean money) {
 
-        Entry entry = null;
-        
-        try {
+		Entry entry = null;
+
+		try {
 			entry = new Entry(name.concat(destination));
 		} catch (EmptyIndexException e) {
 			e.printStackTrace();
 		}
-        
-        entry.addValue("x", b.getX());
-        entry.addValue("y", b.getY());
-        entry.addValue("z", b.getZ());
-        entry.addValue("dest", destination);
 
-        if(money)
-            entry.addValue("cost", String.valueOf(cost));
+		entry.addValue("x", b.getX());
+		entry.addValue("y", b.getY());
+		entry.addValue("z", b.getZ());
+		entry.addValue("dest", destination);
 
-        entry.addValue("world", b.getWorld().toString());
-        DragonTravelMain.signs.addEntry(entry);
-        DragonTravelMain.signs.push();
+		if (money)
+			entry.addValue("cost", String.valueOf(cost));
 
-        CommandHandlers.dtpCredit(player);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignCreatingSaved")));
-    }
+		entry.addValue("world", b.getWorld().toString());
+		DragonTravelMain.signs.addEntry(entry);
+		DragonTravelMain.signs.push();
 
-    // Creates an economy destination sign
-    public static void createDestinationSignEconomy(Block b, SignChangeEvent event, Player player, int cost, String destination) {
+		CommandHandlers.dtpCredit(player);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignCreatingSaved")));
+	}
 
-        for(String name : DragonTravelMain.dbs.getIndices()){
-        	
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
+	// Creates an economy destination sign
+	public static void createDestinationSignEconomy(Block b, SignChangeEvent event, Player player, int cost, String destination) {
 
-            World world = b.getWorld();
-            Location bloc = b.getLocation();
+		for (String name : DragonTravelMain.dbs.getIndices()) {
 
-            if(!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world")))
-                continue;
+			double x = DragonTravelMain.dbs.getDouble(name, "x");
+			double y = DragonTravelMain.dbs.getDouble(name, "y");
+			double z = DragonTravelMain.dbs.getDouble(name, "z");
 
-            Vector locvec = new Location(world, x, y, z).toVector();
-            Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
-            Vector vec = locvec.subtract(locveca);
-            double lenga = vec.length();
+			World world = b.getWorld();
+			Location bloc = b.getLocation();
 
-            if(lenga >= distance)
-                continue;
+			if (!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world")))
+				continue;
 
-            event.setLine(0, gold + "DragonTravel");
-            event.setLine(1, DragonTravelMain.dbs.getString(name, "name").toString());
-            event.setLine(2, "To: " + destination);
-            event.setLine(3, "Cost: " + String.valueOf(cost));
+			Vector locvec = new Location(world, x, y, z).toVector();
+			Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
+			Vector vec = locvec.subtract(locveca);
+			double lenga = vec.length();
 
-            createEntry(name, destination, player, b, cost, true);
-            break;
-        }
-    }
+			if (lenga >= distance)
+				continue;
 
-    // Creates a destination sign
-    public static void createDestinationSign(Block b, SignChangeEvent event, Player player, String destination) {
+			event.setLine(0, gold + "DragonTravel");
+			event.setLine(1, DragonTravelMain.dbs.getString(name, "name").toString());
+			event.setLine(2, "To: " + destination);
+			event.setLine(3, "Cost: " + String.valueOf(cost));
 
-        for(String name : DragonTravelMain.dbs.getIndices()){
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
+			createEntry(name, destination, player, b, cost, true);
+			break;
+		}
+	}
 
-            World world = b.getWorld();
-            Location bloc = b.getLocation();
+	// Creates a destination sign
+	public static void createDestinationSign(Block b, SignChangeEvent event, Player player, String destination) {
 
-            if(!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world")))
-                continue;
+		for (String name : DragonTravelMain.dbs.getIndices()) {
+			double x = DragonTravelMain.dbs.getDouble(name, "x");
+			double y = DragonTravelMain.dbs.getDouble(name, "y");
+			double z = DragonTravelMain.dbs.getDouble(name, "z");
 
-            Vector locvec = new Location(world, x, y, z).toVector();
-            Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
-            Vector vec = locvec.subtract(locveca);
-            double lenga = vec.length();
+			World world = b.getWorld();
+			Location bloc = b.getLocation();
 
-            if(lenga >= distance)
-                continue;
+			if (!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world")))
+				continue;
 
-            event.setLine(0, gold + "DragonTravel");
-            event.setLine(1, DragonTravelMain.dbs.getString(name, "name").toString());
+			Vector locvec = new Location(world, x, y, z).toVector();
+			Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
+			Vector vec = locvec.subtract(locveca);
+			double lenga = vec.length();
 
-            event.setLine(2, "To: " + destination);
+			if (lenga >= distance)
+				continue;
 
-            createEntry(name, destination, player, b, 0, false);
-            break;
-        }
-    }
+			event.setLine(0, gold + "DragonTravel");
+			event.setLine(1, DragonTravelMain.dbs.getString(name, "name").toString());
 
-    // Creates a sign with the specific name of that station
-    public static void nameStationSign(Block b, SignChangeEvent event, Player player) {
+			event.setLine(2, "To: " + destination);
 
-        for(String name : DragonTravelMain.dbs.getIndices()){
-        	
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
+			createEntry(name, destination, player, b, 0, false);
+			break;
+		}
+	}
 
+	// Creates a sign with the specific name of that station
+	public static void nameStationSign(Block b, SignChangeEvent event, Player player) {
 
-            World world = b.getWorld();
-            Location bloc = b.getLocation();
+		for (String name : DragonTravelMain.dbs.getIndices()) {
 
-            if(!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world")))
-                continue;
+			double x = DragonTravelMain.dbs.getDouble(name, "x");
+			double y = DragonTravelMain.dbs.getDouble(name, "y");
+			double z = DragonTravelMain.dbs.getDouble(name, "z");
 
-            Vector locvec = new Location(world, x, y, z).toVector();
-            Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
-            Vector vec = locvec.subtract(locveca);
-            double lenga = vec.length();
+			World world = b.getWorld();
+			Location bloc = b.getLocation();
 
-            if(lenga >= distance)
-                continue;
+			if (!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world")))
+				continue;
 
-            event.setLine(0, gold + "DragonTravel");
-            event.setLine(1, DragonTravelMain.dbs.getString(name, "name").toString());
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignCreatingCreated")));
+			Vector locvec = new Location(world, x, y, z).toVector();
+			Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
+			Vector vec = locvec.subtract(locveca);
+			double lenga = vec.length();
 
-            break;
-        }
-    }
+			if (lenga >= distance)
+				continue;
 
-    // Creates a sign with the name of that specific destination
-    public static void nameDestinationSign(Block b, SignChangeEvent event, Player player) {
+			event.setLine(0, gold + "DragonTravel");
+			event.setLine(1, DragonTravelMain.dbs.getString(name, "name").toString());
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignCreatingCreated")));
 
-        for(String name : DragonTravelMain.dbd.getIndices()){
+			break;
+		}
+	}
 
-            double x = DragonTravelMain.dbd.getDouble(name, "x");
-            double y = DragonTravelMain.dbd.getDouble(name, "y");
-            double z = DragonTravelMain.dbd.getDouble(name, "z");
+	// Creates a sign with the name of that specific destination
+	public static void nameDestinationSign(Block b, SignChangeEvent event, Player player) {
 
-            World world = b.getWorld();
+		for (String name : DragonTravelMain.dbd.getIndices()) {
 
-            if(!world.toString().equalsIgnoreCase(DragonTravelMain.dbd.getString(name, "world")))
-                continue;
+			double x = DragonTravelMain.dbd.getDouble(name, "x");
+			double y = DragonTravelMain.dbd.getDouble(name, "y");
+			double z = DragonTravelMain.dbd.getDouble(name, "z");
 
-            Location bloc = b.getLocation();
-            Vector locvec = new Location(world, x, y + 6, z).toVector();
-            Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
-            Vector vec = locvec.subtract(locveca);
-            double lenga = vec.length();
+			World world = b.getWorld();
 
-            if(lenga >= distance)
-                continue;
+			if (!world.toString().equalsIgnoreCase(DragonTravelMain.dbd.getString(name, "world")))
+				continue;
 
-            event.setLine(0, gold + "DragonTravel");
-            event.setLine(1, DragonTravelMain.dbd.getString(name,"name"));
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignCreatingCreated")));
-            break;
-        }
-    }
-    
-    //Creates a flight sign
-    public static void createFlightSign(String name, SignChangeEvent event){
-    	
-    	event.setLine(0, gold + "DragonTravel");
-    	event.setLine(1, "Flight");
-    	event.setLine(2, name);
-    }
-    
-    //Creates a flight sign with cost
-    public static void createFlightSignEconomy(String name, SignChangeEvent event, int cost){
-    	
-    	event.setLine(0, gold + "DragonTravel");
-    	event.setLine(1, "Flight");
-    	event.setLine(2, name);
-    	event.setLine(3, "Cost: " + cost);
-    }
+			Location bloc = b.getLocation();
+			Vector locvec = new Location(world, x, y + 6, z).toVector();
+			Vector locveca = new Location(world, bloc.getX(), bloc.getY(), bloc.getZ()).toVector();
+			Vector vec = locvec.subtract(locveca);
+			double lenga = vec.length();
+
+			if (lenga >= distance)
+				continue;
+
+			event.setLine(0, gold + "DragonTravel");
+			event.setLine(1, DragonTravelMain.dbd.getString(name, "name"));
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("SignCreatingCreated")));
+			break;
+		}
+	}
+
+	// Creates a flight sign
+	public static void createFlightSign(String name, SignChangeEvent event) {
+
+		event.setLine(0, gold + "DragonTravel");
+		event.setLine(1, "Flight");
+		event.setLine(2, name);
+	}
+
+	// Creates a flight sign with cost
+	public static void createFlightSignEconomy(String name, SignChangeEvent event, int cost) {
+
+		event.setLine(0, gold + "DragonTravel");
+		event.setLine(1, "Flight");
+		event.setLine(2, name);
+		event.setLine(3, "Cost: " + cost);
+	}
 }

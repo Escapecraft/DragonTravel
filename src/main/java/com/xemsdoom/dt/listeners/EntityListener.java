@@ -1,6 +1,5 @@
 package com.xemsdoom.dt.listeners;
 
-
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -14,7 +13,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 import com.xemsdoom.dt.DragonTravelMain;
 import com.xemsdoom.dt.XemDragon;
-
 
 /**
  * Copyright (C) 2011-2012 Moser Luca/Philipp Wagner
@@ -35,57 +33,57 @@ import com.xemsdoom.dt.XemDragon;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class EntityListener implements Listener{
+public class EntityListener implements Listener {
 
-    DragonTravelMain plugin;
+	DragonTravelMain plugin;
 
-    public EntityListener(DragonTravelMain plugin) {
-        this.plugin = plugin;
-    }
+	public EntityListener(DragonTravelMain plugin) {
+		this.plugin = plugin;
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onEnderDragonExlplode(EntityExplodeEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onEnderDragonExlplode(EntityExplodeEvent event) {
 
-        if(DragonTravelMain.onlydragontraveldragons && event.getEntity() instanceof XemDragon)
-            event.setCancelled(true);
+		if (DragonTravelMain.onlydragontraveldragons && event.getEntity() instanceof XemDragon)
+			event.setCancelled(true);
 
-        else if(DragonTravelMain.alldragons && event.getEntity() instanceof EnderDragon)
-            event.setCancelled(true);
-    }
+		else if (DragonTravelMain.alldragons && event.getEntity() instanceof EnderDragon)
+			event.setCancelled(true);
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerDamage(EntityDamageEvent event) {
-        if(event.getEntity() instanceof Player){
-            Player player = (Player) event.getEntity();
-            if(DragonTravelMain.TravelInformation.containsKey(player))
-                event.setCancelled(true);
-        }
-    }
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			if (DragonTravelMain.TravelInformation.containsKey(player))
+				event.setCancelled(true);
+		}
+	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerDeath(EntityDeathEvent event) {
-        if(event.getEntity() instanceof Player){
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerDeath(EntityDeathEvent event) {
+		if (event.getEntity() instanceof Player) {
 
-            Player player = (Player) event.getEntity();
+			Player player = (Player) event.getEntity();
 
-            if(!DragonTravelMain.TravelInformation.containsKey(player))
-                return;
+			if (!DragonTravelMain.TravelInformation.containsKey(player))
+				return;
 
-            XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-            Entity dragona = (Entity) dragon.getBukkitEntity();
-            dragona.remove();
-            DragonTravelMain.TravelInformation.remove(player);
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onCreatureSpawn(CreatureSpawnEvent event) {
-    	if(event.getEntity().getType().toString().equals("ENDER_DRAGON")) {
-            if(event.isCancelled() == true) {
-            	if(DragonTravelMain.ignoreAntiMobspawnAreas == true) {
-            		event.setCancelled(false);
-            	}
-            }    	
-    	}
-    }
+			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+			Entity dragona = (Entity) dragon.getBukkitEntity();
+			dragona.remove();
+			DragonTravelMain.TravelInformation.remove(player);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
+		if (event.getEntity().getType().toString().equals("ENDER_DRAGON")) {
+			if (event.isCancelled() == true) {
+				if (DragonTravelMain.ignoreAntiMobspawnAreas == true) {
+					event.setCancelled(false);
+				}
+			}
+		}
+	}
 }

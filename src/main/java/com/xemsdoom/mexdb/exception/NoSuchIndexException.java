@@ -22,7 +22,7 @@ package com.xemsdoom.mexdb.exception;
 /**
  * Thrown when an invalid/nonexistent index is passed as a parameter.
  */
-public class NoSuchIndexException extends Exception{
+public class NoSuchIndexException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class NoSuchIndexException extends Exception{
 	 * Thrown when an invalid/nonexistent index is passed as a parameter.
 	 */
 	public NoSuchIndexException(String msg) {
-	    super(msg);
-	  }
+		super(msg);
+	}
 
 }

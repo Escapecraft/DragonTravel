@@ -29,213 +29,213 @@ import com.xemsdoom.dt.modules.MessagesLoader;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class EconomyHandler{
+public class EconomyHandler {
 
-    private static String withdrawmessage = DragonTravelMain.messages.getString("WithdrawMessage");
-    private static String notenough = MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotEnoughMoney"));
-    Server server;
+	private static String withdrawmessage = DragonTravelMain.messages.getString("WithdrawMessage");
+	private static String notenough = MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotEnoughMoney"));
+	Server server;
 
-    public EconomyHandler(Server server) {
-        this.server = server;
-    }
+	public EconomyHandler(Server server) {
+		this.server = server;
+	}
 
-    // Gets the economy plugin
-    public boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = server.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if(economyProvider != null){
-            DragonTravelMain.Economy = economyProvider.getProvider();
-            DragonTravelMain.EconomyEnabled = true;
-        }
+	// Gets the economy plugin
+	public boolean setupEconomy() {
+		RegisteredServiceProvider<Economy> economyProvider = server.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		if (economyProvider != null) {
+			DragonTravelMain.Economy = economyProvider.getProvider();
+			DragonTravelMain.EconomyEnabled = true;
+		}
 
-        return (DragonTravelMain.Economy != null);
-    }
+		return (DragonTravelMain.Economy != null);
+	}
 
-    // Charges the player for a normal travel
-    public static boolean chargePlayer(Player player) {
+	// Charges the player for a normal travel
+	public static boolean chargePlayer(Player player) {
 
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
 
-        if(DragonTravelMain.config.getDouble("PayTravel") == 0.0)
-            return true;
+		if (DragonTravelMain.config.getDouble("PayTravel") == 0.0)
+			return true;
 
-        if(balance < DragonTravelMain.config.getDouble("PayTravel")){
+		if (balance < DragonTravelMain.config.getDouble("PayTravel")) {
 
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
 
-        DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayTravel"));
-        
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayTravel")));
-        player.sendMessage(msgm);
-        
-        return true;
+		DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayTravel"));
 
-    }
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayTravel")));
+		player.sendMessage(msgm);
 
-    // Charges the player for a player to player travel
-    public static boolean chargePlayerTravelPlayer(Player player) {
+		return true;
 
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+	}
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+	// Charges the player for a player to player travel
+	public static boolean chargePlayerTravelPlayer(Player player) {
 
-        if(DragonTravelMain.config.getDouble("PaytoPlayer") == 0.0)
-            return true;
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
 
-        if(balance < DragonTravelMain.config.getDouble("PaytoPlayer")){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
 
-        DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PaytoPlayer"));
-       
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PaytoPlayer")));
-        player.sendMessage(msgm);
+		if (DragonTravelMain.config.getDouble("PaytoPlayer") == 0.0)
+			return true;
 
-        return true;
-    }
+		if (balance < DragonTravelMain.config.getDouble("PaytoPlayer")) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
 
-    // Charges the player for a chords travel
-    public static boolean chargePlayerCoordsTravel(Player player) {
+		DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PaytoPlayer"));
 
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PaytoPlayer")));
+		player.sendMessage(msgm);
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+		return true;
+	}
 
-        if(DragonTravelMain.config.getDouble("PayCoords") != 0.0)
-            return true;
+	// Charges the player for a chords travel
+	public static boolean chargePlayerCoordsTravel(Player player) {
 
-        if(balance < DragonTravelMain.config.getDouble("PayCoords")){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
 
-        DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayCoords"));
-        
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayCoords")));
-        player.sendMessage(msgm);
-        
-        return true;
-    }
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
 
-    // Charges the players for a sign travel
-    public static boolean chargePlayerSigns(Player player, Double cost) {
+		if (DragonTravelMain.config.getDouble("PayCoords") != 0.0)
+			return true;
 
-        if(player.hasPermission("dt.nocost"))
-            return true;
+		if (balance < DragonTravelMain.config.getDouble("PayCoords")) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
 
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+		DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayCoords"));
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayCoords")));
+		player.sendMessage(msgm);
 
-        if(cost == 0)
-            return true;
+		return true;
+	}
 
-        if(balance < cost){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+	// Charges the players for a sign travel
+	public static boolean chargePlayerSigns(Player player, Double cost) {
 
-        DragonTravelMain.Economy.withdrawPlayer(name, cost);
-        
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(cost));
-        player.sendMessage(msgm);
+		if (player.hasPermission("dt.nocost"))
+			return true;
 
-        return true;
-    }
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
 
-    // Charges the player for a home travel
-    public static boolean chargePlayerHome(Player player) {
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
 
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+		if (cost == 0)
+			return true;
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+		if (balance < cost) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
 
-        if(DragonTravelMain.config.getDouble("PayHome") == 0.0)
-            return true;
+		DragonTravelMain.Economy.withdrawPlayer(name, cost);
 
-        if(balance < DragonTravelMain.config.getDouble("PayHome")){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(cost));
+		player.sendMessage(msgm);
 
-        DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayHome"));
+		return true;
+	}
 
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayHome")));
-        player.sendMessage(msgm);
-        return true;
-    }
+	// Charges the player for a home travel
+	public static boolean chargePlayerHome(Player player) {
 
-    //Charges the player for a home set
-    public static boolean chargePlayerHomeSet(Player player) {
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
 
-        if(DragonTravelMain.config.getDouble("HomeSetCost") == 0.0)
-            return true;
+		if (DragonTravelMain.config.getDouble("PayHome") == 0.0)
+			return true;
 
-        if(balance < DragonTravelMain.config.getDouble("HomeSetCost")){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+		if (balance < DragonTravelMain.config.getDouble("PayHome")) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
 
-        DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("HomeSetCost"));
+		DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayHome"));
 
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("HomeSetCost")));
-        player.sendMessage(msgm);
-        return true;
-    }
-    
-    //Charges the player for a home set
-    public static boolean chargeFlightTravel(Player player) {
-        if(!DragonTravelMain.config.getBoolean("Economy"))
-            return true;
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayHome")));
+		player.sendMessage(msgm);
+		return true;
+	}
 
-        String name = player.getName();
-        double balance = DragonTravelMain.Economy.getBalance(name);
+	// Charges the player for a home set
+	public static boolean chargePlayerHomeSet(Player player) {
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
 
-        if(DragonTravelMain.config.getDouble("PayFlight") == 0.0)
-            return true;
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
 
-        if(balance < DragonTravelMain.config.getDouble("PayFlight")){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(notenough);
-            return false;
-        }
+		if (DragonTravelMain.config.getDouble("HomeSetCost") == 0.0)
+			return true;
 
-        DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayFlight"));
+		if (balance < DragonTravelMain.config.getDouble("HomeSetCost")) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
 
-        String msg = MessagesLoader.replaceColors(withdrawmessage);
-        String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayFlight")));
-        player.sendMessage(msgm);
-        return true;
-    }
+		DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("HomeSetCost"));
+
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("HomeSetCost")));
+		player.sendMessage(msgm);
+		return true;
+	}
+
+	// Charges the player for a home set
+	public static boolean chargeFlightTravel(Player player) {
+		if (!DragonTravelMain.config.getBoolean("Economy"))
+			return true;
+
+		String name = player.getName();
+		double balance = DragonTravelMain.Economy.getBalance(name);
+
+		if (DragonTravelMain.config.getDouble("PayFlight") == 0.0)
+			return true;
+
+		if (balance < DragonTravelMain.config.getDouble("PayFlight")) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(notenough);
+			return false;
+		}
+
+		DragonTravelMain.Economy.withdrawPlayer(name, DragonTravelMain.config.getDouble("PayFlight"));
+
+		String msg = MessagesLoader.replaceColors(withdrawmessage);
+		String msgm = msg.replace("%amount%", String.valueOf(DragonTravelMain.config.getDouble("PayFlight")));
+		player.sendMessage(msgm);
+		return true;
+	}
 }

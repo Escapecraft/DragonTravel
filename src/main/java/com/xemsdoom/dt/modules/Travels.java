@@ -36,393 +36,386 @@ import com.xemsdoom.dt.spout.music.MusicHandler;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class Travels{
+public class Travels {
 
 	public static ArrayList<String> togglers = new ArrayList<String>();
-    private static ChatColor red = ChatColor.RED;
-    private static ChatColor white = ChatColor.WHITE;
+	private static ChatColor red = ChatColor.RED;
+	private static ChatColor white = ChatColor.WHITE;
 
-    /**
-     * Spawns a XemDragon and mounts the player on it
-     * 
-     * @param player
-     */
-    public static boolean mountDragon(Player player) {
-     
-        if(DragonTravelMain.config.getBoolean("UseStation"))
-            if(!(Stations.checkStation(player)))
-                return false;
+	/**
+	 * Spawns a XemDragon and mounts the player on it
+	 * 
+	 * @param player
+	 */
+	public static boolean mountDragon(Player player) {
 
-        if(DragonTravelMain.TravelInformation.containsKey(player)){
-            XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-            Entity dra = dragon.getBukkitEntity();
-            removePlayerandDragon(dra);
-        }
+		if (DragonTravelMain.config.getBoolean("UseStation"))
+			if (!(Stations.checkStation(player)))
+				return false;
 
-        net.minecraft.server.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
-        XemDragon XemDragon = new XemDragon(player.getLocation(), notchWorld);
-        notchWorld.addEntity(XemDragon);
-        LivingEntity dragon = (LivingEntity) XemDragon.getBukkitEntity();
-        
-        dragon.setPassenger(player);
-        DragonTravelMain.XemDragonRemoval.put(XemDragon, XemDragon);
-        DragonTravelMain.TravelInformation.put(player, XemDragon);
-        CommandHandlers.dtpCredit(player);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("MountSuccessful")));
-        MusicHandler.playEpicSound(player);
+		if (DragonTravelMain.TravelInformation.containsKey(player)) {
+			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+			Entity dra = dragon.getBukkitEntity();
+			removePlayerandDragon(dra);
+		}
 
-        return true;
-    }
+		net.minecraft.server.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
+		XemDragon XemDragon = new XemDragon(player.getLocation(), notchWorld);
+		notchWorld.addEntity(XemDragon);
+		LivingEntity dragon = (LivingEntity) XemDragon.getBukkitEntity();
 
-    /**
-     * Dismounts the player from a dragon if mounted on one.
-     * 
-     * @param player
-     *            entity which gets dismounted by executing /dt dismount
-     */
-    public static void dismountDragon(Player player) {
+		dragon.setPassenger(player);
+		DragonTravelMain.XemDragonRemoval.put(XemDragon, XemDragon);
+		DragonTravelMain.TravelInformation.put(player, XemDragon);
+		CommandHandlers.dtpCredit(player);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("MountSuccessful")));
+		MusicHandler.playEpicSound(player);
 
-        if(!DragonTravelMain.TravelInformation.containsKey(player)){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DismountNotMounted")));
-            return;
-        }
+		return true;
+	}
 
-        XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+	/**
+	 * Dismounts the player from a dragon if mounted on one.
+	 * 
+	 * @param player
+	 *            entity which gets dismounted by executing /dt dismount
+	 */
+	public static void dismountDragon(Player player) {
 
-        Entity dra = dragon.getBukkitEntity();
-        removePlayerandDragon(dra);
-        CommandHandlers.dtpCredit(player);
+		if (!DragonTravelMain.TravelInformation.containsKey(player)) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DismountNotMounted")));
+			return;
+		}
 
-        Location clone = player.getLocation().clone();
-        clone.setY(126);
-        for(;;){
-            for(int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++){
-                clone.setY(126 - offset);
-            }
-            if(clone.getY() == 0){
-                clone.setY(126);
-                clone.setX(clone.getX() + 1);
-            }else{
-                break;
-            }
-        }
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
 
-        clone.setY(clone.getY() + 2);
-        player.teleport(clone);
-        
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DismountSuccessful")));
-    }
+		Entity dra = dragon.getBukkitEntity();
+		removePlayerandDragon(dra);
+		CommandHandlers.dtpCredit(player);
 
-    /**
-     * Removes the player of the HashMap "TravelInformation" and removes the
-     * dragon out of the world, also dismounts the player.
-     * 
-     * @param entity
-     *            the dragon entity used to do stuff
-     */
-    public static void removePlayerandDragon(Entity entity) {
-        Player player = (Player) entity.getPassenger();
-        MusicHandler.stopEpicSound(player);
-        DragonTravelMain.TravelInformation.remove(player);
+		Location clone = player.getLocation().clone();
+		clone.setY(126);
+		for (;;) {
+			for (int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++) {
+				clone.setY(126 - offset);
+			}
+			if (clone.getY() == 0) {
+				clone.setY(126);
+				clone.setX(clone.getX() + 1);
+			} else {
+				break;
+			}
+		}
 
-        Location clone = player.getLocation().clone();
-        clone.setY(126);
-        for(;;){
-            for(int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++){
-                clone.setY(126 - offset);
-            }
-            if(clone.getY() == 0){
-                clone.setY(126);
-                clone.setX(clone.getX() + 1);
-            }else{
-                break;
-            }
-        }
-        
-        clone.setY(clone.getY() + 2);
-        player.teleport(clone);
-        
-        entity.eject();
-        entity.remove();
-        
-    }
+		clone.setY(clone.getY() + 2);
+		player.teleport(clone);
 
-    /**
-     * Removes all enderdragons in the same world as the command executor, which
-     * do not have players as passengers
-     */
-    public static void removeDragons(Player player) {
-        int amount = player.getWorld().getEntities().size();
-        int passed = 0;
-        int counter = 0;
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DismountSuccessful")));
+	}
 
-        for(Entity entity : player.getWorld().getEntities()){
-            counter++;
-            if(entity instanceof EnderDragon){
-                if(!(entity.getPassenger() instanceof Player)){
-                    entity.remove();
-                    passed++;
-                }
-            }
-            if(counter == amount){
-                CommandHandlers.dtpCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons1")) + " " + passed + " " + MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons2")));
-            }
-        }
-    }
+	/**
+	 * Removes the player of the HashMap "TravelInformation" and removes the
+	 * dragon out of the world, also dismounts the player.
+	 * 
+	 * @param entity
+	 *            the dragon entity used to do stuff
+	 */
+	public static void removePlayerandDragon(Entity entity) {
+		Player player = (Player) entity.getPassenger();
+		MusicHandler.stopEpicSound(player);
+		DragonTravelMain.TravelInformation.remove(player);
 
-    /**
-     * Removes all enderdragons in a given world, which do not have players as
-     * passengers. Reports back to log
-     */
-    public static void removeDragons(World world) {
-        if(world == null)
-            return;
+		Location clone = player.getLocation().clone();
+		clone.setY(126);
+		for (;;) {
+			for (int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++) {
+				clone.setY(126 - offset);
+			}
+			if (clone.getY() == 0) {
+				clone.setY(126);
+				clone.setX(clone.getX() + 1);
+			} else {
+				break;
+			}
+		}
 
-        int amount = world.getEntities().size();
-        int passed = 0;
-        int counter = 0;
+		clone.setY(clone.getY() + 2);
+		player.teleport(clone);
 
-        for(Entity entity : world.getEntities()){
-            counter++;
-            if(entity instanceof EnderDragon){
-                if(!(entity.getPassenger() instanceof Player)){
-                    entity.remove();
-                    passed++;
-                }
-            }
+		entity.eject();
+		entity.remove();
 
-            if(counter == amount){
-                DragonTravelMain.log.info(String.format("[DragonTravel] Removed %s dragon(s)", passed));
-            }
-        }
-    }
+	}
 
-    // Traveling
+	/**
+	 * Removes all enderdragons in the same world as the command executor, which
+	 * do not have players as passengers
+	 */
+	public static void removeDragons(Player player) {
+		int amount = player.getWorld().getEntities().size();
+		int passed = 0;
+		int counter = 0;
 
-    /**
-     * Travels the mounted player to a destination passed in the command as an
-     * arg[1]. If the destination is not available or in a other world, the
-     * players gets message to say so. Also charges player if "Economy" is set
-     * to true.
-     * 
-     * @param sender
-     *            the sender of this command, which could travel to a
-     *            destination
-     * @param name
-     *            the destination name passed in the command as arg[1]
-     */
-    public static void travelDestination(Player player, String name) {
+		for (Entity entity : player.getWorld().getEntities()) {
+			counter++;
+			if (entity instanceof EnderDragon) {
+				if (!(entity.getPassenger() instanceof Player)) {
+					entity.remove();
+					passed++;
+				}
+			}
+			if (counter == amount) {
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons1")) + " " + passed + " " + MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons2")));
+			}
+		}
+	}
 
-    	if(!name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
-	        if(!DragonTravelMain.dbd.hasIndex(name)){
-	            CommandHandlers.dtpCredit(player);
-	            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelDoesNotExist")));
-	            return;
-	        }
-	
-	        if(!player.getWorld().toString().equalsIgnoreCase(DragonTravelMain.dbd.getString(name, "world"))){
-	            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelDifferentWorld")));
-	            return;
-	        }
-    	}
-    	
-        if(!(player.hasPermission("dt.nocost")))
-            if(!EconomyHandler.chargePlayer(player))
-                return;
+	/**
+	 * Removes all enderdragons in a given world, which do not have players as
+	 * passengers. Reports back to log
+	 */
+	public static void removeDragons(World world) {
+		if (world == null)
+			return;
 
-        if(!mountDragon(player))
-            return;
+		int amount = world.getEntities().size();
+		int passed = 0;
+		int counter = 0;
 
-        if(!DragonTravelMain.TravelInformation.containsKey(player))
-            return;
+		for (Entity entity : world.getEntities()) {
+			counter++;
+			if (entity instanceof EnderDragon) {
+				if (!(entity.getPassenger() instanceof Player)) {
+					entity.remove();
+					passed++;
+				}
+			}
 
-        XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+			if (counter == amount) {
+				DragonTravelMain.log.info(String.format("[DragonTravel] Removed %s dragon(s)", passed));
+			}
+		}
+	}
 
-        if(dragon == null)
-            return;
-        
-        double x;
-        double y;
-        double z;
-        
-        
-        if(name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {        	
-        	int minX = DragonTravelMain.config.getInt("X-Axis.MinX");
-        	int maxX = DragonTravelMain.config.getInt("X-Axis.MaxX");
-        	int minZ = DragonTravelMain.config.getInt("Z-Axis.MinZ");        	
-        	int maxZ = DragonTravelMain.config.getInt("Z-Axis.MaxZ");       	
-        	x =  minX + (Math.random()*(maxX-1));
-        	z =  minZ + (Math.random()*(maxZ-1));         	
-        	Location randomLoc = new Location(player.getWorld(), x, 10, z);
-        	y = randomLoc.getWorld().getHighestBlockAt(randomLoc).getY();         	
-        }
-        else{
-        	x = DragonTravelMain.dbd.getDouble(name, "x");
-            y = DragonTravelMain.dbd.getDouble(name, "y");
-            z = DragonTravelMain.dbd.getDouble(name, "z"); 
-        }  
-        
-        Location loca = new Location(player.getWorld(), x, y, z);
-        dragon.startTravel(loca);
-        
-        if(name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
-        	player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelRandom")));
-        }
-        else{
-        	player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelTo")) + " " + name);
-        }
+	// Traveling
 
-    }
+	/**
+	 * Travels the mounted player to a destination passed in the command as an
+	 * arg[1]. If the destination is not available or in a other world, the
+	 * players gets message to say so. Also charges player if "Economy" is set
+	 * to true.
+	 * 
+	 * @param sender
+	 *            the sender of this command, which could travel to a
+	 *            destination
+	 * @param name
+	 *            the destination name passed in the command as arg[1]
+	 */
+	public static void travelDestination(Player player, String name) {
 
-    /**
-     * Travels the mounted player to a destination passed in the command as an
-     * arg[1]. If the destination is not available or in a other world, the
-     * players gets message to say so. Also charges player if "Economy" is set
-     * to true. FOR SIGNS!
-     * 
-     * @param sender
-     *            the sender of this command, which could travel to a
-     *            destination
-     * @param name
-     *            the destination name passed in the command as arg[1]
-     */
+		if (!name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+			if (!DragonTravelMain.dbd.hasIndex(name)) {
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelDoesNotExist")));
+				return;
+			}
 
-    public static void travelDestinationSigns(Player player, String name) {
+			if (!player.getWorld().toString().equalsIgnoreCase(DragonTravelMain.dbd.getString(name, "world"))) {
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelDifferentWorld")));
+				return;
+			}
+		}
 
-        if(!DragonTravelMain.TravelInformation.containsKey(player)){
-            CommandHandlers.dtpCredit(player);
-            player.sendMessage(red + "You are not mounted on a dragon");
-            player.sendMessage(red + "Use" + white + " /dt mount" + red + " to mount a dragon");
-            return;
-        }
+		if (!(player.hasPermission("dt.nocost")))
+			if (!EconomyHandler.chargePlayer(player))
+				return;
 
-        XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+		if (!mountDragon(player))
+			return;
 
-        if(!name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
-        	if(!player.getWorld().toString().equalsIgnoreCase(DragonTravelMain.dbd.getString(name, "world"))){
-                removePlayerandDragon(dragon.getBukkitEntity());
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelDifferentWorld")));
-                return;
-            }
-        }
-        
-        
-        if(dragon == null)
-            return;
+		if (!DragonTravelMain.TravelInformation.containsKey(player))
+			return;
 
-        
-        double x;
-        double y;
-        double z;
-        
-        if(name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {        	
-        	int minX = DragonTravelMain.config.getInt("X-Axis.MinX");
-        	int maxX = DragonTravelMain.config.getInt("X-Axis.MaxX");
-        	int minZ = DragonTravelMain.config.getInt("Z-Axis.MinZ");        	
-        	int maxZ = DragonTravelMain.config.getInt("Z-Axis.MaxZ");   
-        	x =  minX + (Math.random()*(maxX-1));
-        	z =  minZ + (Math.random()*(maxZ-1));         	
-        	Location randomLoc = new Location(player.getWorld(), x, 10, z);
-        	y = randomLoc.getWorld().getHighestBlockAt(randomLoc).getY();         	
-        }
-        else{
-        	x = DragonTravelMain.dbd.getDouble(name, "x");
-            y = DragonTravelMain.dbd.getDouble(name, "y");
-            z = DragonTravelMain.dbd.getDouble(name, "z");    
-        }
-        
-        Location loca = new Location(player.getWorld(), x, y, z);
-        dragon.startTravel(loca);
-        
-        if(name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
-        	player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelRandom")));
-        }
-        else{
-        	player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelTo")) + " " + name);
-        }
-    }
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
 
-    /**
-     * Travels the player to the passed chordinates typed in on the command.
-     * Also charges player if "Economy" is set to true.
-     * 
-     * @param player
-     *            entity which is mounted on the dragon, fyling to the
-     *            coordinates.
-     * @param x
-     *            x coordinate
-     * @param y
-     *            y coordinate
-     * @param z
-     *            z coordinates
-     */
-    public static void travelChord(Player player, double x, double y, double z) {
+		if (dragon == null)
+			return;
 
-        if(!(player.hasPermission("dt.nocost")))
-            if(!EconomyHandler.chargePlayerCoordsTravel(player))
-                return;
+		double x;
+		double y;
+		double z;
 
-        mountDragon(player);
+		if (name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+			int minX = DragonTravelMain.config.getInt("X-Axis.MinX");
+			int maxX = DragonTravelMain.config.getInt("X-Axis.MaxX");
+			int minZ = DragonTravelMain.config.getInt("Z-Axis.MinZ");
+			int maxZ = DragonTravelMain.config.getInt("Z-Axis.MaxZ");
+			x = minX + (Math.random() * (maxX - 1));
+			z = minZ + (Math.random() * (maxZ - 1));
+			Location randomLoc = new Location(player.getWorld(), x, 10, z);
+			y = randomLoc.getWorld().getHighestBlockAt(randomLoc).getY();
+		} else {
+			x = DragonTravelMain.dbd.getDouble(name, "x");
+			y = DragonTravelMain.dbd.getDouble(name, "y");
+			z = DragonTravelMain.dbd.getDouble(name, "z");
+		}
 
-        XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-        if(dragon == null)
-            return;
+		Location loca = new Location(player.getWorld(), x, y, z);
+		dragon.startTravel(loca);
 
-        Location loca = new Location(player.getWorld(), x, y, z);
+		if (name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelRandom")));
+		} else {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelTo")) + " " + name);
+		}
 
-        dragon.startTravel(loca);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("CoordinatesTravelTo")) + " " + x + ", " + y + ", " + z);
-    }
+	}
 
-    /**
-     * Travels the player to the player passed on the command. Also charges the
-     * player if "Economy" is set to true. Disallows Traveling to players in
-     * other world.
-     * 
-     * @param player
-     *            entity which travels to the other player
-     * @param name
-     *            the playername which is used to get the exact player in order
-     *            to travel to him/her
-     */
-    public static void traveltoPlayer(Player player, String name) {
+	/**
+	 * Travels the mounted player to a destination passed in the command as an
+	 * arg[1]. If the destination is not available or in a other world, the
+	 * players gets message to say so. Also charges player if "Economy" is set
+	 * to true. FOR SIGNS!
+	 * 
+	 * @param sender
+	 *            the sender of this command, which could travel to a
+	 *            destination
+	 * @param name
+	 *            the destination name passed in the command as arg[1]
+	 */
 
-        if(player.getServer().getPlayer(name) == null){
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerNotOnline")));
-            return;
-        }
-        
-        Player target = player.getServer().getPlayer(name);
-        
-        //Returning if the target-player has ptravel turned off
-        if(togglers.contains(target.getName())){
-        	player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerHasPTravelTurnedOff")));
-        	return;
-        }
-        
-        String targetname = target.getName();
+	public static void travelDestinationSigns(Player player, String name) {
 
-        if(target.getWorld() != player.getWorld())
-            player.sendMessage(targetname + " " + MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerDifferentWorld")));
+		if (!DragonTravelMain.TravelInformation.containsKey(player)) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(red + "You are not mounted on a dragon");
+			player.sendMessage(red + "Use" + white + " /dt mount" + red + " to mount a dragon");
+			return;
+		}
 
-        if(!(player.hasPermission("dt.nocost")))
-            if(!EconomyHandler.chargePlayerTravelPlayer(player))
-                return;
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
 
-        if(!(mountDragon(player)))
-            return;
+		if (!name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+			if (!player.getWorld().toString().equalsIgnoreCase(DragonTravelMain.dbd.getString(name, "world"))) {
+				removePlayerandDragon(dragon.getBukkitEntity());
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelDifferentWorld")));
+				return;
+			}
+		}
 
-        XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+		if (dragon == null)
+			return;
 
-        if(dragon == null)
-            return;
+		double x;
+		double y;
+		double z;
 
-        Location loca = target.getLocation().subtract(0.0D, 5.0D, 0.0D);
+		if (name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+			int minX = DragonTravelMain.config.getInt("X-Axis.MinX");
+			int maxX = DragonTravelMain.config.getInt("X-Axis.MaxX");
+			int minZ = DragonTravelMain.config.getInt("Z-Axis.MinZ");
+			int maxZ = DragonTravelMain.config.getInt("Z-Axis.MaxZ");
+			x = minX + (Math.random() * (maxX - 1));
+			z = minZ + (Math.random() * (maxZ - 1));
+			Location randomLoc = new Location(player.getWorld(), x, 10, z);
+			y = randomLoc.getWorld().getHighestBlockAt(randomLoc).getY();
+		} else {
+			x = DragonTravelMain.dbd.getDouble(name, "x");
+			y = DragonTravelMain.dbd.getDouble(name, "y");
+			z = DragonTravelMain.dbd.getDouble(name, "z");
+		}
 
-        dragon.startTravel(loca);
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerTravelTo")) + " " + name);
+		Location loca = new Location(player.getWorld(), x, y, z);
+		dragon.startTravel(loca);
 
-    }
+		if (name.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelRandom")));
+		} else {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationTravelTo")) + " " + name);
+		}
+	}
+
+	/**
+	 * Travels the player to the passed chordinates typed in on the command.
+	 * Also charges player if "Economy" is set to true.
+	 * 
+	 * @param player
+	 *            entity which is mounted on the dragon, fyling to the
+	 *            coordinates.
+	 * @param x
+	 *            x coordinate
+	 * @param y
+	 *            y coordinate
+	 * @param z
+	 *            z coordinates
+	 */
+	public static void travelChord(Player player, double x, double y, double z) {
+
+		if (!(player.hasPermission("dt.nocost")))
+			if (!EconomyHandler.chargePlayerCoordsTravel(player))
+				return;
+
+		mountDragon(player);
+
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+		if (dragon == null)
+			return;
+
+		Location loca = new Location(player.getWorld(), x, y, z);
+
+		dragon.startTravel(loca);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("CoordinatesTravelTo")) + " " + x + ", " + y + ", " + z);
+	}
+
+	/**
+	 * Travels the player to the player passed on the command. Also charges the
+	 * player if "Economy" is set to true. Disallows Traveling to players in
+	 * other world.
+	 * 
+	 * @param player
+	 *            entity which travels to the other player
+	 * @param name
+	 *            the playername which is used to get the exact player in order
+	 *            to travel to him/her
+	 */
+	public static void traveltoPlayer(Player player, String name) {
+
+		if (player.getServer().getPlayer(name) == null) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerNotOnline")));
+			return;
+		}
+
+		Player target = player.getServer().getPlayer(name);
+
+		// Returning if the target-player has ptravel turned off
+		if (togglers.contains(target.getName())) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerHasPTravelTurnedOff")));
+			return;
+		}
+
+		String targetname = target.getName();
+
+		if (target.getWorld() != player.getWorld())
+			player.sendMessage(targetname + " " + MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerDifferentWorld")));
+
+		if (!(player.hasPermission("dt.nocost")))
+			if (!EconomyHandler.chargePlayerTravelPlayer(player))
+				return;
+
+		if (!(mountDragon(player)))
+			return;
+
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+
+		if (dragon == null)
+			return;
+
+		Location loca = target.getLocation().subtract(0.0D, 5.0D, 0.0D);
+
+		dragon.startTravel(loca);
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerTravelTo")) + " " + name);
+
+	}
 }

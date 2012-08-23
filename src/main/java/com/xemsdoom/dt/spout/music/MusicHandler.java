@@ -25,42 +25,42 @@ import com.xemsdoom.dt.modules.MessagesLoader;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class MusicHandler{
+public class MusicHandler {
 
-    static DragonTravelMain plugin;
-    private static boolean sendplay = DragonTravelMain.sendplaymessage;
+	static DragonTravelMain plugin;
+	private static boolean sendplay = DragonTravelMain.sendplaymessage;
 
-    public MusicHandler(DragonTravelMain main) {
-        MusicHandler.plugin = main;
-    }
+	public MusicHandler(DragonTravelMain main) {
+		MusicHandler.plugin = main;
+	}
 
-    // Plays music for a player which is travelling
-    public static void playEpicSound(Player player) {
+	// Plays music for a player which is travelling
+	public static void playEpicSound(Player player) {
 
-        if(!DragonTravelMain.spout)
-            return;
+		if (!DragonTravelMain.spout)
+			return;
 
-        SpoutPlayer spoutplayer = (SpoutPlayer) player;
+		SpoutPlayer spoutplayer = (SpoutPlayer) player;
 
-        if(!spoutplayer.isSpoutCraftEnabled())
-            return;
+		if (!spoutplayer.isSpoutCraftEnabled())
+			return;
 
-        try{
-            DragonTravelMain.sound.playCustomMusic(plugin, spoutplayer, DragonTravelMain.config.getString("MusicURL"), sendplay);
-        }catch (Exception e){
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorInvalidMusic")));
-        }
-    }
+		try {
+			DragonTravelMain.sound.playCustomMusic(plugin, spoutplayer, DragonTravelMain.config.getString("MusicURL"), sendplay);
+		} catch (Exception e) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorInvalidMusic")));
+		}
+	}
 
-    // Stops the sound for a SpoutCraft player
-    public static void stopEpicSound(Player player) {
-        if(!DragonTravelMain.spout || player == null)
-            return;
-        SpoutPlayer spoutplayer = (SpoutPlayer) player;
+	// Stops the sound for a SpoutCraft player
+	public static void stopEpicSound(Player player) {
+		if (!DragonTravelMain.spout || player == null)
+			return;
+		SpoutPlayer spoutplayer = (SpoutPlayer) player;
 
-        if(!spoutplayer.isSpoutCraftEnabled())
-            return;
+		if (!spoutplayer.isSpoutCraftEnabled())
+			return;
 
-        DragonTravelMain.sound.stopMusic(spoutplayer);
-    }
+		DragonTravelMain.sound.stopMusic(spoutplayer);
+	}
 }

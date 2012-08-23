@@ -5,7 +5,6 @@ import org.getspout.spoutapi.SpoutManager;
 
 import com.xemsdoom.dt.DragonTravelMain;
 
-
 /**
  * Copyright (C) 2011-2012 Moser Luca/Philipp Wagner
  * moser.luca@gmail.com/mail@phiwa.eu
@@ -25,17 +24,17 @@ import com.xemsdoom.dt.DragonTravelMain;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class DragonTravelSpout{
+public class DragonTravelSpout {
 
-    // Gets the instance of Spout
-    public static boolean getSpout() {
-        Plugin plugin = DragonTravelMain.pm.getPlugin("Spout");
-        if(plugin != null){
-            DragonTravelMain.spout = true;
-            DragonTravelMain.sound = SpoutManager.getSoundManager();
-            return true;
-        }
-        return false;
-    }
+	// Gets the instance of Spout
+	public static boolean getSpout() {
+		Plugin plugin = DragonTravelMain.pm.getPlugin("Spout");
+		if (plugin != null) {
+			DragonTravelMain.spout = true;
+			DragonTravelMain.sound = SpoutManager.getSoundManager();
+			return true;
+		}
+		return false;
+	}
 
 }

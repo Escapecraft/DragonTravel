@@ -29,33 +29,33 @@ import com.xemsdoom.dt.spout.gui.MenuScreen;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class InputListener implements Listener{
+public class InputListener implements Listener {
 
-    public DragonTravelMain plugin;
+	public DragonTravelMain plugin;
 
-    @EventHandler
-    public void onKeyPress(KeyPressedEvent event) {
+	@EventHandler
+	public void onKeyPress(KeyPressedEvent event) {
 
-        SpoutPlayer player = event.getPlayer();
+		SpoutPlayer player = event.getPlayer();
 
-        if(!player.isSpoutCraftEnabled())
-            return;
+		if (!player.isSpoutCraftEnabled())
+			return;
 
-        if(event.getScreenType() != ScreenType.GAME_SCREEN)
-            return;
+		if (event.getScreenType() != ScreenType.GAME_SCREEN)
+			return;
 
-        String keypressed = event.getKey().name();
+		String keypressed = event.getKey().name();
 
-        if(!keypressed.equalsIgnoreCase(DragonTravelMain.config.getString("GUIopenKey")))
-            return;
+		if (!keypressed.equalsIgnoreCase(DragonTravelMain.config.getString("GUIopenKey")))
+			return;
 
-        if(!player.hasPermission("dt.gui")){
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NoPermission")));
-            return;
-        }
+		if (!player.hasPermission("dt.gui")) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NoPermission")));
+			return;
+		}
 
-        MenuScreen pop = new MenuScreen(player);
-        pop.createGUI(player);
-    }
+		MenuScreen pop = new MenuScreen(player);
+		pop.createGUI(player);
+	}
 
 }

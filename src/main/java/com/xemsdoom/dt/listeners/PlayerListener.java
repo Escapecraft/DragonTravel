@@ -44,192 +44,192 @@ import com.xemsdoom.dt.spout.music.MusicHandler;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class PlayerListener implements Listener{
+public class PlayerListener implements Listener {
 
-    DragonTravelMain plugin;
+	DragonTravelMain plugin;
 
-    public PlayerListener(DragonTravelMain plugin) {
-        this.plugin = plugin;
-    }
+	public PlayerListener(DragonTravelMain plugin) {
+		this.plugin = plugin;
+	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-    	
-        Player player = event.getPlayer();
-        
-        if(DragonTravelMain.TravelInformation.containsKey(player)){
-            XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-            Entity dragona = dragon.getBukkitEntity();
-            dragona.remove();
-            DragonTravelMain.TravelInformation.remove(player);
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerQuit(PlayerQuitEvent event) {
 
-            // Find a safe Location so the player does not log on in the air
-            Location clone = player.getLocation().clone();
-            clone.setY(126);
-            
-            for(;;){
-                for(int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++){
-                    clone.setY(126 - offset);
-                }
-                if(clone.getY() == 0){
-                    clone.setY(126);
-                    clone.setX(clone.getX() + 1);
-                }else{
-                    break;
-                }
-            }
-            clone.setY(clone.getY() + 2);
-            player.teleport(clone);
-        }
-    }
+		Player player = event.getPlayer();
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onDragonDismount(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
+		if (DragonTravelMain.TravelInformation.containsKey(player)) {
+			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+			Entity dragona = dragon.getBukkitEntity();
+			dragona.remove();
+			DragonTravelMain.TravelInformation.remove(player);
 
-        if(!DragonTravelMain.TravelInformation.containsKey(player))
-            return;
+			// Find a safe Location so the player does not log on in the air
+			Location clone = player.getLocation().clone();
+			clone.setY(126);
 
-        if(player.isInsideVehicle())
-            return;
+			for (;;) {
+				for (int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++) {
+					clone.setY(126 - offset);
+				}
+				if (clone.getY() == 0) {
+					clone.setY(126);
+					clone.setX(clone.getX() + 1);
+				} else {
+					break;
+				}
+			}
+			clone.setY(clone.getY() + 2);
+			player.teleport(clone);
+		}
+	}
 
-        try{
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onDragonDismount(PlayerMoveEvent event) {
+		Player player = event.getPlayer();
 
-            MusicHandler.stopEpicSound(player);
-            XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-            Entity dra = dragon.getBukkitEntity();
-            DragonTravelMain.TravelInformation.remove(player);
-            DragonTravelMain.XemDragonRemoval.remove(dragon);
-            dra.eject();
-            dra.remove();
+		if (!DragonTravelMain.TravelInformation.containsKey(player))
+			return;
 
-        }catch (Exception e){}
-    }
+		if (player.isInsideVehicle())
+			return;
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onDestinationSignInteract(PlayerInteractEvent event) {
+		try {
 
-        Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
+			MusicHandler.stopEpicSound(player);
+			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+			Entity dra = dragon.getBukkitEntity();
+			DragonTravelMain.TravelInformation.remove(player);
+			DragonTravelMain.XemDragonRemoval.remove(dragon);
+			dra.eject();
+			dra.remove();
 
-        if(block == null)
-            return;
+		} catch (Exception e) {
+		}
+	}
 
-        if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)){
-            return;
-        }
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onDestinationSignInteract(PlayerInteractEvent event) {
 
-        for(String name : DragonTravelMain.signs.getIndices()){
-        	
-            double x = DragonTravelMain.dbs.getDouble(name, "x");
-            double y = DragonTravelMain.dbs.getDouble(name, "y");
-            double z = DragonTravelMain.dbs.getDouble(name, "z");
-            
-            World world = block.getWorld();
+		Player player = event.getPlayer();
+		Block block = event.getClickedBlock();
 
-            if(!world.toString().equalsIgnoreCase(DragonTravelMain.signs.getString(name, "world")))
-                continue;
+		if (block == null)
+			return;
 
-            Location compar = new Location(world, x, y, z);
+		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+			return;
+		}
 
-            if(!compar.equals(block.getLocation()))
-                continue;
+		for (String name : DragonTravelMain.signs.getIndices()) {
 
-            if(!(player.hasPermission("dt.travelsigns.use"))){
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NoPermission")));
-                return;
-            }
+			double x = DragonTravelMain.dbs.getDouble(name, "x");
+			double y = DragonTravelMain.dbs.getDouble(name, "y");
+			double z = DragonTravelMain.dbs.getDouble(name, "z");
 
-            String dest = DragonTravelMain.signs.getString(name, "dest");
+			World world = block.getWorld();
 
-            if(!DragonTravelMain.dbd.hasIndex(dest) && !dest.equals(DragonTravelMain.config.getString("RandomDest-Name"))){
-                CommandHandlers.dtpCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorDestinationNotAvailable")));
-                return;
-            }
-            
-            if(!DragonTravelMain.signs.hasKey(name, "cost")){
-                Travels.mountDragon(player);
-                Travels.travelDestinationSigns(player, dest);
-                return;
-            }
+			if (!world.toString().equalsIgnoreCase(DragonTravelMain.signs.getString(name, "world")))
+				continue;
 
-            double cost = DragonTravelMain.signs.getDouble(name, "cost");
+			Location compar = new Location(world, x, y, z);
 
-            if(!player.hasPermission("dt.nocost"))
-            	if(!EconomyHandler.chargePlayerSigns(player, cost))
-            		return;
-            
-            
-            Travels.mountDragon(player);
-            Travels.travelDestinationSigns(player, dest);
-            return;
-        }
-    }
+			if (!compar.equals(block.getLocation()))
+				continue;
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onCommandPreventCMD(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
+			if (!(player.hasPermission("dt.travelsigns.use"))) {
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NoPermission")));
+				return;
+			}
 
-        if(!DragonTravelMain.TravelInformation.containsKey(player))
-            return;
+			String dest = DragonTravelMain.signs.getString(name, "dest");
 
-        if(event.getMessage().equalsIgnoreCase("/dt home")){
-            player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
-            event.setCancelled(true);
-            return;
-        }
+			if (!DragonTravelMain.dbd.hasIndex(dest) && !dest.equals(DragonTravelMain.config.getString("RandomDest-Name"))) {
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("ErrorDestinationNotAvailable")));
+				return;
+			}
 
-        String[] cmd = event.getMessage().split(" ");
-        for(String message : DragonTravelMain.config.getStringList("CommandPrevent")){
-            if(cmd[0].equalsIgnoreCase(message)){
-                event.setCancelled(true);
-                CommandHandlers.dtpCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
-                return;
-            }
-        }
-    }
+			if (!DragonTravelMain.signs.hasKey(name, "cost")) {
+				Travels.mountDragon(player);
+				Travels.travelDestinationSigns(player, dest);
+				return;
+			}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onCommandPreventCHAT(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
+			double cost = DragonTravelMain.signs.getDouble(name, "cost");
 
-        if(!DragonTravelMain.TravelInformation.containsKey(player))
-            return;
+			if (!player.hasPermission("dt.nocost"))
+				if (!EconomyHandler.chargePlayerSigns(player, cost))
+					return;
 
-        for(String message : DragonTravelMain.config.getStringList("CommandPrevent")){
+			Travels.mountDragon(player);
+			Travels.travelDestinationSigns(player, dest);
+			return;
+		}
+	}
 
-            if(event.getMessage().equalsIgnoreCase(message)){
-                event.setCancelled(true);
-                CommandHandlers.dtpCredit(player);
-                player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
-                return;
-            }
-        }
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCommandPreventCMD(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
 
-    }
-    
-    /**
-     * @param event
-     */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onStatDragonClick(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
-        Entity clicked = event.getRightClicked();
-        if(player.getItemInHand().getType() != Material.STICK)
-            return;
-        
-        if(!player.hasPermission("dt.statdragon"))
-            return;
-        
-        if(!(clicked instanceof XemDragon))
-            return;
-        
-        if(clicked.getPassenger() != null)
-            return;
-        
-        player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemovedStationaryDragon")));
-        clicked.remove();
-    }
+		if (!DragonTravelMain.TravelInformation.containsKey(player))
+			return;
+
+		if (event.getMessage().equalsIgnoreCase("/dt home")) {
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
+			event.setCancelled(true);
+			return;
+		}
+
+		String[] cmd = event.getMessage().split(" ");
+		for (String message : DragonTravelMain.config.getStringList("CommandPrevent")) {
+			if (cmd[0].equalsIgnoreCase(message)) {
+				event.setCancelled(true);
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
+				return;
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCommandPreventCHAT(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+
+		if (!DragonTravelMain.TravelInformation.containsKey(player))
+			return;
+
+		for (String message : DragonTravelMain.config.getStringList("CommandPrevent")) {
+
+			if (event.getMessage().equalsIgnoreCase(message)) {
+				event.setCancelled(true);
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
+				return;
+			}
+		}
+
+	}
+
+	/**
+	 * @param event
+	 */
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onStatDragonClick(PlayerInteractEntityEvent event) {
+		Player player = event.getPlayer();
+		Entity clicked = event.getRightClicked();
+		if (player.getItemInHand().getType() != Material.STICK)
+			return;
+
+		if (!player.hasPermission("dt.statdragon"))
+			return;
+
+		if (!(clicked instanceof XemDragon))
+			return;
+
+		if (clicked.getPassenger() != null)
+			return;
+
+		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemovedStationaryDragon")));
+		clicked.remove();
+	}
 }

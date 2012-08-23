@@ -22,15 +22,15 @@ package com.xemsdoom.mexdb.exception;
 /**
  * Thrown when an empty list is passed as a method parameter.
  */
-public class EmptyListException extends Exception{
-	
+public class EmptyListException extends Exception {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Thrown when an empty list is passed as a method parameter.
 	 */
-	public EmptyListException(String msg){
+	public EmptyListException(String msg) {
 		super(msg);
 	}
-	
+
 }

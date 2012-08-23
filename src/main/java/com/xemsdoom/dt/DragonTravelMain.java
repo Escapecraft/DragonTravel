@@ -58,202 +58,201 @@ import static com.xemsdoom.dt.movement.Waypoint.markers;
  * You should have received a copy of the GNU General Public License along with
  * Foobar. If not, see <http://www.gnu.org/licenses/>.
  */
-public class DragonTravelMain extends JavaPlugin{
+public class DragonTravelMain extends JavaPlugin {
 
-    // Server
-    public static PluginManager pm;
+	// Server
+	public static PluginManager pm;
 
-    public static DragonTravelMain instance;
+	public static DragonTravelMain instance;
 
-    // Booleans for EntityListener
-    public static boolean onlydragontraveldragons;
-    public static boolean alldragons;
+	// Booleans for EntityListener
+	public static boolean onlydragontraveldragons;
+	public static boolean alldragons;
 
-    // Config
-    public static FileConfiguration config;
-    public static Double ver = 1.5; // IMPORTANT
+	// Config
+	public static FileConfiguration config;
+	public static Double ver = 1.5; // IMPORTANT
 
-    // Messages
-    public static File messagesFile; // Config erstellen
-    public static FileConfiguration messages;
-    public static Double messagesVer = 0.6; // IMPORTANT
-    MessagesLoader DTmessages;
+	// Messages
+	public static File messagesFile; // Config erstellen
+	public static FileConfiguration messages;
+	public static Double messagesVer = 0.6; // IMPORTANT
+	MessagesLoader DTmessages;
 
-    // Commands
-    public static boolean onlysigns;
+	// Commands
+	public static boolean onlysigns;
 
-    // Spout
-    public static SoundManager sound;
-    public static boolean sendplaymessage = false;
-    public static boolean spout = false;
+	// Spout
+	public static SoundManager sound;
+	public static boolean sendplaymessage = false;
+	public static boolean spout = false;
 
-    public static boolean ignoreAntiMobspawnAreas = true;
-    
-    // DT Dragon
-    public static Double speed;
+	public static boolean ignoreAntiMobspawnAreas = true;
 
-    // Database
-    public static MexDB dbd; // DatabaseDestinations
-    public static MexDB dbs; // DatabaseStations
-    public static MexDB wps;
-    public static MexDB signs; // DatabaseSigns
-    public static MexDB players;// Player homes
+	// DT Dragon
+	public static Double speed;
 
-    // HashMaps for needed information on DragonTravelFunctions
-    public static HashMap<Player, XemDragon> TravelInformation = new HashMap<Player, XemDragon>();
-    public static HashMap<XemDragon, XemDragon> XemDragonRemoval = new HashMap<XemDragon, XemDragon>();
+	// Database
+	public static MexDB dbd; // DatabaseDestinations
+	public static MexDB dbs; // DatabaseStations
+	public static MexDB wps;
+	public static MexDB signs; // DatabaseSigns
+	public static MexDB players;// Player homes
 
-    // Economy
-    public static boolean EconomyEnabled = false;
-    public static Economy Economy = null;
+	// HashMaps for needed information on DragonTravelFunctions
+	public static HashMap<Player, XemDragon> TravelInformation = new HashMap<Player, XemDragon>();
+	public static HashMap<XemDragon, XemDragon> XemDragonRemoval = new HashMap<XemDragon, XemDragon>();
 
-    // Console Output
-    public static final Logger log = Logger.getLogger("Minecraft");
+	// Economy
+	public static boolean EconomyEnabled = false;
+	public static Economy Economy = null;
 
-    // Events
-    private static Listener entitiesListener;
-    private static Listener playersListener;
-    private static Listener blocksListener;
-    private static Listener inputListener;
-    private static Listener buttonListener;
-    private static Listener editorListener;
-    private static Listener flightsignListener;
+	// Console Output
+	public static final Logger log = Logger.getLogger("Minecraft");
 
-    @Override
-    public void onDisable() {
+	// Events
+	private static Listener entitiesListener;
+	private static Listener playersListener;
+	private static Listener blocksListener;
+	private static Listener inputListener;
+	private static Listener buttonListener;
+	private static Listener editorListener;
+	private static Listener flightsignListener;
 
-        // Removes all XemDragons which still exist(not stationary dragons)
-        for(XemDragon dragon : XemDragonRemoval.keySet()){
-            LivingEntity a = (LivingEntity) dragon.getBukkitEntity();
-            a.remove();
-        }
+	@Override
+	public void onDisable() {
 
-        
-        if(markers != null){
-            for(Block block : markers.values()){
-                if(block != null)
-                    block.getChunk().load();
-                block.setType(Material.AIR);
-            }
-        }
-        
-        setStuffToNull();
+		// Removes all XemDragons which still exist(not stationary dragons)
+		for (XemDragon dragon : XemDragonRemoval.keySet()) {
+			LivingEntity a = (LivingEntity) dragon.getBukkitEntity();
+			a.remove();
+		}
 
-        log.info(String.format("[%s] Disabled v%s", getDescription().getName(), getDescription().getVersion()));
+		if (markers != null) {
+			for (Block block : markers.values()) {
+				if (block != null)
+					block.getChunk().load();
+				block.setType(Material.AIR);
+			}
+		}
 
-    }
+		setStuffToNull();
 
-    @Override
-    public void onEnable() {
+		log.info(String.format("[%s] Disabled v%s", getDescription().getName(), getDescription().getVersion()));
 
-        PluginDescriptionFile description = getDescription();
+	}
 
-        // Add our new entity to minecrafts entities
-        try{
-            Method method = EntityTypes.class.getDeclaredMethod("a", new Class[] { Class.class, String.class, int.class });
-            method.setAccessible(true);
-            method.invoke(EntityTypes.class, XemDragon.class, "XemDragon", 63);
-        }catch (Exception e){
-            log.info("[DragonTravel] Error registering Entity!");
-            e.printStackTrace();
-            pm.disablePlugin(this);
-            return;
-        }
+	@Override
+	public void onEnable() {
 
-        // Configuration file
-        ConfigurationLoader dtc = new ConfigurationLoader(this);
-        dtc.loadConfig();
-        if(!dtc.checkConfig()){
-            getPluginLoader().disablePlugin(this);
-            return;
-        }
+		PluginDescriptionFile description = getDescription();
 
-        onlydragontraveldragons = config.getBoolean("AntiGriefDragonTravelDragons");
-        alldragons = config.getBoolean("AntiGriefallDragons");
-        EconomyEnabled = config.getBoolean("Economy");
-        speed = config.getDouble("DragonSpeed");
-        sendplaymessage = config.getBoolean("MessageOnPlay");
-        onlysigns = config.getBoolean("UseOnlySigns");
-        ignoreAntiMobspawnAreas = config.getBoolean("IgnoreAntiMobspawnAreas");
-        
-        // Messages file
-        DTmessages = new MessagesLoader();
-        DTmessages.initMessages();
+		// Add our new entity to minecrafts entities
+		try {
+			Method method = EntityTypes.class.getDeclaredMethod("a", new Class[] { Class.class, String.class, int.class });
+			method.setAccessible(true);
+			method.invoke(EntityTypes.class, XemDragon.class, "XemDragon", 63);
+		} catch (Exception e) {
+			log.info("[DragonTravel] Error registering Entity!");
+			e.printStackTrace();
+			pm.disablePlugin(this);
+			return;
+		}
 
-        // FAQ file
-        FAQLoader faq = new FAQLoader();
-        faq.copy();
+		// Configuration file
+		ConfigurationLoader dtc = new ConfigurationLoader(this);
+		dtc.loadConfig();
+		if (!dtc.checkConfig()) {
+			getPluginLoader().disablePlugin(this);
+			return;
+		}
 
-        // Database
-        DatabaseLoader.loadDatabase();
+		onlydragontraveldragons = config.getBoolean("AntiGriefDragonTravelDragons");
+		alldragons = config.getBoolean("AntiGriefallDragons");
+		EconomyEnabled = config.getBoolean("Economy");
+		speed = config.getDouble("DragonSpeed");
+		sendplaymessage = config.getBoolean("MessageOnPlay");
+		onlysigns = config.getBoolean("UseOnlySigns");
+		ignoreAntiMobspawnAreas = config.getBoolean("IgnoreAntiMobspawnAreas");
 
-        // Commands
-        getCommand("dt").setExecutor(new Commands(this));
+		// Messages file
+		DTmessages = new MessagesLoader();
+		DTmessages.initMessages();
 
-        // Registering Events
-        pm = getServer().getPluginManager();
-        entitiesListener = new EntityListener(this);
-        playersListener = new PlayerListener(this);
-        blocksListener = new BlockListener(this);
-        inputListener = new InputListener();
-        buttonListener = new ScreenListener();
-        editorListener = new FlightEditor();
-        flightsignListener = new FlightSignsInteract();
+		// FAQ file
+		FAQLoader faq = new FAQLoader();
+		faq.copy();
 
-        pm.registerEvents(playersListener, this);
-        pm.registerEvents(blocksListener, this);
-        pm.registerEvents(entitiesListener, this);
-        pm.registerEvents(editorListener, this);
-        pm.registerEvents(flightsignListener, this);
+		// Database
+		DatabaseLoader.loadDatabase();
 
-        // Spout
-        if(DragonTravelSpout.getSpout()){
-            System.out.println("[DragonTravel] Hooked into Spout");
+		// Commands
+		getCommand("dt").setExecutor(new Commands(this));
 
-            // Registring
-            pm.registerEvents(inputListener, this);
-            pm.registerEvents(buttonListener, this);
+		// Registering Events
+		pm = getServer().getPluginManager();
+		entitiesListener = new EntityListener(this);
+		playersListener = new PlayerListener(this);
+		blocksListener = new BlockListener(this);
+		inputListener = new InputListener();
+		buttonListener = new ScreenListener();
+		editorListener = new FlightEditor();
+		flightsignListener = new FlightSignsInteract();
 
-        }
+		pm.registerEvents(playersListener, this);
+		pm.registerEvents(blocksListener, this);
+		pm.registerEvents(entitiesListener, this);
+		pm.registerEvents(editorListener, this);
+		pm.registerEvents(flightsignListener, this);
 
-        // Economy
-        if(!EconomyEnabled){
-            log.info(String.format("[%s] Enabled v%s", description.getName(), description.getVersion()));
-            return;
-        }
+		// Spout
+		if (DragonTravelSpout.getSpout()) {
+			System.out.println("[DragonTravel] Hooked into Spout");
 
-        instance = this;
+			// Registring
+			pm.registerEvents(inputListener, this);
+			pm.registerEvents(buttonListener, this);
 
-        Plugin x = pm.getPlugin("Vault");
+		}
 
-        if(x != null & x instanceof Vault){
-            log.info(String.format("[DragonTravel] Hooked into Vault, using for economy support"));
-            log.info(String.format("[DragonTravel] Enabled v%s", description.getVersion()));
-            EconomyHandler dte = new EconomyHandler(this.getServer());
-            dte.setupEconomy();
-        }else{
-            log.warning(String.format("[DragonTravel] Vault was not found, disabling plugin!"));
-            log.warning(String.format("[DragonTravel] Turn off \"Economy\" in the config-file or install Vault!"));
-            getPluginLoader().disablePlugin(this);
-        }
-    }
+		// Economy
+		if (!EconomyEnabled) {
+			log.info(String.format("[%s] Enabled v%s", description.getName(), description.getVersion()));
+			return;
+		}
 
-    private void setStuffToNull() {
-        pm = null;
-        instance = null;
-        config = null;
-        sound = null;
-        dbd = null;
-        dbs = null;
-        signs = null;
-        players = null;
-        TravelInformation.clear();
-        XemDragonRemoval.clear();
-        Economy = null;
-        entitiesListener = null;
-        playersListener = null;
-        blocksListener = null;
-        inputListener = null;
-        buttonListener = null;
-    }
+		instance = this;
+
+		Plugin x = pm.getPlugin("Vault");
+
+		if (x != null & x instanceof Vault) {
+			log.info(String.format("[DragonTravel] Hooked into Vault, using for economy support"));
+			log.info(String.format("[DragonTravel] Enabled v%s", description.getVersion()));
+			EconomyHandler dte = new EconomyHandler(this.getServer());
+			dte.setupEconomy();
+		} else {
+			log.warning(String.format("[DragonTravel] Vault was not found, disabling plugin!"));
+			log.warning(String.format("[DragonTravel] Turn off \"Economy\" in the config-file or install Vault!"));
+			getPluginLoader().disablePlugin(this);
+		}
+	}
+
+	private void setStuffToNull() {
+		pm = null;
+		instance = null;
+		config = null;
+		sound = null;
+		dbd = null;
+		dbs = null;
+		signs = null;
+		players = null;
+		TravelInformation.clear();
+		XemDragonRemoval.clear();
+		Economy = null;
+		entitiesListener = null;
+		playersListener = null;
+		blocksListener = null;
+		inputListener = null;
+		buttonListener = null;
+	}
 }
