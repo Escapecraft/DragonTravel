@@ -91,7 +91,6 @@ public class XemDragon extends EntityEnderDragon {
 			yaw = 180F;
 		else
 			yaw = 270F;
-
 	}
 
 	public XemDragon(World world) {
@@ -195,7 +194,6 @@ public class XemDragon extends EntityEnderDragon {
 		// Flight
 		if (isFlight) {
 			flight();
-			return;
 		}
 	}
 
@@ -238,8 +236,7 @@ public class XemDragon extends EntityEnderDragon {
 		}
 
 		// If myZ = toZ, then we will load the next waypoint or
-		// finish the flight,
-		// in case it was the last waypoint to fly
+		// finish the flight, in case it was the last waypoint to fly
 		if ((int) myZ == (int) toZ && (int) myY == (int) toY && (int) myX == (int) toX) {
 			Waypoint wp = flight.getNextWaypoint();
 
@@ -259,7 +256,6 @@ public class XemDragon extends EntityEnderDragon {
 			setMoveFlight();
 			yaw = getCorrectYaw(toX, toZ);
 			return;
-
 		}
 
 		setPosition(myX, myY, myZ);

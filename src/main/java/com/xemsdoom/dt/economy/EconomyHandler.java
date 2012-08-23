@@ -76,7 +76,6 @@ public class EconomyHandler {
 		player.sendMessage(msgm);
 
 		return true;
-
 	}
 
 	// Charges the player for a player to player travel

@@ -141,7 +141,6 @@ public class DragonTravelMain extends JavaPlugin {
 		setStuffToNull();
 
 		log.info(String.format("[%s] Disabled v%s", getDescription().getName(), getDescription().getVersion()));
-
 	}
 
 	@Override
@@ -214,7 +213,6 @@ public class DragonTravelMain extends JavaPlugin {
 			// Registring
 			pm.registerEvents(inputListener, this);
 			pm.registerEvents(buttonListener, this);
-
 		}
 
 		// Economy
