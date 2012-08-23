@@ -164,6 +164,7 @@ public class Stations {
 	 *            the station name
 	 */
 	public static void removeStation(CommandSender sender, String name) {
+		
 		if (!(DragonTravelMain.dbs.hasIndex(name))) {
 			CommandHandlers.dtCredit(sender);
 			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingDoesNotExist")));

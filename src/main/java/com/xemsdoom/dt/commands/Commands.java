@@ -426,6 +426,17 @@ public class Commands implements CommandExecutor {
 					Stations.setStation(player, name);
 					return true;
 				}
+				
+				if(arg1.equalsIgnoreCase("remstat")){
+					
+					if (!sender.hasPermission("dt.remstat")) {
+						CommandHandlers.noPerm(sender);
+						return false;
+					}
+					
+					Stations.removeStation(player, args[1]);
+					return true;
+				}
 
 				if (arg1.equalsIgnoreCase("travel")) {
 
@@ -473,10 +484,6 @@ public class Commands implements CommandExecutor {
 						return false;
 					}
 				} 
-
-				break;
-
-			case 3:
 
 				break;
 
