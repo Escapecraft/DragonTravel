@@ -1,6 +1,7 @@
 package com.xemsdoom.dt;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ import com.xemsdoom.dt.modules.FAQLoader;
 import com.xemsdoom.dt.modules.MessagesLoader;
 import com.xemsdoom.dt.movement.FlightEditor;
 import com.xemsdoom.dt.spout.DragonTravelSpout;
+import com.xemsdoom.metrics.Metrics;
 import com.xemsdoom.mexdb.MexDB;
 
 import static com.xemsdoom.dt.movement.Waypoint.markers;
@@ -220,13 +222,20 @@ public class DragonTravelMain extends JavaPlugin {
 			log.info(String.format("[%s] Enabled v%s", description.getName(), description.getVersion()));
 			return;
 		}
+		
+		// Metrics
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {
+		}
 
 		instance = this;
 
 		Plugin x = pm.getPlugin("Vault");
 
 		if (x != null & x instanceof Vault) {
-			log.info(String.format("[DragonTravel] Hooked into Vault, using for economy support"));
+			log.info(String.format("[DragonTravel] Hooked into Vault, using it for economy support"));
 			log.info(String.format("[DragonTravel] Enabled v%s", description.getVersion()));
 			EconomyHandler dte = new EconomyHandler(this.getServer());
 			dte.setupEconomy();

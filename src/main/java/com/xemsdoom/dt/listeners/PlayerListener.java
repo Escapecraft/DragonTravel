@@ -181,13 +181,16 @@ public class PlayerListener implements Listener {
 		}
 
 		String[] cmd = event.getMessage().split(" ");
+		
 		for (String message : DragonTravelMain.config.getStringList("CommandPrevent")) {
-			if (cmd[0].equalsIgnoreCase(message)) {
-				event.setCancelled(true);
-				CommandHandlers.dtpCredit(player);
-				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
-				return;
-			}
+
+			if (!cmd[0].equalsIgnoreCase(message))
+				continue;
+			
+			event.setCancelled(true);
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
+			return;
 		}
 	}
 
@@ -200,19 +203,17 @@ public class PlayerListener implements Listener {
 
 		for (String message : DragonTravelMain.config.getStringList("CommandPrevent")) {
 
-			if (event.getMessage().equalsIgnoreCase(message)) {
-				event.setCancelled(true);
-				CommandHandlers.dtpCredit(player);
-				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
-				return;
-			}
-		}
+			if (!event.getMessage().equalsIgnoreCase(message))
+				continue;
 
+			event.setCancelled(true);
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));
+			return;
+		}
 	}
 
-	/**
-	 * @param event
-	 */
+	// TODO: FIX THIS - IT DOES NOT WORK!
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onStatDragonClick(PlayerInteractEntityEvent event) {
 		Player player = event.getPlayer();

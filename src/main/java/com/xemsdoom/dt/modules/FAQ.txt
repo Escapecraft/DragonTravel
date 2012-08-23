@@ -4,39 +4,40 @@ In this file, some questions about DragonTravel are answered.
 Also some random stuff is just written on some places, because
 being a server administrator needs more fun and stuff, right?
 
->Who made DragonTravel?
+> Who made DragonTravel?
 - Penguins.
 
->Can you be serious or so?
+> Can you be serious?
 - Sure, here you go:
 
->The dragon sometimes looks into the wrong direction, what can I do?
-- Make sure that you have enough FPS
-- Make sure the dragon does not fly into any blocks
+> The dragon sometimes looks into the wrong direction, what can I do?
+- This is caused by the client itself, but on clients with more
+  FPS, this usually does not occur.
 
->Economy does not work, I don't get any withdraw.
+> Economy does not work, I don't get any withdraw.
 - As a server administrator, you likely got the permission
   dt.nocost, which disables withdraws for you.
   
->DragonTravel does not work on the server
+> DragonTravel does not work on the server
 - If you set "Economy" true in the config but did not install
   the plugin "Vault", then DragonTravel will disable itself 
 - If you try to run DragonTravel with an outdated config or
   messages file, then DragonTravel will disable itself
 - If you like cakes, then DragonTravel is a lie and disables itself
   
->The dragon flys really glitchy or laggy.
+> The dragon flys really glitchy or laggy.
 - Decrease the dragon's speed in the configuration
 - Set your render distance smaller
+- Get better hardware anyways...
 
->The dragon flys through blocks.
-- We can't change that in a efficient way
+> The dragon flys through blocks.
+- We can't change that in an efficient way
 
->Is it possible to remove the boss-health bar?
-- No sorry, this is technically not possible. -.-
+> Is it possible to remove the boss-health bar?
+- No it is not, the boss-health bar is client-sided.
 
->Where are the permission-nodes?
-Some lines under me {-_-}:
+> Where are the permission-nodes?
+  Some lines under me {-_-}:
 
 ############################################################################
 dt.* -> All permissions
@@ -84,5 +85,3 @@ dt.user -> Basic permissions
 - using flight signs				dt.flightsigns.use
 - flightlist						dt.flightlist
 ###########################################################################
-
-Gilon is an idiot. Gilon is an idiot. Gilon is an idiot. Gilon is an idiot.

@@ -82,7 +82,6 @@ public class Stations {
 
 		CommandHandlers.dtpCredit(player);
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingSuccessful")) + " " + name);
-
 	}
 
 	/**

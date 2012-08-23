@@ -53,37 +53,42 @@ public class EntityListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDamage(EntityDamageEvent event) {
-		if (event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
-			if (DragonTravelMain.TravelInformation.containsKey(player))
-				event.setCancelled(true);
-		}
+
+		if (!(event.getEntity() instanceof Player))
+			return;
+
+		Player player = (Player) event.getEntity();
+		if (DragonTravelMain.TravelInformation.containsKey(player))
+			event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerDeath(EntityDeathEvent event) {
-		if (event.getEntity() instanceof Player) {
 
-			Player player = (Player) event.getEntity();
+		if (!(event.getEntity() instanceof Player))
+			return;
 
-			if (!DragonTravelMain.TravelInformation.containsKey(player))
-				return;
+		Player player = (Player) event.getEntity();
 
-			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-			Entity dragona = (Entity) dragon.getBukkitEntity();
-			dragona.remove();
-			DragonTravelMain.TravelInformation.remove(player);
-		}
+		if (!DragonTravelMain.TravelInformation.containsKey(player))
+			return;
+
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+		Entity dragona = (Entity) dragon.getBukkitEntity();
+		dragona.remove();
+		DragonTravelMain.TravelInformation.remove(player);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		if (event.getEntity().getType().toString().equals("ENDER_DRAGON")) {
-			if (event.isCancelled() == true) {
-				if (DragonTravelMain.ignoreAntiMobspawnAreas == true) {
-					event.setCancelled(false);
-				}
-			}
-		}
+
+		if (!event.getEntity().getType().toString().equals("ENDER_DRAGON"))
+			return;
+
+		if (!event.isCancelled())
+			return;
+
+		if (DragonTravelMain.ignoreAntiMobspawnAreas == true)
+			event.setCancelled(false);
 	}
 }

@@ -61,8 +61,10 @@ public class FlightSignsInteract implements Listener {
 			// Here comes the cost withdraw, player won't fly if
 			// the withdraw didnt occur successfully
 			if (!sign.getLine(3).isEmpty()) {
+				
 				String[] split = sign.getLine(3).split(":");
 				double cost = Double.parseDouble(split[1].trim());
+				
 				if (!player.hasPermission("dt.nocost"))
 					if (!EconomyHandler.chargePlayerSigns(player, cost))
 						return;

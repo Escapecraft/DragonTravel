@@ -32,6 +32,7 @@ public class MessagesLoader extends JavaPlugin {
 	public void initMessages() {
 
 		DragonTravelMain.messagesFile = new File("plugins/DragonTravel", "messages.yml");
+		
 		try {
 			firstRun();
 		} catch (Exception e) {

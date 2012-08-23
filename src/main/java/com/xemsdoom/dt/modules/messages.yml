@@ -1,8 +1,8 @@
-#DragonTravel 1.1, made by XemsDoom & Phiwa, thanks to V10lator, THEEX and all DT-users for helping us!
-#This plugin is open-source, if any code of our work
-#is used in your plugin, you must make it open-source
+# Copyright 2012 - XemsDoom/Phiwa DragonTravel Licence GPLv3
+# This plugin is open-source, if any code of our work
+# is used in your plugin, you must make it open-source
 
-#Do not touch this option at all(!), it's a check if you are running the recent configuration version
+# Do not touch this option at all(!), it's a check if you are running the recent configuration version
 MessagesVersion: 0.6
 
 NoPermission: '&cYou dont have the permission to do that!'
@@ -13,23 +13,23 @@ NotAtAStation: '&cYou are not at a station!'
 RemoveDragons1: '&cSuccessfully removed'
 RemoveDragons2: '&cdragons'
 
-#Stationary Dragons
+# Stationary Dragons
 CreatedStationaryDragon: '&cCreated stationary dragon'
 RemovedStationaryDragon: '&cRemoved stationary dragon'
 
-#Mounting
+# Mounting
 MountSuccessful: '&aYou successfully mounted your dragon!'
 AlreadyMounted: '&cYou are already mounted!'
 
-#Dismounting
+# Dismounting
 DismountNotMounted: '&cYou arent mounted!'
 DismountSuccessful: '&aYou successfully dismounted from your dragon.'
 
-#Economy
+# Economy
 WithdrawMessage: '&cSay bye to %amount%'
 NotEnoughMoney: '&cYou dont have enough money!'
 
-#Help-Menu
+# Help-Menu
 Help: 'Type &a/dt help <1/2>&f for a list of commands.'
 HelpNoPermission: '&aYou dont have the permission for seeing this help list!'
 HelpDTmount: '&a/dt mount&f mounts you onto the dragon.'
@@ -56,7 +56,7 @@ HelpDTremstat: '&a/dt remstat <name>&f removes the station with this name.'
 HelpDTstatdragon: '&a/dt statdragon&f creates a stationary dragon at your location'
 HelpDTremdragons: '&a/dt remdragons&f removes all dragons.'
 
-#Flights
+# Flights
 MarkersBreak: '&aYou can only remove markers with /dt remlastwp.'
 AlreadyInEditMode: '&cYou are already in edit-mode.'
 AvailableFlights: '&aAvailable flights:'
@@ -76,13 +76,13 @@ SetWP: '&cCreated waypoint:'
 AtleastCreateOneWP: '&cYou must atleast create one waypoint!'
 RemovedLastWP: '&aRemoved last waypoint.'
 
-#Travel to Homes
+# Travel to Homes
 TravelHomeCreated: '&aYour home has been set successfully.'
 TravelHomeNotAvailable: '&aYou did not set a home yet.'
 TravelHomeInDifferentWorld: '&aYour home is in a different world.'
 TravelHomeTravelling: '&aTravelling to your home.'
 
-#Travel to Player
+# Travel to Player
 PlayerNotOnline: '&cThis player is not online!'
 PlayerDifferentWorld: '&cis in a different world!'
 PlayerTravelTo: '&aTravelling to&6'
@@ -90,14 +90,14 @@ PlayerToggleOff: '&aTurned ptravel to you off.'
 PlayerToggleOn: '&aTurned ptravel to you on.'
 PlayerHasPTravelTurnedOff: '&cThe target-player disallows player-travels.'
 
-#Travel to Coordinates
+# Travel to Coordinates
 CoordinatesTravelTo: '&aTravelling to coordinates&6'
 
-#Signs
+# Signs
 SignCreatingCreated: '&aSuccessfully created the sign.'
 SignCreatingSaved: '&aSaved created destination-sign.'
 
-#Stations
+# Stations
 StationCreatingAlreadyExists: '&cThere already is a station with that name!'
 StationCreatingSuccessful: '&aSuccessfully created station&6'
 StationCreatingNameTooLong: '&cThe stations name is too long!'
@@ -106,7 +106,7 @@ StationRemovingSuccessful: '&cSuccessfully removed station&6'
 StationTravelDoesNotExist: '&cThere is no station with that name!'
 StationShowList: '&aAvailable stations in your current world:&f'
 
-#Destinations
+# Destinations
 DestinationCreatingAlreadyExists: '&cThere already is a destination with that name!'
 DestinationCreatingSuccessful: '&aSuccessfully created destination&6'
 DestinationCreatingNameTooLong: '&cThe destinations name is too long!'
@@ -118,7 +118,7 @@ DestinationTravelTo: '&aTravelling to&6'
 DestinationTravelRandom: '&aTravelling to a random destination.'
 DestinationShowList: '&aAvailable destinations in your current world:&f'
 
-#Errors
+# Errors
 ErrorInvalidName: '&cEnter a valid name!'
 ErrorEnterName: '&cEnter a destination/station name!'
 ErrorEnterCoords: '&cEnter coordinates to travel to!'
