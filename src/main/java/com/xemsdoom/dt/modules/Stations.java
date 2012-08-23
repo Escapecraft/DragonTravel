@@ -173,8 +173,8 @@ public class Stations {
 
 		CommandHandlers.dtCredit(sender);
 		sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingSuccessful")) + " " + name);
-		DragonTravelMain.dbd.removeEntry(name);
-		DragonTravelMain.dbd.push();
+		DragonTravelMain.dbs.removeEntry(name);
+		DragonTravelMain.dbs.push();
 
 	}
 
