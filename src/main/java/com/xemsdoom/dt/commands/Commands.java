@@ -520,8 +520,10 @@ public class Commands implements CommandExecutor {
 
 			default:
 				CommandHandlers.helpPlayer(player);
+				return false;
 		}
 		
+		CommandHandlers.helpPlayer(player);
 		return false;
 	}
 }
