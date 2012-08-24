@@ -144,21 +144,24 @@ public class Travels {
 		MusicHandler.stopEpicSound(player);
 		DragonTravelMain.TravelInformation.remove(player);
 
-		// Teleport player to safe location
-		Location clone = player.getLocation().clone();
-		clone.setY(256);
+        // Teleport player to safe location
+        Location clone = player.getLocation().clone();
+        int offset = 1;
 
-		for (;;) {
+        for (;;) {
 
-			for (int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++) {
-				clone.setY(256 - offset);
-			}
+            while (clone.getBlock().isEmpty() && clone.getY() != 0) {
+                clone.setY(clone.getY() - offset);
+            }
 
-			if (clone.getY() != 0)
-				break;
+            if (clone.getY() != 0)
+                break;
 
-			clone.setY(256);
-		}
+            clone.setY(256);
+        }
+
+        clone.setY(clone.getY() + 2);
+        player.teleport(clone);
 
 		clone.setY(clone.getY() + 2);
 		player.teleport(clone);
