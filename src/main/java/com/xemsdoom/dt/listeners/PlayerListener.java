@@ -116,9 +116,8 @@ public class PlayerListener implements Listener {
 		if (block == null)
 			return;
 
-		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR))
 			return;
-		}
 
 		for (String name : DragonTravelMain.signs.getIndices()) {
 
@@ -181,12 +180,12 @@ public class PlayerListener implements Listener {
 		}
 
 		String[] cmd = event.getMessage().split(" ");
-		
+
 		for (String message : DragonTravelMain.config.getStringList("CommandPrevent")) {
 
 			if (!cmd[0].equalsIgnoreCase(message))
 				continue;
-			
+
 			event.setCancelled(true);
 			CommandHandlers.dtpCredit(player);
 			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAllowedWhileMounted")));

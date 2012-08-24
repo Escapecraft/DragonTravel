@@ -1,0 +1,136 @@
+#DragonTravel 1.6, made by XemsDoom & Phiwa, thanks to V10lator, THEEX and all DT-users for helping us!
+#This plugin is open-source, if any code of our work
+#is used in your plugin, you must make it open-source
+
+#Do not touch this option at all(!), it's a check if you are running the recent configuration version
+MessagesVersion: 0.6
+
+NoPermission: '&cVous ne possédez pas les permissions pour faire ceci!'
+SignRemovedSuccessfully: '&a Le panneau de destination a été supprimé avec succès.'
+NotAllowedWhileMounted: '&cVous ne pouvez pas faire ceci pendant que vous montez un dragon!'
+NotAtAStation: '&cVous ne vous trouvez pas dans une station!'
+
+RemoveDragons1: '&cSupprimé(s) avec succès'
+RemoveDragons2: '&cDragon(s)'
+
+#Stationary Dragons
+CreatedStationaryDragon: '&cDragon en position stationnaire créé.'
+RemovedStationaryDragon: '&cDragon en position stationnaire supprimé.'
+
+#Mounting
+MountSuccessful: '&aVous êtes bien monté sur le dragon!'
+AlreadyMounted: '&cVous êtes déjà sur le dragon !'
+
+#Dismounting
+DismountNotMounted: '&cVous ne vous trouvez pas sur un dragon!'
+DismountSuccessful: '&aVous êtes bien descendu de votre dragon.'
+
+#Economy
+WithdrawMessage: 'Vous payez %amount%'
+NotEnoughMoney: '&cVous ne possédez pas assez d"argent!'
+
+#Help-Menu
+Help: 'Tapez &a/dt help <1/2>&f pour la liste des commandes.'
+HelpNoPermission: 'Vous ne possédez pas la permission pour voir la liste des commandes!'
+HelpDTmount: '&a/dt mount&f monter sur le dragon.'
+HelpDTdismount: '&a/dt dismount&f descendre du dragon.'
+HelpDTsethome: '&a/dt sethome&f Localiser votre maison.'
+HelpDThome: '&a/dt home&f Voyager vers votre maison.'
+HelpDTstopmusic: '&a/dt stopmusic&f Stopper la musique pendant le voyage.'
+HelpFlight: '&a/dt flight <nom>&f Lancer le vol choisi.'
+HelpCreateFlight: '&a/dt createflight <nom>&f Créer un nouveau vol.'
+HelpRemFlight: '&a/dt remflight <nom>&f Supprimer le vol choisi.'
+HelpSetWP: '&a/dt setwp&f Placer un point (waypoint) à votre emplacement.'
+HelpRemWP: '&a/dt remlastwp&f Supprimer le dernier point (waypoint) placé.'
+HelpTogglePTravel: '&a/dt ptoggle&f Activer/Désactiver le voyage vers vous.'
+HelpDTtravel: '&a/dt travel <destination>&f Voyager vers la destination choisie.'
+HelpDTctravel: '&a/dt ctravel <x> <y> <z>&f Voyager vers les coordonnées choisies.'
+HelpDTptravel: '&a/dt ptravel <playername>&f Voyager vers le joueur choisi.'
+HelpFlightList: '&a/dt flightlist&f Voir la liste des vols disponibles.'
+HelpDTdestlist: '&a/dt destlist&f Voir la liste des destinations.'
+HelpDTstatlist: '&a/dt statlist&f Voir la liste des stations.'
+HelpDTsetdest: '&a/dt setdest <name>&f Définir une destination avec le nom choisi.'
+HelpDTsetstat: '&a/dt setstat <name>&f Définir une station avec le nom choisi.'
+HelpDTremdest: '&a/dt remdest <name>&f Supprimer la destination choisie.'
+HelpDTremstat: '&a/dt remstat <name>&f Supprimer la station choisie.'
+HelpDTstatdragon: '&a/dt statdragon&f Créer un dragon en position stationnaire.'
+HelpDTremdragons: '&a/dt remdragons&f Supprimer les dragons.'
+
+#Flights
+MarkersBreak: '&aVous pouvez enlever les points seulement avec /dt remlastwp.'
+AlreadyInEditMode: '&cVous êtes déjà en mode édition de points (waypoints).'
+AvailableFlights: '&aVols Disponibles:'
+NoFlightsYet: '&cIl n"y a pas encore de vols.'
+StartingFlight: '&aDémarrage du vol.'
+SavedFlight: '&aVol sauvegardé avec succès.'
+RemovedFlight: '&aVol supprimé avec succès.'
+FlightAlreadyExists: '&cCe vol existe déjà, supprimez le d"abord.'
+FlightSignCreated: '&aPanneau de vol créé.'
+FlightDoesNotExist: '&cCe vol n"existe pas!'
+YouAreNowInEditMode: '&aVous êtes maintenant en mode édition de points (waypoints).'
+HelpToMakeWP: '&aPlacez les points (waypoints) en faisant un clic droit avec un bol ou avec /dt setwp.'
+HelpToMakeWP2: '&aVous pouvez supprimer le dernier point (waypoint) placé avec  /dt remlastwp.'
+ExecuteSaveWhenDone: '&aFaites /dt saveflight quand vous avez fini.'
+YouAreNotInEditMode: '&cVous n"êtes pas en mode édition de points (waypoints).'
+SetWP: '&cPoint (waypoint) créé:'
+AtleastCreateOneWP: '&cVous devez au moins placer un point (waypoint)!'
+RemovedLastWP: '&aDernier Point (waypoint) supprimé.'
+
+#Travel to Homes
+TravelHomeCreated: '&aVotre maison a bien été définie.'
+TravelHomeNotAvailable: '&aVous ne pouvez pas placer de maison.'
+TravelHomeInDifferentWorld: '&aVotre maison est dans un autre monde.'
+TravelHomeTravelling: '&aEt ... Hop!Direction la maison!'
+
+#Travel to Player
+PlayerNotOnline: '&cCe joueur est déconnecté !'
+PlayerDifferentWorld: '&cest dans un autre monde!'
+PlayerTravelTo: '&aVous allez vers&6'
+PlayerToggleOff: '&aVoyage vers vous désactivé.'
+PlayerToggleOn: '&aVoyage vers vous activé.'
+PlayerHasPTravelTurnedOff: '&cLe joueur choisi a désactivé le voyage vers lui.'
+
+#Travel to Coordinates
+CoordinatesTravelTo: '&aVous allez aux coordonnées&6'
+
+#Signs
+SignCreatingCreated: '&aPanneau bien créé.'
+SignCreatingSaved: '&aPanneau de destination créé sauvegardé.'
+
+#Stations
+StationCreatingAlreadyExists: '&cIl y a déjà une station avec ce nom!'
+StationCreatingSuccessful: '&aStation créée avec succès&6'
+StationCreatingNameTooLong: '&cLe nom de cette station est trop long!'
+StationRemovingDoesNotExist: '&cAucune station ne porte ce nom ...'
+StationRemovingSuccessful: '&cSuppression de la station effectuée&6'
+StationTravelDoesNotExist: '&cAucune station ne porte ce nom ...'
+StationShowList: '&aStation disponibles dans ce monde:&f'
+
+#Destinations
+DestinationCreatingAlreadyExists: '&cIl y a déjà une destination portant ce nom!'
+DestinationCreatingSuccessful: '&aDestination créée avec succès&6'
+DestinationCreatingNameTooLong: '&cLe nom de cette destination est trop long!'
+DestinationRemovingDoesNotExist: '&cAucune destination ne porte ce nom ...!'
+DestinationRemovingSuccessful: '&c Suppression de la destination effectuée&6'
+DestinationTravelDoesNotExist: '&cAucune destination ne porte ce nom ...!'
+DestinationTravelDifferentWorld: '&cLa destination est dans un autre monde!'
+DestinationTravelTo: '&aDirection la destination :&6'
+DestinationTravelRandom: '&aVoyage vers une destination choisie au hasard.'
+DestinationShowList: '&aDestinations disponibles dans ce monde:&f'
+
+#Errors
+ErrorInvalidName: '&cEntrez un nom valide!'
+ErrorEnterName: '&cEntrez un nom de destination/station!'
+ErrorEnterCoords: '&cEntrez les coordonnées!'
+ErrorEnterPlayername: '&cEntrez un nom de joueur!'
+ErrorNumbersAsCoords: '&cUtilisez les nombres pour vos coordonnées!'
+ErrorCommandDisabled1: '&cCette commande est désactivée!'
+ErrorCommandDisabled2: '&cUtilisez les panneaux pour vous déplacer!'
+ErrorNoDestinationsAvailable: '&cPas de destinations disponibles!'
+ErrorNoStationsAvailable: '&cPas de station disponible!'
+ErrorDestinationNotAvailable: '&cAucune destination de porte ce nom!'
+ErrorEconomyNotActivated1: '&cl"Économie n"est pas activée, s"il vous plait, quittez le'
+ErrorEconomyNotActivated2: '&cLigne 4 (configuration) vide!'
+ErrorFourthLineMissing: '&cVous n"avez pas entré de prix à la ligne 4(configuration)!'
+ErrorFourthLineInvalid: '&c La 4ème ligne dois contenir un nombre pour le prix (configuration)!'
+ErrorInvalidMusic: '&cErreur: Le fichier de musique pour les voyages est invalide'
