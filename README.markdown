@@ -1,6 +1,7 @@
 #DragonTravel - A new fresh way to travel in Minecraft
 
-Author: XemsDoom Documenter: Phiwa<br>
+Author: XemsDoom<br>
+Documenter: Phiwa<br>
 Version: 1.6<br>
 Website: http://xemsdoom.com<br>
 Twitter: @XemsDoom<br>
