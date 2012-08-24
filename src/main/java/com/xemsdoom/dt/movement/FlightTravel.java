@@ -52,7 +52,5 @@ public class FlightTravel {
 		CommandHandlers.dtCredit(player);
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("AvailableFlights")));
 		player.sendMessage(ChatColor.RED + a.toString());
-
 	}
-
 }

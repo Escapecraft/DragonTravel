@@ -28,13 +28,15 @@ public class DragonTravelSpout {
 
 	// Gets the instance of Spout
 	public static boolean getSpout() {
+		
 		Plugin plugin = DragonTravelMain.pm.getPlugin("Spout");
-		if (plugin != null) {
-			DragonTravelMain.spout = true;
-			DragonTravelMain.sound = SpoutManager.getSoundManager();
-			return true;
-		}
-		return false;
+		
+		if (plugin == null)
+			return false;
+		
+		DragonTravelMain.spout = true;
+		DragonTravelMain.sound = SpoutManager.getSoundManager();
+		return true;
 	}
 
 }

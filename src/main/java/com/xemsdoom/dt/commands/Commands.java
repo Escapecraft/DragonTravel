@@ -85,7 +85,8 @@ public class Commands implements CommandExecutor {
 					// Removing the dragons
 					World world = plugin.getServer().getWorld(worldStr.trim());
 					Travels.removeDragons(world);
-
+					return true;
+					
 				} catch (Exception ex) {
 					DragonTravelMain.log.info("[DragonTravel] Could not find the world specified. /dt remdragons worldname");
 					return false;
