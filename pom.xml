@@ -34,7 +34,7 @@
 
 	<!-- Build -->
 	<build>
-
+		<!-- Resources -->
 		<resources>
 			<resource>
 				<directory>src/main/java/</directory>
@@ -42,11 +42,13 @@
 					<include>**</include>
 				</includes>
 				<excludes>
+				<!-- Don't add source files to target jar -->
 					<exclude>com/xemsdoom/**/*.java</exclude>
 				</excludes>
 			</resource>
 		</resources>
 		<defaultGoal>clean install</defaultGoal>
+		<!-- Plugins -->
 		<plugins>
 			<!-- Compiler plugin -->
 			<plugin>
