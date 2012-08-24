@@ -32,25 +32,6 @@
 		<url>xemsdoom.com</url>
 	</organization>
 
-	<!-- Build -->
-	<build>
-		<defaultGoal>clean install</defaultGoal>
-		<plugins>
-			<!-- Compiler plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 	<!-- Repository locations -->
 	<repositories>
 		<repository>
