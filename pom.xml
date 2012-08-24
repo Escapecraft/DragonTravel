@@ -39,9 +39,7 @@
 			<resource>
 				<directory>src/main/java/</directory>
 				<includes>
-					<include>languages</include>
-					<include>config.yml</include>
-					<include>plugin.yml</include>
+					<include>**</include>
 				</includes>
 			</resource>
 		</resources>
