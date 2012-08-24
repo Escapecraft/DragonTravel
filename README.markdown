@@ -10,8 +10,10 @@ Author: XemsDoom<br>
 Documenter: Phiwa<br>
 Version: 1.6<br>
 Website: http://xemsdoom.com<br>
-Twitter: @XemsDoom<br><object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/jJECepNeCJ0&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/jJECepNeCJ0&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+Twitter: @XemsDoom
 <hr/>
+
+<iframe width="560" height="315" src="http://www.youtube.com/embed/r6juqug6iLw" frameborder="0" allowfullscreen></iframe>
 
 <h3>DragonTravel on Curse's Mod-Spotlights | DragonTravel on Minecraft-Quarterly<br>
 <a href="http://www.curse.com/spotlight/server-mods/minecraft/45630-minecraft-plugin-spotlight-interview-dragontravel">
