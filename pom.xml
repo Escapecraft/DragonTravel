@@ -34,7 +34,6 @@
 
 	<!-- Build -->
 	<build>
-		<defaultGoal>clean install</defaultGoal>
 		<plugins>
 			<!-- Compiler plugin -->
 			<plugin>
