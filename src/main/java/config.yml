@@ -10,7 +10,7 @@ ConfigVersion: 1.5
 # ----->SPOUT FEATURES<------
 # Music to play when somebody starts a travel
 # Enter the URL which goes DIRECTLY to the file
-# Use ogg/wav files for playing, otherwhise you get errors!
+# Use ogg/wav/mp3 files for playing, otherwhise you get errors!
 # The default track is made by me(Xems) and can be used for whatever you like
 # IT IS SUGGESTED TO INSERT AN OWN LINK HERE!
 MusicURL: 'http://dl.dropbox.com/u/37237580/DragonTravelDemo.ogg'
