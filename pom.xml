@@ -42,10 +42,6 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<compilerArguments>
-						<O>-Xlint:all</O>
-						<O>-Xlint:-path</O>
-					</compilerArguments>
 					<source>1.6</source>
 					<target>1.6</target>
 					<showWarnings>true</showWarnings>
