@@ -49,36 +49,26 @@ public class Travels {
 	 */
 	public static boolean mountDragon(Player player) {
 
-		// Return if player is not on a station.
 		if (DragonTravelMain.config.getBoolean("UseStation"))
 			if (!(Stations.checkStation(player)))
 				return false;
 
-		// Removing dragon if already mounted
 		if (DragonTravelMain.TravelInformation.containsKey(player)) {
 			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
 			Entity dra = dragon.getBukkitEntity();
 			removePlayerandDragon(dra);
 		}
 
-		// Spawning XemDragon
 		net.minecraft.server.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
 		XemDragon XemDragon = new XemDragon(player.getLocation(), notchWorld);
 		notchWorld.addEntity(XemDragon);
 		LivingEntity dragon = (LivingEntity) XemDragon.getBukkitEntity();
 
-		// Set the player as passenger to the XemDragon
 		dragon.setPassenger(player);
-
-		// Adding XemDragon and Player to static hashmaps
 		DragonTravelMain.XemDragonRemoval.put(XemDragon, XemDragon);
 		DragonTravelMain.TravelInformation.put(player, XemDragon);
-
-		// Send Message
 		CommandHandlers.dtpCredit(player);
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("MountSuccessful")));
-
-		// Player sound
 		MusicHandler.playEpicSound(player);
 
 		return true;
@@ -98,28 +88,24 @@ public class Travels {
 			return;
 		}
 
-		// Get XemDragon
 		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
 
-		// Get Entity of XemDragon
 		Entity dra = dragon.getBukkitEntity();
 		removePlayerandDragon(dra);
 		CommandHandlers.dtpCredit(player);
 
-		// Teleport player to safe location
 		Location clone = player.getLocation().clone();
-		clone.setY(256);
-
+		clone.setY(126);
 		for (;;) {
-
 			for (int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++) {
-				clone.setY(256 - offset);
+				clone.setY(126 - offset);
 			}
-
-			if (clone.getY() != 0)
+			if (clone.getY() == 0) {
+				clone.setY(126);
+				clone.setX(clone.getX() + 1);
+			} else {
 				break;
-
-			clone.setY(256);
+			}
 		}
 
 		clone.setY(clone.getY() + 2);
@@ -136,36 +122,30 @@ public class Travels {
 	 *            the dragon entity used to do stuff
 	 */
 	public static void removePlayerandDragon(Entity entity) {
-
-		// Getting player
 		Player player = (Player) entity.getPassenger();
-
-		// Stopping sound
 		MusicHandler.stopEpicSound(player);
 		DragonTravelMain.TravelInformation.remove(player);
 
-		// Teleport player to safe location
 		Location clone = player.getLocation().clone();
-		clone.setY(256);
-
+		clone.setY(126);
 		for (;;) {
-
 			for (int offset = 0; clone.getBlock().isEmpty() && clone.getY() != 0; offset++) {
-				clone.setY(256 - offset);
+				clone.setY(126 - offset);
 			}
-
-			if (clone.getY() != 0)
+			if (clone.getY() == 0) {
+				clone.setY(126);
+				clone.setX(clone.getX() + 1);
+			} else {
 				break;
-
-			clone.setY(256);
+			}
 		}
 
 		clone.setY(clone.getY() + 2);
 		player.teleport(clone);
 
-		// Remove dragon from world
 		entity.eject();
 		entity.remove();
+
 	}
 
 	/**
@@ -173,31 +153,23 @@ public class Travels {
 	 * do not have players as passengers
 	 */
 	public static void removeDragons(Player player) {
-
+		int amount = player.getWorld().getEntities().size();
 		int passed = 0;
+		int counter = 0;
 
 		for (Entity entity : player.getWorld().getEntities()) {
-
-			// Check if EnderDragon
-			if (!(entity instanceof EnderDragon))
-				continue;
-
-			// Check if EnderDragon has a player as passenger
-			if (entity.getPassenger() instanceof Player)
-				continue;
-
-			// Remove entity/dragon
-			entity.remove();
-			passed++;
+			counter++;
+			if (entity instanceof EnderDragon) {
+				if (!(entity.getPassenger() instanceof Player)) {
+					entity.remove();
+					passed++;
+				}
+			}
+			if (counter == amount) {
+				CommandHandlers.dtpCredit(player);
+				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons1")) + " " + passed + " " + MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons2")));
+			}
 		}
-
-		// Send "done"-message
-		CommandHandlers.dtpCredit(player);
-		StringBuilder builder = new StringBuilder();
-		builder.append(DragonTravelMain.messages.getString("RemoveDragons1"));
-		builder.append(" " + passed + " ");
-		builder.append(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemoveDragons2")));
-		player.sendMessage(MessagesLoader.replaceColors(builder.toString()));
 	}
 
 	/**
@@ -205,29 +177,29 @@ public class Travels {
 	 * passengers. Reports back to log
 	 */
 	public static void removeDragons(World world) {
-
 		if (world == null)
 			return;
 
+		int amount = world.getEntities().size();
 		int passed = 0;
+		int counter = 0;
 
 		for (Entity entity : world.getEntities()) {
+			counter++;
+			if (entity instanceof EnderDragon) {
+				if (!(entity.getPassenger() instanceof Player)) {
+					entity.remove();
+					passed++;
+				}
+			}
 
-			// Check if EnderDragon
-			if (!(entity instanceof EnderDragon))
-				continue;
-
-			// Check if EnderDragon has a player as passenger
-			if (entity.getPassenger() instanceof Player)
-				continue;
-
-			// Remove entity/dragon
-			entity.remove();
-			passed++;
+			if (counter == amount) {
+				DragonTravelMain.log.info(String.format("[DragonTravel] Removed %s dragon(s)", passed));
+			}
 		}
-
-		DragonTravelMain.log.info(String.format("[DragonTravel] Removed %s dragon(s)", passed));
 	}
+
+	// Traveling
 
 	/**
 	 * Travels the mounted player to a destination passed in the command as an
