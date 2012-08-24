@@ -41,6 +41,9 @@
 				<includes>
 					<include>**</include>
 				</includes>
+				<excludes>
+					<exclude>com/xemsdoom/**/*.java</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<defaultGoal>clean install</defaultGoal>
