@@ -34,6 +34,17 @@
 
 	<!-- Build -->
 	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/java/**</directory>
+				<includes>
+					<include>languages</include>
+					<include>config.yml</include>
+					<include>plugin.yml</include>
+				</includes>
+			</resource>
+		</resources>
 		<defaultGoal>clean install</defaultGoal>
 		<plugins>
 			<!-- Compiler plugin -->
