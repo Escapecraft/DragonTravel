@@ -108,13 +108,12 @@ public class Travels {
 
 		// Teleport player to safe location
 		Location clone = player.getLocation().clone();
-		clone.setY(256);
 		int offset = 1;
 		
 		for (;;) {
 
 			while (clone.getBlock().isEmpty() && clone.getY() != 0) {
-				clone.setY(256 - offset);
+				clone.setY(clone.getY() - offset);
 			}
 
 			if (clone.getY() != 0)
