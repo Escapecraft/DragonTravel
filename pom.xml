@@ -44,7 +44,7 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<includes>
-						<include>src/main/java/**/*.java</include>
+						<include>src/main/java/*</include>
 					</includes>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
