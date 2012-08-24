@@ -48,9 +48,6 @@
 					</compilerArguments>
 					<source>1.6</source>
 					<target>1.6</target>
-					<includes>
-						<include></include>
-					</includes>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
