@@ -6,14 +6,12 @@
 <a href="http://dev.bukkit.org/server-mods/dragontravel/tickets/"><img src="https://dl.dropbox.com/u/37237580/Bukkit-Plugins/DragonTravel/Pictures/submit.jpg"></a>
 <hr/>
 
-Author: XemsDoom<br>
-Documenter: Phiwa<br>
+Developer: XemsDoom<br>
+Documenter, Wiki: Phiwa<br>
 Version: 1.6<br>
 Website: http://xemsdoom.com<br>
 Twitter: @XemsDoom
 <hr/>
-
-<iframe width="560" height="315" src="http://www.youtube.com/embed/r6juqug6iLw" frameborder="0" allowfullscreen></iframe>
 
 <h3>DragonTravel on Curse's Mod-Spotlights | DragonTravel on Minecraft-Quarterly<br>
 <a href="http://www.curse.com/spotlight/server-mods/minecraft/45630-minecraft-plugin-spotlight-interview-dragontravel">
