@@ -1,0 +1,6 @@
+/!\ IMPORTANT /!\ : 
+
+_ Pour que les accents ne fassent pas d'erreur, (avec notepad++) cliquez sur Encodage, cliquez sur "Convertir en UTF-8 (sans BOM) !
+_ N'oubliez pas de retirer les crochets et leur contenu du Titre ([sans accents] / [avec accents]), mais ne changez pas le format (ici .yml)
+
+- Traduction par TBGleNolife

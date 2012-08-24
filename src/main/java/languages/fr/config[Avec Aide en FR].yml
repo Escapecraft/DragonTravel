@@ -1,0 +1,124 @@
+# Copyright 2012 - XemsDoom/Phiwa DragonTravel 1.6 Licence GPLv3
+#
+# - Ne pas utiliser de Tabulations.
+# - Lisez les Commentaires pour comprendre la configuration..
+# - Amusez-bous bien !
+
+# Ne TOUCHEZ PAS cette option(!)
+ConfigVersion: 1.5
+
+# ----->FONCTIONS SPOUT<------
+# Musique a jouer quand quelqu'un monte sur un dragon et vole.
+# Mettez l'URL qui va DIRECTEMENT au fichier
+# Format a Utiliser : ogg/wav !
+# Le son de defaut a ete cree par le createur du plugin (Xems) et peut être utilise pour ce que vous voulez.
+MusicURL: 'http://dl.dropbox.com/u/37237580/DragonTravelDemo.ogg'
+MessageOnPlay: true
+
+#Touche pour ouvrir le GUI (Seuleument Utilisateurs Spoutcraft).
+#La Touche est par exemple: "KEY_O" pour O ou "KEY_U" pour U.
+GUIopenKey: 'KEY_L'
+
+# ------>FONCTIONS ECONOMIE<------
+# True = Economie activee et couplee avec le plugin. Necessite VAULT !!
+Economy: true
+
+# Prix pour les commandes de vol.
+# Si vous utilisez les panneaux, le prix marque sur le panneau remplacera ce prix.
+# Prix d'un vol normal (Destination).
+PayTravel: 10.0
+# Prix d'un Vol (Flight).
+PayFlight: 12.0
+# Prix d'un Vol aux coordonnees.
+PayCoords: 20.0
+# Prix d'un vol a la Residence (Home).
+PayHome: 2.0
+# Prix du Placement de point de Residence (Home).
+HomeSetCost: 0.0
+# Prix d'un vol vers un Joueur.
+PaytoPlayer: 15.0
+
+# ------->OPTIONS DE VOL<-------
+
+# La hauteur a laquelle le dragon vole durant un trajet (Sauf dans les Flights)
+# L'Unite du Nombre est en Blocs.
+# Vous pouvez mettre un nombre plus haut que la hauteur du Ciel.
+TravelHeight: 150
+
+# Si vous mettez sur true, les joueurs peuvent monter sur les dragons et
+# Voler Seulement a partir des Stations.
+UseStation: true
+# Placer les marqueurs (Bloc de glowstone) a la creation de Station/Sestination ? true = oui
+UseStatDestMarker: true
+# Definissez le rayon d'une station.
+# L'Unite du Nombre est en Blocs.
+DistancetoStation: 5.0
+# Si vous mettez true, les joueurs pourront utiliser seulement
+# les panneaux pour aller aux destinations.
+# En resume, cette option desactive le /dt travel
+UseOnlySigns: true
+
+# Si vous mettez true, le plugin ignorera
+# les zones (WorldGuard) ou le spawning de monstres est interdit.
+IgnoreAntiMobspawnAreas: true
+
+# Choisissez quel(s) dragons ne peuvent pas detruire les blocs (true=ne peut pas)
+AntiGriefallDragons: true
+AntiGriefDragonTravelDragons: true
+
+# Choisissez la vitesse des Dragons.
+# Le nombre represente le nombre de block en 1 serveur tick (20 ticks = 1 seconde)
+# Ne PAS Mettre A Plus de 1.0!
+DragonSpeed: 0.5
+
+# Choisissez les commandes interdites quand on est sur un Dragon.
+# Soyez sur de mettre TOUTES les commandes qui permettraient de partir du dragon !
+# Placez dans cette liste une commande par ligne avec le '/'!
+CommandPrevent:
+- /spawn
+- /warp
+- /home
+- /kill
+- /suicide
+- /tp
+
+# Destination Aleatoire
+# Placez les bordures de la zone dans laquelle la Destination Aleatoire pourra être.
+# "RandomDest-Name" est le nom a taper dans la commande pour aller a cette destination.
+RandomDest-Name: '_random_'
+X-Axis:
+    MinX: -100
+    MaxX: 100
+Z-Axis:
+    MinZ: -100
+    MaxZ: 100
+
+#Legit old Dragon:
+#
+#                                            (
+#                                              )
+#
+#
+#                                            (      )
+#                                             ) )  ( (
+#  __..--...___                                (    \ )
+#''            ``---..__               .--._    )    ),
+#            .      ,  -``,..__       /.   _`=_     ((
+#          ,                .  `--.._(    (e)`a)     )
+#                 '    ,'  ,    ---._ `-..-'   \_.  (
+#         ,      |    ,'   ::   ,--._ ,        > (__
+#    ,          |'    |.   `\. /     |   ___  ' >  /
+#        '      |:    |:.    `:      `.__._ `-.  O `)
+#   |    |      |: -  \::. .-'             `-. `.  /
+#   |    /\     ::.    '\:'                   `\_\/
+#   |    |:.    `::...-'--
+#   :    \::\     `:' ________________________________________________
+#   :     \:;;.._,.8a.
+#   ::      `8Pa88888888888aa.
+#_  ::: _..a8888888888888888888a.
+#888aaa8888888888888888888888888888a.
+#888888888888888888888888888888888888888888a.
+#      ""Y8888888888888P""'   `"88888888888888a.
+#                                 `88888888888888
+#                                     `8888888888
+#                                       `8888888'
