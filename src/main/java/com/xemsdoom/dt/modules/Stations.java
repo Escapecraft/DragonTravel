@@ -54,6 +54,7 @@ public class Stations {
 		if (name.length() > 15) {
 			CommandHandlers.dtpCredit(player);
 			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationCreatingNameTooLong")));
+			return;
 		}
 
 		Entry entry = null;
@@ -103,6 +104,7 @@ public class Stations {
 		if (name.length() > 15) {
 			CommandHandlers.dtpCredit(player);
 			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationCreatingNameTooLong")));
+			return;
 		}
 
 		Entry entry = null;
@@ -112,6 +114,7 @@ public class Stations {
 		} catch (EmptyIndexException e) {
 			e.printStackTrace();
 		}
+		
 		Location location = player.getLocation();
 
 		entry.addValue("world", player.getWorld().toString());
@@ -163,7 +166,7 @@ public class Stations {
 	 *            the station name
 	 */
 	public static void removeStation(CommandSender sender, String name) {
-		
+
 		if (!(DragonTravelMain.dbs.hasIndex(name))) {
 			CommandHandlers.dtCredit(sender);
 			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationRemovingDoesNotExist")));
@@ -190,44 +193,56 @@ public class Stations {
 			return false;
 		}
 
+		// Get station amount
 		int amount = DragonTravelMain.dbs.getIndices().size();
 
+		// Return if there aren't any stations
+		if (amount == 0) {
+			CommandHandlers.dtpCredit(player);
+			player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
+			return false;
+		}
+
+		// Getting world in which the player is
+		World world = player.getWorld();
+		// Getting player location
+		Location locplayer = player.getLocation();
+		Vector locvaca = new Location(world, locplayer.getX(), locplayer.getY(), locplayer.getZ()).toVector();
+
+		// Iterate over all stations and check if the player is nearby one
 		for (String name : DragonTravelMain.dbs.getIndices()) {
+			
 			double x = DragonTravelMain.dbs.getDouble(name, "x");
 			double y = DragonTravelMain.dbs.getDouble(name, "y");
 			double z = DragonTravelMain.dbs.getDouble(name, "z");
 
-			if (amount != 0) {
-				World world = player.getWorld();
-
-				if (world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world"))) {
-					Location locplayer = player.getLocation();
-					Vector locvec = new Location(world, x, y, z).toVector();
-					Vector locvaca = new Location(world, locplayer.getX(), locplayer.getY(), locplayer.getZ()).toVector();
-					double lenga = locvec.subtract(locvaca).length();
-					if (lenga < DragonTravelMain.config.getDouble("DistancetoStation")) {
-						return true;
-
-					} else {
-						if (amount == 1) {
-							CommandHandlers.dtpCredit(player);
-							player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
-							return false;
-						}
-						amount--;
-					}
-				} else {
-					if (amount == 1) {
-						CommandHandlers.dtpCredit(player);
-						player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
-						return false;
-					}
-					amount--;
+			// Check if the current station is in the same world as the player
+			if (!world.toString().equalsIgnoreCase(DragonTravelMain.dbs.getString(name, "world"))) {
+				if (amount == 1) {
+					CommandHandlers.dtpCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
+					return false;
 				}
-			} else {
-				CommandHandlers.dtpCredit(player);
-				player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
-				return false;
+				amount--;
+				continue;
+			}
+
+			// Create vector out of station location
+			Vector locvec = new Location(world, x, y, z).toVector();
+
+			// Getting differente between station and player location
+			double lenga = locvec.subtract(locvaca).length();
+
+			// Return true if the player is nearby the station
+			if (lenga <= DragonTravelMain.config.getDouble("DistancetoStation"))
+				return true;
+			else {
+				if (amount == 1) {
+					CommandHandlers.dtpCredit(player);
+					player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("NotAtAStation")));
+					return false;
+				}
+				amount--;
 			}
 		}
 		return true;
@@ -239,32 +254,25 @@ public class Stations {
 	 * @param player
 	 */
 	public static void showStations(Player player) {
-		int amount = DragonTravelMain.dbs.getIndices().size();
+
+		// Getting player worldname
 		StringBuilder a = new StringBuilder();
+		String pworld = player.getWorld().toString();
 
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("StationShowList")));
+
+		// Adding stations names to builder - Only stations from the same world
+		// are added to the builder
 		for (String index : DragonTravelMain.dbs.getIndices()) {
 
 			String world = DragonTravelMain.dbs.getString(index, "world");
 
-			if (world.equalsIgnoreCase(player.getWorld().toString())) {
+			if (world.equalsIgnoreCase(pworld))
 				a.append(index + ", ");
-
-				if (amount == 1) {
-					player.sendRawMessage(a.toString());
-					return;
-				}
-
-				amount--;
-
-			} else {
-				if (amount == 1) {
-					player.sendRawMessage(a.toString());
-					return;
-				}
-				amount--;
-			}
 		}
+
+		// Send station names
+		player.sendMessage(a.toString());
 	}
 
 	/**
@@ -273,30 +281,24 @@ public class Stations {
 	 * @param player
 	 */
 	public static void showDestinations(Player player) {
-		int amount = DragonTravelMain.dbd.getIndices().size();
+		
+		// Getting player worldname
 		StringBuilder a = new StringBuilder();
+		String pworld = player.getWorld().toString();
 
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("DestinationShowList")));
+		
+		// Adding destinations names to builder - Only destinations from the same world
+		// are added to the builder
 		for (String index : DragonTravelMain.dbd.getIndices()) {
 
 			String world = DragonTravelMain.dbd.getString(index, "world");
 
-			if (world.equalsIgnoreCase(player.getWorld().toString())) {
+			if (world.equalsIgnoreCase(pworld))
 				a.append(index + ", ");
-
-				if (amount == 1) {
-					player.sendRawMessage(a.toString());
-					return;
-				}
-				amount--;
-
-			} else {
-				if (amount == 1) {
-					player.sendRawMessage(a.toString());
-					return;
-				}
-				amount--;
-			}
 		}
+
+		// Send destination names
+		player.sendMessage(a.toString());
 	}
 }
