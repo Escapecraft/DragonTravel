@@ -20,7 +20,6 @@ import com.xemsdoom.dt.movement.Flight;
 import com.xemsdoom.dt.movement.FlightEditor;
 import com.xemsdoom.dt.movement.FlightTravel;
 import com.xemsdoom.dt.movement.Waypoint;
-import com.xemsdoom.dt.spout.music.MusicHandler;
 
 /**
  * Copyright (C) 2011-2012 Moser Luca/Philipp Wagner
@@ -299,17 +298,6 @@ public class Commands implements CommandExecutor {
 						sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("PlayerToggleOn")));
 						return true;
 					}
-				}
-
-				if (arg1.equalsIgnoreCase("stopmusic")) {
-
-					if (!sender.hasPermission("dt.stopmusic")) {
-						CommandHandlers.noPerm(sender);
-						return false;
-					}
-
-					MusicHandler.stopEpicSound(player);
-					return true;
 				}
 
 				if (arg1.equalsIgnoreCase("flightlist")) {

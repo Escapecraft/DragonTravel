@@ -20,23 +20,18 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.sound.SoundManager;
 
 import com.xemsdoom.dt.commands.Commands;
 import com.xemsdoom.dt.economy.EconomyHandler;
 import com.xemsdoom.dt.listeners.BlockListener;
 import com.xemsdoom.dt.listeners.EntityListener;
 import com.xemsdoom.dt.listeners.FlightSignsInteract;
-import com.xemsdoom.dt.listeners.InputListener;
 import com.xemsdoom.dt.listeners.PlayerListener;
-import com.xemsdoom.dt.listeners.ScreenListener;
 import com.xemsdoom.dt.modules.ConfigurationLoader;
 import com.xemsdoom.dt.modules.DatabaseLoader;
 import com.xemsdoom.dt.modules.FAQLoader;
 import com.xemsdoom.dt.modules.MessagesLoader;
 import com.xemsdoom.dt.movement.FlightEditor;
-import com.xemsdoom.dt.spout.DragonTravelSpout;
-import com.xemsdoom.metrics.Metrics;
 import com.xemsdoom.mexdb.MexDB;
 
 import static com.xemsdoom.dt.movement.Waypoint.markers;
@@ -84,11 +79,6 @@ public class DragonTravelMain extends JavaPlugin{
     // Commands
     public static boolean onlysigns;
 
-    // Spout
-    public static SoundManager sound;
-    public static boolean sendplaymessage = false;
-    public static boolean spout = false;
-
     public static boolean ignoreAntiMobspawnAreas = true;
 
     // DT Dragon
@@ -116,8 +106,6 @@ public class DragonTravelMain extends JavaPlugin{
     private static Listener entitiesListener;
     private static Listener playersListener;
     private static Listener blocksListener;
-    private static Listener inputListener;
-    private static Listener buttonListener;
     private static Listener editorListener;
     private static Listener flightsignListener;
 
@@ -175,7 +163,6 @@ public class DragonTravelMain extends JavaPlugin{
         alldragons = config.getBoolean("AntiGriefallDragons");
         EconomyEnabled = config.getBoolean("Economy");
         speed = config.getDouble("DragonSpeed");
-        sendplaymessage = config.getBoolean("MessageOnPlay");
         onlysigns = config.getBoolean("UseOnlySigns");
         ignoreAntiMobspawnAreas = config.getBoolean("IgnoreAntiMobspawnAreas");
 
@@ -198,8 +185,6 @@ public class DragonTravelMain extends JavaPlugin{
         entitiesListener = new EntityListener(this);
         playersListener = new PlayerListener(this);
         blocksListener = new BlockListener(this);
-        inputListener = new InputListener();
-        buttonListener = new ScreenListener();
         editorListener = new FlightEditor();
         flightsignListener = new FlightSignsInteract();
 
@@ -209,26 +194,11 @@ public class DragonTravelMain extends JavaPlugin{
         pm.registerEvents(editorListener, this);
         pm.registerEvents(flightsignListener, this);
 
-        // Spout
-        if(DragonTravelSpout.getSpout()){
-            System.out.println("[DragonTravel] Hooked into Spout");
-
-            // Registring
-            pm.registerEvents(inputListener, this);
-            pm.registerEvents(buttonListener, this);
-        }
-
         // Economy
         if(!EconomyEnabled){
             log.info(String.format("[%s] Enabled v%s", description.getName(), description.getVersion()));
             return;
         }
-
-        // Metrics
-        try{
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        }catch (IOException e){}
 
         instance = this;
 
@@ -250,7 +220,6 @@ public class DragonTravelMain extends JavaPlugin{
         pm = null;
         instance = null;
         config = null;
-        sound = null;
         dbd = null;
         dbs = null;
         signs = null;
@@ -261,7 +230,5 @@ public class DragonTravelMain extends JavaPlugin{
         entitiesListener = null;
         playersListener = null;
         blocksListener = null;
-        inputListener = null;
-        buttonListener = null;
     }
 }

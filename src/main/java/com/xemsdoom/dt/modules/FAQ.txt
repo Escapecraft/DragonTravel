@@ -64,7 +64,6 @@ dt.* -> All permissions
 
 ohters -> Stuff which doesn't fit into sub.group.permissions
 - no cost for any flight/travel		dt.nocost
-- using DragonTravel-GUI			dt.gui
 - creating stationary dragons		dt.statdragon
 - removing ghost-dragons			dt.remdragons
 
@@ -92,7 +91,6 @@ dt.userplus -> Basic permissions & some more features
 - mount								dt.mount
 
 dt.user -> Basic permissions
-- stopmusic							dt.stopmusic
 - dismount							dt.dismount
 - deslist							dt.destlist
 - statlist							dt.statlist

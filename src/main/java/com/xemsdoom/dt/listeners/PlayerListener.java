@@ -23,7 +23,6 @@ import com.xemsdoom.dt.commands.CommandHandlers;
 import com.xemsdoom.dt.economy.EconomyHandler;
 import com.xemsdoom.dt.modules.MessagesLoader;
 import com.xemsdoom.dt.modules.Travels;
-import com.xemsdoom.dt.spout.music.MusicHandler;
 
 /**
  * Copyright (C) 2011-2012 Moser Luca/Philipp Wagner
@@ -80,30 +79,6 @@ public class PlayerListener implements Listener {
 			}
 			clone.setY(clone.getY() + 2);
 			player.teleport(clone);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onDragonDismount(PlayerMoveEvent event) {
-		Player player = event.getPlayer();
-
-		if (!DragonTravelMain.TravelInformation.containsKey(player))
-			return;
-
-		if (player.isInsideVehicle())
-			return;
-
-		try {
-
-			MusicHandler.stopEpicSound(player);
-			XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-			Entity dra = dragon.getBukkitEntity();
-			DragonTravelMain.TravelInformation.remove(player);
-			DragonTravelMain.XemDragonRemoval.remove(dragon);
-			dra.eject();
-			dra.remove();
-
-		} catch (Exception e) {
 		}
 	}
 

@@ -32,297 +32,333 @@ import com.xemsdoom.dt.movement.Waypoint;
  */
 public class XemDragon extends EntityEnderDragon {
 
-	// Travel
-	private double toX;
-	private double toY;
-	private double toZ;
-	private int maxY;
-	private boolean finalmove = false;
-	private boolean move = false;
+    // Travel
+    private double toX;
+    private double toY;
+    private double toZ;
+    private int maxY;
+    private boolean finalmove = false;
+    private boolean move = false;
 
-	// Flight
-	private Flight flight;
-	private Waypoint firstwp;
+    // Flight
+    private Flight flight;
+    private Waypoint firstwp;
 
-	// First Waypoint coords
-	private double fwpX;
-	private double fwpY;
-	private double fwpZ;
+    // First Waypoint coords
+    private double fwpX;
+    private double fwpY;
+    private double fwpZ;
 
-	// Amount to fly up/down during a flight
-	private double XTick;
-	private double YTick;
-	private double ZTick;
+    // Amount to fly up/down during a flight
+    private double XTick;
+    private double YTick;
+    private double ZTick;
 
-	// Distance to the right wp coords
-	private double distanceX;
-	private double distanceY;
-	private double distanceZ;
+    // Distance to the right wp coords
+    private double distanceX;
+    private double distanceY;
+    private double distanceZ;
 
-	// Start points for tick calculation
-	private double startX;
-	private double startY;
-	private double startZ;
+    // Start points for tick calculation
+    private double startX;
+    private double startY;
+    private double startZ;
 
-	// Basics
-	boolean isFlight = false;
-	boolean isTravel = false;
-	Entity entity;
+    // Basics
+    boolean isFlight = false;
+    boolean isTravel = false;
+    Entity entity;
 
-	// Start Location
-	Location start;
+    // Start Location
+    Location start;
 
-	public XemDragon(Location loca, World world) {
+    public XemDragon(Location loca, World world) {
 
-		super(world);
+        super(world);
 
-		this.start = loca;
-		setPosition(loca.getX(), loca.getY(), loca.getZ());
-		yaw = loca.getYaw() + 180;
-		while (yaw > 360)
-			yaw -= 360;
-		while (yaw < 0)
-			yaw += 360;
-		if (yaw < 45 || yaw > 315)
-			yaw = 0F;
-		else if (yaw < 135)
-			yaw = 90F;
-		else if (yaw < 225)
-			yaw = 180F;
-		else
-			yaw = 270F;
-	}
+        this.start = loca;
+        setPosition(loca.getX(), loca.getY(), loca.getZ());
+        yaw = loca.getYaw() + 180;
+        while (yaw > 360)
+            yaw -= 360;
+        while (yaw < 0)
+            yaw += 360;
+        if (yaw < 45 || yaw > 315)
+            yaw = 0F;
+        else if (yaw < 135)
+            yaw = 90F;
+        else if (yaw < 225)
+            yaw = 180F;
+        else
+            yaw = 270F;
+    }
 
-	public XemDragon(World world) {
-		super(world);
-	}
+    public XemDragon(World world) {
+        super(world);
+    }
 
-	public void startTravel(Location loc) {
+    public void startTravel(Location loc) {
 
-		toX = loc.getBlockX();
-		toY = loc.getBlockY();
-		toZ = loc.getBlockZ();
+        toX = loc.getBlockX();
+        toY = loc.getBlockY();
+        toZ = loc.getBlockZ();
 
-		this.startX = start.getX();
-		this.startY = start.getY();
-		this.startZ = start.getZ();
+        this.startX = start.getX();
+        this.startY = start.getY();
+        this.startZ = start.getZ();
 
-		maxY = DragonTravelMain.config.getInt("TravelHeight");
+        maxY = DragonTravelMain.config.getInt("TravelHeight");
 
-		setMoveTravel();
-		yaw = getCorrectYaw(toX, toZ);
-		isTravel = true;
-		move = true;
-	}
+        setMoveTravel();
+        yaw = getCorrectYaw(toX, toZ);
+        isTravel = true;
+        move = true;
+    }
 
-	public void startFlight(Flight flight) {
+    public void startFlight(Flight flight) {
 
-		entity = getBukkitEntity();
+        entity = getBukkitEntity();
 
-		this.flight = flight;
-		this.flight.loadWPs();
+        this.flight = flight;
+        this.flight.loadWPs();
 
-		this.firstwp = flight.getFirstWaypoint();
-		this.fwpX = firstwp.getX();
-		this.fwpY = firstwp.getY();
-		this.fwpZ = firstwp.getZ();
+        this.firstwp = flight.getFirstWaypoint();
+        this.fwpX = firstwp.getX();
+        this.fwpY = firstwp.getY();
+        this.fwpZ = firstwp.getZ();
 
-		this.startX = start.getX();
-		this.startY = start.getY();
-		this.startZ = start.getZ();
+        this.startX = start.getX();
+        this.startY = start.getY();
+        this.startZ = start.getZ();
 
-		toX = fwpX;
-		toY = fwpY;
-		toZ = fwpZ;
+        toX = fwpX;
+        toY = fwpY;
+        toZ = fwpZ;
 
-		setMoveFlight();
-		yaw = getCorrectYaw(toX, toZ);
-		move = true;
-		isFlight = true;
-	}
+        setMoveFlight();
+        yaw = getCorrectYaw(toX, toZ);
+        move = true;
+        isFlight = true;
+    }
 
-	/**
-	 * Gets the correct yaw for this specific path
-	 */
-	private float getCorrectYaw(double targetx, double targetz) {
-		if (this.locZ > targetz)
-			return (float) (-Math.toDegrees(Math.atan((this.locX - targetx) / (this.locZ - targetz))));
-		if (this.locZ < targetz) {
-			return (float) (-Math.toDegrees(Math.atan((this.locX - targetx) / (this.locZ - targetz)))) + 180.0F;
-		}
-		return this.yaw;
-	}
+    /**
+     * Gets the correct yaw for this specific path
+     */
+    private float getCorrectYaw(double targetx, double targetz) {
+        if (this.locZ > targetz)
+            return (float) (-Math.toDegrees(Math.atan((this.locX - targetx) / (this.locZ - targetz))));
+        if (this.locZ < targetz) {
+            return (float) (-Math.toDegrees(Math.atan((this.locX - targetx) / (this.locZ - targetz)))) + 180.0F;
+        }
+        return this.yaw;
+    }
 
-	/**
-	 * Sets the x,y,z move for each tick
-	 */
-	public void setMoveFlight() {
+    /**
+     * Sets the x,y,z move for each tick
+     */
+    public void setMoveFlight() {
 
-		this.distanceX = this.startX - toX;
-		this.distanceY = this.startY - toY;
-		this.distanceZ = this.startZ - toZ;
+        this.distanceX = this.startX - toX;
+        this.distanceY = this.startY - toY;
+        this.distanceZ = this.startZ - toZ;
 
-		double tick = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ)) / DragonTravelMain.speed;
-		YTick = Math.abs(distanceY) / tick;
-		XTick = Math.abs(distanceX) / tick;
-		ZTick = Math.abs(distanceZ) / tick;
-	}
+        double tick = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ)) / DragonTravelMain.speed;
+        YTick = Math.abs(distanceY) / tick;
+        XTick = Math.abs(distanceX) / tick;
+        ZTick = Math.abs(distanceZ) / tick;
+    }
 
-	/**
-	 * Sets the x,z move for each tick
-	 */
-	public void setMoveTravel() {
+    /**
+     * Sets the x,z move for each tick
+     */
+    public void setMoveTravel() {
 
-		this.distanceX = this.startX - toX;
-		this.distanceY = this.startY - toY;
-		this.distanceZ = this.startZ - toZ;
+        this.distanceX = this.startX - toX;
+        this.distanceZ = this.startZ - toZ;
 
-		double tick = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ)) / DragonTravelMain.speed;
-		XTick = Math.abs(distanceX) / tick;
-		ZTick = Math.abs(distanceZ) / tick;
-	}
+        // altho this is 3d, we're only using the planar distance
+        double distance = Math.sqrt((distanceX * distanceX) + (distanceZ * distanceZ));
 
-	@Override
-	public void d() {
+        double tick = distance / DragonTravelMain.speed;
+        XTick = Math.abs(distanceX) / tick;
+        ZTick = Math.abs(distanceZ) / tick;
+    }
 
-		// Travel
-		if (isTravel) {
-			travel();
-			return;
-		}
+    @Override
+    public void d() {
 
-		// Flight
-		if (isFlight) {
-			flight();
-		}
-	}
+        // Travel
+        if (isTravel) {
+            travel();
+            return;
+        }
 
-	/**
-	 * Flight with waypoints
-	 */
-	public void flight() {
+        // Flight
+        if (isFlight) {
+            flight();
+        }
+    }
 
-		// Returns, the dragon won't move
-		if (!move)
-			return;
+    /**
+     * Flight with waypoints
+     */
+    public void flight() {
 
-		// Init move variables
-		double myX = locX;
-		double myY = locY;
-		double myZ = locZ;
+        // Returns, the dragon won't move
+        if (!move)
+            return;
 
-		if ((int) myX != (int) toX) {
-			if (myX < toX) {
-				myX += XTick;
-			} else {
-				myX -= XTick;
-			}
-		}
+        // Init move variables
+        double myX = locX;
+        double myY = locY;
+        double myZ = locZ;
 
-		if ((int) myY != (int) toY) {
-			if (myY < toY) {
-				myY += YTick;
-			} else {
-				myY -= YTick;
-			}
-		}
+        if ((int) myX != (int) toX) {
+            if (myX < toX) {
+                myX += XTick;
+            } else {
+                myX -= XTick;
+            }
+        }
 
-		if ((int) myZ != (int) toZ) {
-			if (myZ < toZ) {
-				myZ += ZTick;
-			} else {
-				myZ -= ZTick;
-			}
-		}
+        if ((int) myY != (int) toY) {
+            if (myY < toY) {
+                myY += YTick;
+            } else {
+                myY -= YTick;
+            }
+        }
 
-		// If myZ = toZ, then we will load the next waypoint or
-		// finish the flight, in case it was the last waypoint to fly
-		if ((int) myZ == (int) toZ && (int) myY == (int) toY && (int) myX == (int) toX) {
-			Waypoint wp = flight.getNextWaypoint();
+        if ((int) myZ != (int) toZ) {
+            if (myZ < toZ) {
+                myZ += ZTick;
+            } else {
+                myZ -= ZTick;
+            }
+        }
 
-			// Removing the entity and dismouting the player
-			if (wp == null) {
-				Travels.removePlayerandDragon(entity);
-				return;
-			}
+        // If myZ = toZ, then we will load the next waypoint or
+        // finish the flight, in case it was the last waypoint to fly
+        if ((int) myZ == (int) toZ && (int) myY == (int) toY && (int) myX == (int) toX) {
+            Waypoint wp = flight.getNextWaypoint();
 
-			this.startX = locX;
-			this.startY = locY;
-			this.startZ = locZ;
+            // Removing the entity and dismouting the player
+            if (wp == null) {
+                Travels.removePlayerandDragon(entity);
+                return;
+            }
 
-			toX = wp.getX();
-			toY = wp.getY();
-			toZ = wp.getZ();
-			setMoveFlight();
-			yaw = getCorrectYaw(toX, toZ);
-			return;
-		}
+            this.startX = locX;
+            this.startY = locY;
+            this.startZ = locZ;
 
-		setPosition(myX, myY, myZ);
-	}
+            toX = wp.getX();
+            toY = wp.getY();
+            toZ = wp.getZ();
+            setMoveFlight();
+            yaw = getCorrectYaw(toX, toZ);
+            return;
+        }
 
-	/**
-	 * Normal Travel
-	 */
-	public void travel() {
+        setPosition(myX, myY, myZ);
+    }
 
-		// Returns, the dragon won't move
-		if (!move)
-			return;
+    /**
+     * Normal Travel
+     */
+    public void travel() {
 
-		Entity entity = getBukkitEntity();
+        // Returns, the dragon won't move
+        if (!move)
+            return;
 
-		if (entity.getPassenger() == null)
-			return;
+        Entity entity = getBukkitEntity();
 
-		double myX = locX;
-		double myY = locY;
-		double myZ = locZ;
+        if (entity.getPassenger() == null)
+            return;
 
-		if (finalmove) {
+        double myX = locX;
+        double myY = locY;
+        double myZ = locZ;
 
-			// Flying down on end
-			if ((int) locY > (int) toY)
-				myY -= DragonTravelMain.speed;
+        // landing
+        if (finalmove) {
 
-			// Flying up on end
-			else if ((int) locY < (int) toY)
-				myY += DragonTravelMain.speed;
+            // landed - removing entity
+            if (myY == toY) {
+                Location dest = entity.getPassenger().getLocation().clone();
+                dest.setX(toX);
+                dest.setY(toY);
+                dest.setZ(toZ);
+                Travels.landDragon(entity, dest);
+                return;
+            }
 
-			// Removing entity
-			else {
-				Travels.removePlayerandDragon(entity);
-				return;
-			}
+            // if y is within 1 tick of the destination set it to that
+            if (Math.abs(myY - toY) < DragonTravelMain.speed)
+                myY = toY;
 
-			setPosition(myX, myY, myZ);
-			return;
-		}
+            // landing - flying down
+            else if (myY > toY)
+                myY -= DragonTravelMain.speed;
 
-		// Getting the correct height
-		if ((int) locY < maxY) {
-			myY += DragonTravelMain.speed;
-		}
+            // landing - flying up
+            else
+                myY += DragonTravelMain.speed;
 
-		if (myX < toX) {
-			myX += XTick;
-		} else {
-			myX -= XTick;
-		}
+            setPosition(myX, myY, myZ);
+            return;
+        }
 
-		if (myZ < toZ) {
-			myZ += ZTick;
-		} else {
-			myZ -= ZTick;
-		}
+        // going to crusing altitude
+        if ((int) myY != maxY) {
 
-		if ((int) myZ == (int) toZ)
-			finalmove = true;
+            // if y is within 1 tick of the max height set it to that
+            if (Math.abs(myY - maxY) < DragonTravelMain.speed)
+                myY = maxY;
 
-		setPosition(myX, myY, myZ);
-	}
+            // flying up
+            else if ((int) myY < maxY)
+                myY += DragonTravelMain.speed;
 
-	public double x_() {
-		return 3;
-	}
+            // flying down
+            else
+                myY -= DragonTravelMain.speed;
+
+            setPosition(myX, myY, myZ);
+            return;
+        }
+
+        // moving toward X destination
+        if (myX != toX) {
+            if (Math.abs(myX - toX) < XTick)
+                myX = toX;
+            else if (myX < toX)
+                myX += XTick;
+            else
+                myX -= XTick;
+        }
+
+        // moving toward Z destination
+        if (myZ != toZ) {
+            if (Math.abs(myZ - toZ) < ZTick)
+                myZ = toZ;
+            else if (myZ < toZ)
+                myZ += ZTick;
+            else
+                myZ -= ZTick;
+        }
+
+        // check if arrived
+        if ((myX == toX) && (myZ == toZ))
+            finalmove = true;
+
+        setPosition(myX, myY, myZ);
+    }
+
+/*
+    public double x_() {
+        return 3;
+    }
+*/
 }

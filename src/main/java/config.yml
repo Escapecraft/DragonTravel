@@ -7,19 +7,6 @@
 # Do not touch this option at all(!), it's a check if you are running the recent configuration version
 ConfigVersion: 1.5
 
-# ----->SPOUT FEATURES<------
-# Music to play when somebody starts a travel
-# Enter the URL which goes DIRECTLY to the file
-# Use ogg/wav/mp3 files for playing, otherwhise you get errors!
-# The default track is made by me(Xems) and can be used for whatever you like
-# IT IS SUGGESTED TO INSERT AN OWN LINK HERE!
-MusicURL: 'http://dl.dropbox.com/u/37237580/DragonTravelDemo.ogg'
-MessageOnPlay: true
-
-#Key for opening the GUI, please notice that this is only available for SpoutCraft users!
-#A key is for example: "KEY_O" or "KEY_U"
-GUIopenKey: 'KEY_L'
-
 # ------>ECONOMY STUFF<------
 # Set Economy to "true" to enable withdraws on travels
 # You must have >Vault< installed for using this feature!

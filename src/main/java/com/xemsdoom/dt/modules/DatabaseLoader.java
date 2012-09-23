@@ -31,7 +31,7 @@ public class DatabaseLoader extends DragonTravelMain {
 			dbs = new MexDB("plugins/DragonTravel/databases", "Stations");
 			log.info(String.format("[DragonTravel] Created Stations Database"));
 		} else {
-			dbs = new MexDB("plugins/DragonTravel/databases", "Stations.mini");
+			dbs = new MexDB("plugins/DragonTravel/databases", "Stations");
 			log.info(String.format("[DragonTravel] Loaded Stations"));
 		}
 

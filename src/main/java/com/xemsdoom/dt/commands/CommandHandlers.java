@@ -66,9 +66,6 @@ public class CommandHandlers {
 		if (sender.hasPermission("dt.flightlist"))
 			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpFlightList")));
 
-		if (sender.hasPermission("dt.stopmusic"))
-			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpDTstopmusic")));
-		if (sender.hasPermission("dt.travel"))
 			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpDTtravel")));
 		if (sender.hasPermission("dt.destlist"))
 			sender.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("HelpDTdestlist")));

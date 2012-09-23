@@ -1,8 +1,8 @@
 name: DragonTravel
 main: com.xemsdoom.dt.DragonTravelMain
-author: XemsDoom & Phiwa
+author: XemsDoom & Phiwa, modified by Tulonsae
 version: 1.6
-softdepend: [Vault, SpoutPlugin]
+softdepend: [Vault]
 permissions:
     dt.mod.flight:
         default: op
@@ -37,7 +37,6 @@ permissions:
         default: op
         description: Basic permissions
         children:
-            dt.stopmusic: true
             dt.destlist: true
             dt.dismount: true
             dt.statlist: true
@@ -52,9 +51,6 @@ permissions:
     dt.nocost:
         default: op
         description: No withdraws
-    dt.gui:
-        default: op
-        description: Opening the GUI
     dt.statdragon:
         default: op
         description: Creating stationary dragons
@@ -103,9 +99,6 @@ permissions:
     dt.mount:
         default: op
         description: Mounting a dragon
-    dt.stopmusic:
-        default: op
-        description: Stoppping the music
     dt.destlist:
         default: op
         description: Destination list
