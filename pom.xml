@@ -4,7 +4,7 @@
 
   <groupId>com.xemsdoom</groupId>
   <artifactId>DragonTravel</artifactId>
-  <version>1.6-tulon</version>
+  <version>1.6-1-tulon</version>
   <packaging>jar</packaging>
 
   <name>DragonTravel</name>
@@ -19,6 +19,7 @@
     <!-- Resources -->
     <resources>
       <resource>
+        <filtering>true</filtering>
         <directory>src/main/java/</directory>
         <includes>
           <include>**</include>
