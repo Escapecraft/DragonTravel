@@ -4,7 +4,7 @@
 
   <groupId>com.xemsdoom</groupId>
   <artifactId>DragonTravel</artifactId>
-  <version>1.6-2-tulon</version>
+  <version>1.6-1.4.7-tulon</version>
   <packaging>jar</packaging>
 
   <name>DragonTravel</name>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>craftbukkit</artifactId>
-      <version>1.4.5-R0.2</version>
+      <version>1.4.7-R0.1</version>
     </dependency>
     <dependency>
       <groupId>net.milkbowl.vault</groupId>
