@@ -1,7 +1,7 @@
 package com.xemsdoom.dt;
 
-import net.minecraft.server.EntityEnderDragon;
-import net.minecraft.server.World;
+import net.minecraft.server.v1_4_R1.EntityEnderDragon;
+import net.minecraft.server.v1_4_R1.World;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -185,8 +185,8 @@ public class XemDragon extends EntityEnderDragon {
     }
 
     @Override
-    public void d() {
-
+    public void c() {
+    	
         // Travel
         if (isTravel) {
             travel();

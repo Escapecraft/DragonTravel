@@ -1,6 +1,6 @@
 package com.xemsdoom.dt.modules;
 
-import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
 import com.xemsdoom.dt.DragonTravelMain;
@@ -16,7 +16,7 @@ public class StationaryDragon {
 	 * Creates a stationary dragon
 	 */
 	public static void createStatDragon(Player player) {
-		net.minecraft.server.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
+		net.minecraft.server.v1_4_R1.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
 		XemDragon XemDragon = new XemDragon(player.getLocation(), notchWorld);
 		notchWorld.addEntity(XemDragon);
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("CreatedStationaryDragon")));
