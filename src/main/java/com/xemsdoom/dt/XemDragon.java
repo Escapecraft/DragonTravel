@@ -1,7 +1,7 @@
 package com.xemsdoom.dt;
 
-import net.minecraft.server.v1_4_R1.EntityEnderDragon;
-import net.minecraft.server.v1_4_R1.World;
+import net.minecraft.server.v1_5_R2.EntityEnderDragon;
+import net.minecraft.server.v1_5_R2.World;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
