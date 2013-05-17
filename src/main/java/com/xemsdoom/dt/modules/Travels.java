@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import org.bukkit.craftbukkit.v1_5_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 
 import com.xemsdoom.dt.DragonTravelMain;
 import com.xemsdoom.dt.XemDragon;
@@ -62,7 +62,7 @@ public class Travels {
         }
 
         // Spawning XemDragon
-        net.minecraft.server.v1_5_R2.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
+        net.minecraft.server.v1_5_R3.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
         XemDragon XemDragon = new XemDragon(player.getLocation(), notchWorld);
         notchWorld.addEntity(XemDragon);
         LivingEntity dragon = (LivingEntity) XemDragon.getBukkitEntity();
