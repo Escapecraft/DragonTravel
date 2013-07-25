@@ -123,6 +123,7 @@ public class PlayerListener implements Listener {
 			}
 
 			if (!DragonTravelMain.signs.hasKey(name, "cost")) {
+       				DragonTravelMain.log.info(String.format("[DragonTravel] Player %s starting dragon travel to destination %s.", player.getName(), dest));
 				Travels.mountDragon(player);
 				Travels.travelDestinationSigns(player, dest);
 				return;

@@ -1,7 +1,7 @@
 name: DragonTravel
 main: com.xemsdoom.dt.DragonTravelMain
 author: XemsDoom & Phiwa, modified by Tulonsae
-version: 1.6
+version: ${project.version}
 softdepend: [Vault]
 permissions:
     dt.mod.flight:

@@ -1,12 +1,11 @@
 package com.xemsdoom.dt;
 
-import net.minecraft.server.v1_5_R2.EntityEnderDragon;
-import net.minecraft.server.v1_5_R2.World;
+import net.minecraft.server.v1_6_R2.EntityEnderDragon;
+import net.minecraft.server.v1_6_R2.World;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
-import com.xemsdoom.dt.DragonTravelMain;
 import com.xemsdoom.dt.modules.Travels;
 import com.xemsdoom.dt.movement.Flight;
 import com.xemsdoom.dt.movement.Waypoint;
@@ -186,7 +185,7 @@ public class XemDragon extends EntityEnderDragon {
 
     @Override
     public void c() {
-    	
+
         // Travel
         if (isTravel) {
             travel();
