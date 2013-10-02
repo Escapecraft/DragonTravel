@@ -22,6 +22,8 @@ import com.xemsdoom.dt.commands.CommandHandlers;
 import com.xemsdoom.dt.economy.EconomyHandler;
 import com.xemsdoom.dt.modules.MessagesLoader;
 import com.xemsdoom.dt.modules.Travels;
+import org.bukkit.entity.EntityType;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 /**
  * Copyright (C) 2011-2012 Moser Luca/Philipp Wagner
@@ -207,4 +209,14 @@ public class PlayerListener implements Listener {
 		player.sendMessage(MessagesLoader.replaceColors(DragonTravelMain.messages.getString("RemovedStationaryDragon")));
 		clicked.remove();
 	}
+        
+        @EventHandler(priority = EventPriority.LOWEST)
+        public void onEntityDismount(EntityDismountEvent event) {
+            if (event.getEntityType() == EntityType.PLAYER && 
+                    event.getDismounted() instanceof XemDragon) {
+                //event is not cancellable, so we work around it
+                event.getDismounted().setPassenger(event.getEntity());
+            } return;
+            
+        }
 }
