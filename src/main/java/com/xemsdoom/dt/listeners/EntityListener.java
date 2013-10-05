@@ -1,5 +1,6 @@
 package com.xemsdoom.dt.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.xemsdoom.dt.DragonTravelMain;
 import com.xemsdoom.dt.XemDragon;
@@ -35,61 +37,77 @@ import com.xemsdoom.dt.XemDragon;
  */
 public class EntityListener implements Listener {
 
-    DragonTravelMain plugin;
+	DragonTravelMain plugin;
 
-    public EntityListener(DragonTravelMain plugin) {
-        this.plugin = plugin;
-    }
+	public EntityListener(DragonTravelMain plugin) {
+		this.plugin = plugin;
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onEnderDragonExplode(EntityExplodeEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onEnderDragonExplode(EntityExplodeEvent event) {
 
-        if (DragonTravelMain.onlydragontraveldragons && event.getEntity() instanceof XemDragon)
-            event.setCancelled(true);
+		if (DragonTravelMain.onlydragontraveldragons && event.getEntity() instanceof XemDragon)
+			event.setCancelled(true);
 
-        else if (DragonTravelMain.alldragons && event.getEntity() instanceof EnderDragon)
-            event.setCancelled(true);
-    }
+		else if (DragonTravelMain.alldragons && event.getEntity() instanceof EnderDragon)
+			event.setCancelled(true);
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerDamage(EntityDamageEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerDamage(EntityDamageEvent event) {
 
-        if (!(event.getEntity() instanceof Player))
-            return;
+		if (!(event.getEntity() instanceof Player))
+			return;
 
-        Player player = (Player) event.getEntity();
-        if (DragonTravelMain.TravelInformation.containsKey(player)) {
-            event.setCancelled(true);
-        }
-    }
+		Player player = (Player) event.getEntity();
+		if (DragonTravelMain.TravelInformation.containsKey(player)) {
+			event.setCancelled(true);
+		}
+	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerDeath(EntityDeathEvent event) {
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerDeath(EntityDeathEvent event) {
 
-        if (!(event.getEntity() instanceof Player))
-            return;
+		if (!(event.getEntity() instanceof Player))
+			return;
 
-        Player player = (Player) event.getEntity();
+		Player player = (Player) event.getEntity();
 
-        if (!DragonTravelMain.TravelInformation.containsKey(player))
-            return;
+		if (!DragonTravelMain.TravelInformation.containsKey(player))
+			return;
 
-        XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
-        Entity dragona = (Entity) dragon.getBukkitEntity();
-        dragona.remove();
-        DragonTravelMain.TravelInformation.remove(player);
-    }
+		XemDragon dragon = DragonTravelMain.TravelInformation.get(player);
+		Entity dragona = (Entity) dragon.getBukkitEntity();
+		dragona.remove();
+		DragonTravelMain.TravelInformation.remove(player);
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onCreatureSpawn(CreatureSpawnEvent event) {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
 
-        if (!event.getEntity().getType().toString().equals("ENDER_DRAGON"))
-            return;
+		if (!event.getEntity().getType().toString().equals("ENDER_DRAGON"))
+			return;
 
-        if (!event.isCancelled())
-            return;
+		if (!event.isCancelled())
+			return;
 
-        if (DragonTravelMain.ignoreAntiMobspawnAreas == true)
-            event.setCancelled(false);
-    }
+		if (DragonTravelMain.ignoreAntiMobspawnAreas == true)
+			event.setCancelled(false);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onEntityDismount(EntityDismountEvent evt) {
+		final Entity dismounter = evt.getEntity();
+		final Entity dismounted = evt.getDismounted();
+		if (dismounter.getType().toString().equalsIgnoreCase("player") && dismounted.getType().toString().equalsIgnoreCase("ender_dragon")) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("DragonTravel"), new Runnable() {
+
+				@Override
+				public void run() {
+					dismounted.setPassenger(dismounter);
+				}
+				
+			}, 10);
+		}
+	}
 }

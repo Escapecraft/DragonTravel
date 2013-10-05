@@ -34,6 +34,7 @@ public class Flight {
 	 * @return
 	 */
 	public static boolean existFlight(String name) {
+		
 		if (wps.hasIndex(name))
 			return true;
 		else
