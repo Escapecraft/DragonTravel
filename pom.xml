@@ -4,7 +4,7 @@
 
   <groupId>com.xemsdoom</groupId>
   <artifactId>DragonTravel</artifactId>
-  <version>1.6.4-dave</version>
+  <version>1.6.4-6.3-tul</version>
   <packaging>jar</packaging>
 
   <name>DragonTravel</name>
@@ -19,6 +19,7 @@
     <!-- Resources -->
     <resources>
       <resource>
+        <filtering>true</filtering>
         <directory>src/main/java/</directory>
         <includes>
           <include>**</include>
@@ -49,26 +50,37 @@
 
   <repositories>
     <repository>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/repositories/releases/</url>
+      <id>vault-repo</id>
+      <url>http://ci.herocraftonline.com/plugin/repository/everything/</url>
     </repository>
     <repository>
-      <id>vault-repo</id>
-      <url>http://ci.herocraftonline.com/repo/everything/</url>
+      <id>spigot-repo</id>
+      <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>bukkit-repo</id>
+      <url>http://repo.bukkit.org/content/repositories/releases/</url>
     </repository>
   </repositories>
 
   <!-- Dependencies -->
   <dependencies>
+<!-- craftbukkit
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>craftbukkit</artifactId>
-      <version>1.6.4-R3.0</version>
+      <version>1.6.2-R0.1-SNAPSHOT</version>
+    </dependency>
+-->
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.6.4-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>net.milkbowl</groupId>
-      <artifactId>vault</artifactId>
-      <version>1.2.18-SNAPSHOT</version>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>Vault</artifactId>
+      <version>1.2.27</version>
     </dependency>
   </dependencies>
 </project>
