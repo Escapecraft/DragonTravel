@@ -182,13 +182,19 @@ public class Travels {
 
             clone.setY(256);
         }
-
+        
+        while (!clone.getBlock().isEmpty() && clone.getY() <= 255) {
+        	clone.add(0, 1, 0);
+        }
+        
         clone.setY(clone.getY() + 2);
         player.teleport(clone);
 
         clone.setY(clone.getY() + 2);
         player.teleport(clone);
-
+        
+        
+        
         // remove dragon
         entity.remove();
         
