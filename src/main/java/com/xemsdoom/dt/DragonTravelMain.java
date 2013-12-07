@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
-import net.minecraft.server.v1_6_R3.EntityTypes;
+import net.minecraft.server.v1_7_R1.EntityTypes;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
