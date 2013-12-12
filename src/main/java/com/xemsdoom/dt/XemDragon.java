@@ -183,8 +183,10 @@ public class XemDragon extends EntityEnderDragon {
         ZTick = Math.abs(distanceZ) / tick;
     }
 
+    // This must override the method in net/minecraft/server/EntityEnderDragon
+    // that handles dragon action and movement
     @Override
-    public void c() {
+    public void e() {
 
         // Travel
         if (isTravel) {
