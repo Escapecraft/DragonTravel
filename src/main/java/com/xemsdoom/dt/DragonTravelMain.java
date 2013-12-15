@@ -142,7 +142,7 @@ public class DragonTravelMain extends JavaPlugin{
         try{
             Method method = EntityTypes.class.getDeclaredMethod("a", new Class[] { Class.class, String.class, int.class });
             method.setAccessible(true);
-            method.invoke(EntityTypes.class, XemDragon.class, "XemDragon", 63);
+            method.invoke(EntityTypes.class, XemDragon.class, "XemDragon", 963);
         }catch (Exception e){
             log.info("[DragonTravel] Error registering Entity!");
             e.printStackTrace();
