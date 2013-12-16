@@ -1,12 +1,14 @@
 package com.xemsdoom.dt;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
 import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
+
 import net.minecraft.server.v1_7_R1.EntityTypes;
 
 import org.bukkit.Material;
@@ -139,11 +141,46 @@ public class DragonTravelMain extends JavaPlugin{
         PluginDescriptionFile description = getDescription();
 
         // Add our new entity to minecrafts entities
+/*
         try{
             Method method = EntityTypes.class.getDeclaredMethod("a", new Class[] { Class.class, String.class, int.class });
             method.setAccessible(true);
-            method.invoke(EntityTypes.class, XemDragon.class, "XemDragon", 963);
+            method.invoke(EntityTypes.class, XemDragon.class, "XemDragon", 63);
         }catch (Exception e){
+            log.info("[DragonTravel] Error registering Entity!");
+            e.printStackTrace();
+            pm.disablePlugin(this);
+            return;
+        }
+*/
+        try {
+            int xemDragonId = 63;
+
+            Class entityTypesClass = EntityTypes.class;
+            Field c = entityTypesClass.getDeclaredField("c");
+            Field d = entityTypesClass.getDeclaredField("d");
+            Field e = entityTypesClass.getDeclaredField("e");
+            Field f = entityTypesClass.getDeclaredField("f");
+            Field g = entityTypesClass.getDeclaredField("g");
+
+            c.setAccessible(true);
+            d.setAccessible(true);
+            e.setAccessible(true);
+            f.setAccessible(true);
+            g.setAccessible(true);
+
+            HashMap cMap = (HashMap)c.get(null);
+            HashMap dMap = (HashMap)d.get(null);
+            HashMap eMap = (HashMap)e.get(null);
+            HashMap fMap = (HashMap)f.get(null);
+            HashMap gMap = (HashMap)g.get(null);
+
+            cMap.put("XemDragon", XemDragon.class);
+            dMap.put(XemDragon.class, "XemDragon");
+            eMap.put(Integer.valueOf(xemDragonId), XemDragon.class);
+            fMap.put(XemDragon.class, Integer.valueOf(xemDragonId));
+            gMap.put("XemDragon", Integer.valueOf(xemDragonId));
+        } catch (Exception e) {
             log.info("[DragonTravel] Error registering Entity!");
             e.printStackTrace();
             pm.disablePlugin(this);

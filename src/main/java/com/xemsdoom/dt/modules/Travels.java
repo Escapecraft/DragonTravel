@@ -1,6 +1,7 @@
 package com.xemsdoom.dt.modules;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -38,6 +39,8 @@ import com.xemsdoom.dt.economy.EconomyHandler;
  */
 public class Travels {
 
+    public static final Logger log = Logger.getLogger("Minecraft");
+
     public static ArrayList<String> togglers = new ArrayList<String>();
     private static ChatColor red = ChatColor.RED;
     private static ChatColor white = ChatColor.WHITE;
@@ -48,6 +51,7 @@ public class Travels {
      * @param player
      */
     public static boolean mountDragon(Player player) {
+log.info("[DragonTravel] About to mount a dragon");
 
         // Return if player is not on a station.
         if (DragonTravelMain.config.getBoolean("UseStation"))
@@ -62,10 +66,17 @@ public class Travels {
         }
 
         // Spawning XemDragon
-        net.minecraft.server.v1_7_R1.World notchWorld = ((CraftWorld) player.getWorld()).getHandle();
-        XemDragon XemDragon = new XemDragon(player.getLocation(), notchWorld);
-        notchWorld.addEntity(XemDragon);
+        net.minecraft.server.v1_7_R1.World craftWorld = ((CraftWorld) player.getWorld()).getHandle();
+        XemDragon XemDragon = new XemDragon(player.getLocation(), craftWorld);
+        if (!craftWorld.addEntity(XemDragon)) {
+            log.warning("[DragonTravel] Couldn't add XemDragon to world!");
+            return false;
+        }
         LivingEntity dragon = (LivingEntity) XemDragon.getBukkitEntity();
+        if (dragon == null) {
+            log.warning("[DragonTravel] Couldn't create EnderDragon!");
+            return false;
+        }
 
         // Set the player as passenger to the XemDragon
         dragon.setPassenger(player);

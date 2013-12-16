@@ -4,6 +4,7 @@ import net.minecraft.server.v1_7_R1.EntityEnderDragon;
 import net.minecraft.server.v1_7_R1.World;
 
 import org.bukkit.Location;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 
 import com.xemsdoom.dt.modules.Travels;
